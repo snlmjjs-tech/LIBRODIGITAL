@@ -655,40 +655,7 @@
   </div>
 
   <!-- JAVASCRIPT APP ARCHITECTURE -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDvF1IwWiPS10IottkfGzTzJWv2a9mplGU",
-  authDomain: "libro-digital-5b032.firebaseapp.com",
-  projectId: "libro-digital-5b032",
-  storageBucket: "libro-digital-5b032.firebasestorage.app",
-  messagingSenderId: "141901799802",
-  appId: "1:141901799802:web:ea3d38b2d28677acfdf6c3",
-  measurementId: "G-8752XD5MT5"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-window.auth = auth;
-window.db = db;
+  <script>
     // 15 HISTORICAL STUDENTS WITH RESPECTIVE SUBJECTS AND CONVERTED GRADE DATA SEED
     const defaultTeacherProfile = {
       name: "Juan Valenzuela",
