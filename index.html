@@ -223,10 +223,10 @@
             <button onclick="setFastFilter('destacados')" id="ff-destacados" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold rounded-lg border border-slate-200 dark:border-slate-700 transition-all text-center">
               ⭐ Destacados
             </button>
-            <button onclick="setFastFilter('enriesgo')" id="ff-enriesgo" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold rounded-lg border border-slate-200 dark:border-slate-700 transition-all text-center">
+            <button onclick="setFastFilter('enriesgo')" id="ff-enriesgo" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold rounded-lg border border-slate-200/40 transition-all text-center">
               ⚠️ En Riesgo (&lt;5.0)
             </button>
-            <button onclick="setFastFilter('aprobados')" id="ff-aprobados" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold rounded-lg border border-slate-200 dark:border-slate-700 transition-all text-center">
+            <button onclick="setFastFilter('aprobados')" id="ff-aprobados" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold rounded-lg border border-slate-200/40 transition-all text-center">
               ✔️ Aprobados (≥4.0)
             </button>
           </div>
@@ -959,6 +959,17 @@
       renderProfileDeepDive();
     }
 
+    function changeActiveSubject(subjectId) {
+      activeSubjectId = subjectId;
+      safeSetItem("incosaf_active_subject_id", activeSubjectId);
+      updateHeaderAndLabels();
+      renderEvaluationsList();
+      renderNewStudentFields();
+      applyFilters();
+      renderTable();
+      renderProfileDeepDive();
+    }
+
     function renderCoursesBadgeList() {
       const container = document.getElementById("courses-badge-container");
       if (!container) return;
@@ -1271,6 +1282,7 @@
       });
     }
 
+    // CONTROLES DE ASIGNATURAS MODALES
     function toggleNewSubjectModalOn() {
       document.getElementById("subject-modal-title").innerText = "Añadir Asignatura";
       document.getElementById("edit-subject-id").value = "";
@@ -1489,59 +1501,6 @@
       const minVal = parseFloat(document.getElementById("min-avg-slider").value);
       document.getElementById("range-value").innerText = `${minVal.toFixed(1)} - 7.0`;
       minAvgFilter = minVal;
-    }
-
-    function setFastFilter(mode) {
-      fastFilterMode = mode;
-      const modes = ['all', 'destacados', 'enriesgo', 'aprobados'];
-      modes.forEach(m => {
-        const btn = document.getElementById(`ff-${m}`);
-        if (btn) {
-          if (m === mode) {
-            btn.className = "text-[10px] py-1 px-1.5 bg-brand-500 text-white font-semibold rounded-lg border border-transparent shadow-sm hover:opacity-95 transition-all text-center";
-          } else {
-            btn.className = "text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold rounded-lg border border-slate-200/40 transition-all text-center";
-          }
-        }
-      });
-      applyFilters();
-    }
-
-    function applyFilters() {
-      searchFilter = document.getElementById("search-input").value.toLowerCase();
-      
-      filteredStudents = students.filter(student => {
-        // Validate active course matching
-        const matchesCourse = student.courseId === activeCourseId;
-        if (!matchesCourse) return false;
-
-        const matchesName = student.name.toLowerCase().includes(searchFilter);
-        const avg = calculateAverages(student);
-        const matchesRange = avg >= minAvgFilter;
-        
-        let matchesFastFilter = true;
-        if (fastFilterMode === 'destacados') {
-          matchesFastFilter = avg >= 6.0;
-        } else if (fastFilterMode === 'enriesgo') {
-          matchesFastFilter = avg < 5.0;
-        } else if (fastFilterMode === 'aprobados') {
-          matchesFastFilter = avg >= 4.0;
-        }
-
-        return matchesName && matchesRange && matchesFastFilter;
-      });
-
-      const sortOrder = document.getElementById("sort-order").value;
-      if (sortOrder === "high-low") {
-        filteredStudents.sort((a, b) => calculateAverages(b) - calculateAverages(a));
-      } else if (sortOrder === "low-high") {
-        filteredStudents.sort((a, b) => calculateAverages(a) - calculateAverages(b));
-      } else if (sortOrder === "alphabetical") {
-        filteredStudents.sort((a, b) => a.name.localeCompare(b.name));
-      }
-
-      updateKPIs();
-      recreateCharts();
     }
 
     // DYNAMIC TABLE RENDERING (LIBRO DE CLASES PLANILLA)
@@ -1991,6 +1950,7 @@
       renderProfileDeepDive();
     }
 
+    // CARGAR DETALLE ACADÉMICO INDIVIDUAL
     function renderProfileDeepDive() {
       const student = students.find(s => s.id === selectedStudentId);
       if (!student) {
