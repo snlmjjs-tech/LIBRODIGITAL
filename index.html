@@ -4,13 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal Docente INCOSAF - Libro de Clases Digital</title>
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- SheetJS para importar/exportar a Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <!-- Tailwind Config -->
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -59,14 +55,11 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
 
-  <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
 
-  <!-- NAVIGATION HEADER -->
   <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex flex-wrap justify-between items-center gap-4 sticky top-0 z-40 shadow-sm">
     <div class="flex items-center gap-3.5">
       <div class="flex items-center justify-center">
-        <!-- Logo Institucional con fallback estético -->
         <img src="Insignia INCOSAF.png" alt="Insignia INCOSAF" class="w-14 h-14 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/120x120/1e3a8a/ffffff?text=INCOSAF';">
       </div>
       <div>
@@ -79,25 +72,19 @@
       </div>
     </div>
 
-    <!-- CONTROLS & TABS NAVIGATION -->
     <div class="flex flex-wrap items-center gap-3">
-      <!-- Active Course Select directly in Header -->
       <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-700/50 p-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700">
         <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider px-2">Curso:</label>
         <select id="header-active-course" onchange="changeActiveCourse(this.value)" class="text-xs font-bold text-brand-700 dark:text-brand-400 bg-white dark:bg-slate-800 border-none rounded-lg py-1 px-2.5 focus:ring-2 focus:ring-brand-500 outline-none cursor-pointer">
-          <!-- Dynamically populated courses list -->
         </select>
       </div>
 
-      <!-- Active Subject Select directly in Header -->
       <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-700/50 p-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700">
         <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider px-2">Asignatura:</label>
         <select id="header-active-subject" onchange="changeActiveSubject(this.value)" class="text-xs font-bold text-brand-700 dark:text-brand-400 bg-white dark:bg-slate-800 border-none rounded-lg py-1 px-2.5 focus:ring-2 focus:ring-brand-500 outline-none cursor-pointer">
-          <!-- Dynamically populated subjects list -->
         </select>
       </div>
 
-      <!-- Nav Tabs -->
       <nav class="flex space-x-1 bg-slate-100 dark:bg-slate-700/50 p-1 rounded-xl">
         <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="px-4 py-2 text-sm font-medium rounded-lg bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-sm flex items-center gap-2 transition-all">
           📊 Resumen
@@ -110,7 +97,6 @@
         </button>
       </nav>
 
-      <!-- Theme Switcher -->
       <button onclick="toggleDarkMode()" class="p-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 rounded-xl transition-all" title="Alternar Modo Oscuro/Claro">
         <svg id="sun-icon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
         <svg id="moon-icon" class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
@@ -118,13 +104,9 @@
     </div>
   </header>
 
-  <!-- DASHBOARD WORKSPACE -->
   <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
     
-    <!-- LEFT PANEL: FILTERS & TEACHER ACTIONS -->
     <aside id="filters-sidebar" class="w-full md:w-80 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 p-5 flex flex-col gap-4 overflow-y-auto shrink-0">
-      
-      <!-- Teacher Profile Metadata Settings Card -->
       <div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-700/60 flex flex-col gap-3">
         <div class="flex justify-between items-center">
           <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Perfil Docente</span>
@@ -148,63 +130,36 @@
         </div>
       </div>
 
-      <!-- Courses Management Section -->
       <div class="border-b border-slate-100 dark:border-slate-700/80 pb-4">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Mis Cursos</h3>
-          <button onclick="toggleNewCourseModalOn()" class="text-[10px] text-brand-600 dark:text-brand-400 font-bold hover:underline flex items-center gap-0.5">
-            ➕ Agregar
-          </button>
+          <button onclick="toggleNewCourseModalOn()" class="text-[10px] text-brand-600 dark:text-brand-400 font-bold hover:underline flex items-center gap-0.5">➕ Agregar</button>
         </div>
-        
-        <div id="courses-badge-container" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
-          <!-- Dynamically populated courses as manageable badges -->
-        </div>
+        <div id="courses-badge-container" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1"></div>
       </div>
 
-      <!-- Subjects Management Section -->
       <div class="border-b border-slate-100 dark:border-slate-700/80 pb-4">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Mis Asignaturas</h3>
-          <button onclick="toggleNewSubjectModalOn()" class="text-[10px] text-brand-600 dark:text-brand-400 font-bold hover:underline flex items-center gap-0.5">
-            ➕ Agregar
-          </button>
+          <button onclick="toggleNewSubjectModalOn()" class="text-[10px] text-brand-600 dark:text-brand-400 font-bold hover:underline flex items-center gap-0.5">➕ Agregar</button>
         </div>
-        
-        <div id="subjects-badge-container" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
-          <!-- Dynamically populated subjects as manageable badges -->
-        </div>
+        <div id="subjects-badge-container" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1"></div>
       </div>
 
-      <!-- Evaluations Management Section (Subject Active) -->
       <div class="border-b border-slate-100 dark:border-slate-700/80 pb-4">
         <div class="flex items-center justify-between mb-2">
-          <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider" id="evaluations-panel-title">
-            Evaluaciones Activas
-          </h3>
-          <button onclick="toggleNewEvaluationModalOn()" class="text-[10px] text-brand-600 dark:text-brand-400 font-bold hover:underline">
-            ➕ Añadir Prueba
-          </button>
+          <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider" id="evaluations-panel-title">Evaluaciones Activas</h3>
+          <button onclick="toggleNewEvaluationModalOn()" class="text-[10px] text-brand-600 dark:text-brand-400 font-bold hover:underline">➕ Añadir Prueba</button>
         </div>
-        
-        <div id="evaluations-sidebar-list" class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-          <!-- Dynamically loaded list of active subject evaluations -->
-        </div>
+        <div id="evaluations-sidebar-list" class="space-y-1.5 max-h-48 overflow-y-auto pr-1"></div>
       </div>
 
-      <!-- Interactive Filters Section -->
       <div>
         <h3 class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2.5">Filtros de Alumnos</h3>
-        
-        <!-- Search bar -->
         <div class="relative mb-3">
-          <div class="relative">
-            <input type="text" id="search-input" oninput="applyFilters()" placeholder="Buscar Estudiante..." class="w-full pl-8 pr-3 py-1.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-1 focus:ring-brand-500 transition-all">
-            <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          </div>
+          <input type="text" id="search-input" oninput="applyFilters()" placeholder="Buscar Estudiante..." class="w-full pl-8 pr-3 py-1.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-1 focus:ring-brand-500 transition-all">
         </div>
 
-        <!-- Grade Range Filter -->
         <div class="mb-3">
           <div class="flex justify-between items-center mb-0.5">
             <label class="text-[10px] font-semibold text-slate-500">Promedio General ≥</label>
@@ -213,110 +168,62 @@
           <input type="range" id="min-avg-slider" min="1" max="7" step="0.1" value="1.0" oninput="updateRangeLabel(); applyFilters()" class="w-full accent-brand-500 h-1 bg-slate-100 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer">
         </div>
 
-        <!-- Fast Status Filters -->
         <div>
           <label class="block text-[10px] font-semibold text-slate-500 mb-1">Segmentación Rápida</label>
           <div class="grid grid-cols-2 gap-1.5">
-            <button onclick="setFastFilter('all')" id="ff-all" class="text-[10px] py-1 px-1.5 bg-brand-500 text-white font-semibold rounded-lg border border-transparent shadow-sm hover:opacity-95 transition-all text-center">
-              Todos
-            </button>
-            <button onclick="setFastFilter('destacados')" id="ff-destacados" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold rounded-lg border border-slate-200 dark:border-slate-700 transition-all text-center">
-              ⭐ Destacados
-            </button>
-            <button onclick="setFastFilter('enriesgo')" id="ff-enriesgo" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold rounded-lg border border-slate-200/40 transition-all text-center">
-              ⚠️ En Riesgo (&lt;5.0)
-            </button>
-            <button onclick="setFastFilter('aprobados')" id="ff-aprobados" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold rounded-lg border border-slate-200/40 transition-all text-center">
-              ✔️ Aprobados (≥4.0)
-            </button>
+            <button onclick="setFastFilter('all')" id="ff-all" class="text-[10px] py-1 px-1.5 bg-brand-500 text-white font-semibold rounded-lg text-center">Todos</button>
+            <button onclick="setFastFilter('destacados')" id="ff-destacados" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 font-semibold rounded-lg text-center">⭐ Destacados</button>
+            <button onclick="setFastFilter('enriesgo')" id="ff-enriesgo" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 font-semibold rounded-lg text-center">⚠️ En Riesgo</button>
+            <button onclick="setFastFilter('aprobados')" id="ff-aprobados" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 font-semibold rounded-lg text-center">✔️ Aprobados</button>
           </div>
         </div>
       </div>
     </aside>
 
-    <!-- MAIN INTERACTIVE SPACE -->
     <main class="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-900 p-6 flex flex-col gap-6">
-      
-      <!-- TOP BANNER -->
-      <div class="bg-gradient-to-r from-brand-900 to-brand-700 text-white rounded-2xl p-5 shadow-md relative overflow-hidden shrink-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div class="relative z-10 max-w-lg">
+      <div class="bg-gradient-to-r from-brand-900 to-brand-700 text-white rounded-2xl p-5 shadow-md flex justify-between items-center gap-4">
+        <div>
           <span class="text-[10px] bg-white/20 text-white font-bold tracking-wider uppercase px-2.5 py-1 rounded-full">Gestión Escolar por Asignatura</span>
           <h2 class="text-xl font-bold mt-2" id="active-banner-subject-title">Planilla de Notas: Inglés</h2>
-          <p class="text-xs text-white/80 mt-1">Ingresa evaluaciones, pondera los instrumentos de evaluación y edita calificaciones directamente. El sistema recalcula promedios en tiempo real.</p>
         </div>
-        <div class="shrink-0 flex items-center gap-3">
-          <button onclick="switchTab('table')" class="bg-white text-brand-900 hover:bg-brand-50 text-xs font-bold px-4 py-2 rounded-xl shadow transition-all">
-            ✏️ Ver Planilla de Curso
-          </button>
-        </div>
-        <div class="absolute -right-16 -top-16 w-48 h-48 bg-white/5 rounded-full pointer-events-none"></div>
-        <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-white/5 rounded-full pointer-events-none"></div>
+        <button onclick="switchTab('table')" class="bg-white text-brand-900 text-xs font-bold px-4 py-2 rounded-xl shadow">✏️ Ver Planilla de Curso</button>
       </div>
 
-      <!-- KPI CARD ROW -->
       <section class="grid grid-cols-2 lg:grid-cols-4 gap-4 shrink-0">
-        <!-- Promedio General Card -->
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-700/80 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4">
-          <div class="p-3 bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400 rounded-xl">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg>
-          </div>
+        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border flex items-center gap-4">
           <div>
-            <p class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Promedio Asignatura</p>
-            <h3 id="kpi-promedio" class="text-xl font-bold mt-0.5 text-slate-900 dark:text-white">-</h3>
-            <span id="kpi-promedio-trend" class="text-[9px] font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 px-1 py-0.5 rounded">Curso Aprobado</span>
+            <p class="text-[10px] text-slate-500 font-semibold uppercase">Promedio Asignatura</p>
+            <h3 id="kpi-promedio" class="text-xl font-bold">-</h3>
           </div>
         </div>
-
-        <!-- Alumno Destacado Card -->
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-700/80 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4">
-          <div class="p-3 bg-amber-50 dark:bg-amber-950/40 text-amber-500 dark:text-amber-400 rounded-xl">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.907c.961 0 1.36 1.246.588 1.81l-3.97 2.88a1 1 0 00-.364 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.971-2.88a1 1 0 00-1.178 0l-3.97 2.88c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.364-1.118L2.98 8.72c-.773-.564-.373-1.81.588-1.81h4.906a1 1 0 00.951-.69l1.519-4.674z"/></svg>
-          </div>
+        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border flex items-center gap-4">
           <div>
-            <p class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Estudiante Destacado</p>
-            <h3 id="kpi-best-student" class="text-xs font-bold mt-0.5 text-slate-900 dark:text-white truncate max-w-[130px]">-</h3>
-            <span id="kpi-best-score" class="text-[10px] font-bold text-brand-600 block mt-0.5">-</span>
+            <p class="text-[10px] text-slate-500 font-semibold uppercase">Estudiante Destacado</p>
+            <h3 id="kpi-best-student" class="text-xs font-bold truncate max-w-[130px]">-</h3>
+            <span id="kpi-best-score" class="text-[10px] font-bold text-brand-600 block">-</span>
           </div>
         </div>
-
-        <!-- Asignatura Top Card -->
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-700/80 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4">
-          <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 rounded-xl">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-          </div>
+        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border flex items-center gap-4">
           <div>
-            <p class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Mejor Evaluación</p>
-            <h3 id="kpi-best-subject" class="text-xs font-bold mt-0.5 text-slate-900 dark:text-white truncate max-w-[130px]">-</h3>
-            <span id="kpi-best-subject-avg" class="text-[10px] font-bold text-emerald-600 block mt-0.5">-</span>
+            <p class="text-[10px] text-slate-500 font-semibold uppercase">Mejor Evaluación</p>
+            <h3 id="kpi-best-subject" class="text-xs font-bold truncate max-w-[130px]">-</h3>
+            <span id="kpi-best-subject-avg" class="text-[10px] font-bold text-emerald-600 block">-</span>
           </div>
         </div>
-
-        <!-- Alumnos en Riesgo Card -->
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-700/80 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4">
-          <div class="p-3 bg-red-50 dark:bg-red-950/40 text-red-500 dark:text-red-400 rounded-xl">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-          </div>
+        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border flex items-center gap-4">
           <div>
-            <p class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Bajo Nota 5,0</p>
-            <h3 id="kpi-at-risk" class="text-xl font-bold mt-0.5 text-slate-900 dark:text-white">-</h3>
-            <span class="text-[9px] font-medium text-red-600 bg-red-50 dark:bg-red-950/30 px-1 py-0.5 rounded">Requieren apoyo remedial</span>
+            <p class="text-[10px] text-slate-500 font-semibold uppercase">Bajo Nota 5,0</p>
+            <h3 id="kpi-at-risk" class="text-xl font-bold">-</h3>
           </div>
         </div>
       </section>
 
-      <!-- TAB 1: EXECUTIVE DASHBOARD VIEW -->
       <section id="tab-content-dashboard" class="space-y-6 fade-in">
-        <!-- Main Charts Section -->
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          
-          <!-- Column chart (Student Average) -->
-          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/80 shadow-sm xl:col-span-2 flex flex-col min-h-[380px]">
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border xl:col-span-2 flex flex-col min-h-[380px]">
             <div class="flex justify-between items-center mb-4">
-              <div>
-                <h4 class="text-sm font-bold text-slate-900 dark:text-white" id="student-avg-chart-title">Rendimiento General por Alumno</h4>
-                <p class="text-xs text-slate-400">Comparación de promedios ponderados en la materia seleccionada.</p>
-              </div>
-              <select id="sort-order" onchange="applyFilters()" class="text-xs px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-medium">
+              <h4 class="text-sm font-bold" id="student-avg-chart-title">Rendimiento General por Alumno</h4>
+              <select id="sort-order" onchange="applyFilters()" class="text-xs px-2.5 py-1.5 rounded-lg border bg-slate-50 dark:bg-slate-900 font-medium">
                 <option value="high-low">De Mayor a Menor</option>
                 <option value="low-high">De Menor a Mayor</option>
                 <option value="alphabetical">Alfabético</option>
@@ -327,409 +234,168 @@
             </div>
           </div>
 
-          <!-- Pie / Distribution Chart -->
-          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/80 shadow-sm flex flex-col justify-between min-h-[380px]">
-            <div>
-              <h4 class="text-sm font-bold text-slate-900 dark:text-white">Logro de Competencias Académicas</h4>
-              <p class="text-xs text-slate-400">Distribución de alumnos según nivel de logro.</p>
-            </div>
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border flex flex-col justify-between min-h-[380px]">
+            <h4 class="text-sm font-bold">Logro de Competencias Académicas</h4>
             <div class="relative py-4 flex items-center justify-center max-h-[240px]">
               <canvas id="chart-distribution" class="max-w-[210px] max-h-[210px]"></canvas>
             </div>
-            <div class="grid grid-cols-2 gap-2 text-[11px] border-t border-slate-100 dark:border-slate-700/50 pt-3">
-              <div class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 block"></span>
-                <span class="text-slate-600 dark:text-slate-400">Destacados (≥ 6.0)</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 block"></span>
-                <span class="text-slate-600 dark:text-slate-400">Competentes (5.0 - 5.9)</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 block"></span>
-                <span class="text-slate-600 dark:text-slate-400">Aprobados (4.0 - 4.9)</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-red-500 block"></span>
-                <span class="text-slate-600 dark:text-slate-400">Reprobados (< 4.0)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Secondary Charts Row -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Average per Evaluation Chart -->
-          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/80 shadow-sm flex flex-col h-80">
-            <div>
-              <h4 class="text-sm font-bold text-slate-900 dark:text-white" id="subject-evaluations-chart-title">Desempeño Medio por Evaluación</h4>
-              <p class="text-xs text-slate-400">Análisis comparativo de promedios para cada instrumento de evaluación.</p>
-            </div>
-            <div class="flex-1 relative mt-3">
-              <canvas id="chart-subject-averages"></canvas>
-            </div>
-          </div>
-
-          <!-- Quick Insights Card -->
-          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/80 shadow-sm flex flex-col h-80">
-            <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2">Hallazgos y Diagnóstico de Aula</h4>
-            <div id="dashboard-insights" class="space-y-3 overflow-y-auto pr-1 text-xs text-slate-600 dark:text-slate-300 flex-1">
-              <div class="p-3 bg-indigo-50/50 dark:bg-slate-900/50 border-l-4 border-indigo-500 rounded-r-xl">
-                <p class="font-semibold text-slate-900 dark:text-white">Contenido Mejor Dominado</p>
-                <p class="mt-1" id="insight-subject-best">-</p>
-              </div>
-              <div class="p-3 bg-amber-50/50 dark:bg-slate-900/50 border-l-4 border-amber-500 rounded-r-xl">
-                <p class="font-semibold text-slate-900 dark:text-white">Alerta de Aprendizaje Crítico</p>
-                <p class="mt-1" id="insight-subject-worst">-</p>
-              </div>
-              <div class="p-3 bg-teal-50/50 dark:bg-slate-900/50 border-l-4 border-teal-500 rounded-r-xl">
-                <p class="font-semibold text-slate-900 dark:text-white">Ratio de Promoción en la Materia</p>
-                <p class="mt-1" id="insight-approvals">-</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      <!-- TAB 2: EDITABLE GRADE SHEET (TABLE) -->
       <section id="tab-content-table" class="hidden space-y-6 fade-in">
-        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/80 shadow-sm flex flex-col gap-4">
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border flex flex-col gap-4">
           <div class="flex flex-wrap justify-between items-center gap-4">
-            <div>
-              <h3 class="text-base font-bold text-slate-900 dark:text-white" id="digital-book-subject-title">Libro de Calificaciones Escolar</h3>
-              <p class="text-xs text-slate-400">Ingresa las calificaciones directly (1.0 - 7.0). El promedio de la asignatura se recalcula aplicando las ponderaciones.</p>
-            </div>
-            
+            <h3 class="text-base font-bold" id="digital-book-subject-title">Libro de Calificaciones Escolar</h3>
             <div class="flex flex-wrap items-center gap-2">
-              <!-- Excel Import/Export Suite -->
-              <button onclick="triggerExcelFileInput()" class="flex items-center gap-1.5 px-3.5 py-2 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800/60 font-bold rounded-xl text-xs transition-all shadow-sm">
-                📥 Importar Roster/Notas
-              </button>
+              <button onclick="triggerExcelFileInput()" class="px-3.5 py-2 bg-blue-50 text-blue-700 border rounded-xl text-xs font-bold">📥 Importar Roster/Notas</button>
               <input type="file" id="excel-import-file-input" onchange="handleExcelImport(event)" class="hidden" accept=".xlsx, .xls, .ods">
-
-              <!-- Add Student Modal Trigger -->
-              <button onclick="toggleNewStudentModal()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-slate-200 text-white dark:text-slate-900 font-semibold rounded-xl shadow-sm text-xs transition-all">
-                👤 Registrar Alumno
-              </button>
-              
-              <!-- Export Data EXCEL (.xlsx) -->
-              <button onclick="exportToExcel()" class="flex items-center gap-1.5 px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60 font-bold rounded-xl text-xs transition-all shadow-sm">
-                <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                </svg>
-                Descargar Reporte Excel
-              </button>
+              <button onclick="toggleNewStudentModal()" class="px-3.5 py-2 bg-slate-900 text-white font-semibold rounded-xl text-xs">👤 Registrar Alumno</button>
+              <button onclick="exportToExcel()" class="px-3.5 py-2 bg-emerald-50 text-emerald-700 border rounded-xl text-xs font-bold">Descargar Reporte Excel</button>
             </div>
           </div>
 
-          <!-- TABLE COMPONENT WITH ALL DYNAMIC SUBJECTS -->
-          <div class="overflow-x-auto border border-slate-100 dark:border-slate-700 rounded-xl">
+          <div class="overflow-x-auto border rounded-xl">
             <table class="w-full text-left border-collapse min-w-[1000px]">
-              <thead id="student-table-header">
-                <!-- Dynamically filled with Javascript depending on active evaluations -->
-              </thead>
-              <tbody id="student-table-body" class="text-xs divide-y divide-slate-100 dark:divide-slate-700/60">
-                <!-- Dynamically filled with Javascript -->
-              </tbody>
+              <thead id="student-table-header"></thead>
+              <tbody id="student-table-body" class="text-xs divide-y"></tbody>
             </table>
           </div>
         </div>
-
-        <!-- NEW ESTUDIANTE MODAL -->
-        <div id="new-student-modal" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50">
-          <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700 max-h-[85vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-              <h3 class="text-base font-bold text-slate-900 dark:text-white">Registrar Nuevo Estudiante</h3>
-              <button onclick="toggleNewStudentModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-              </button>
-            </div>
-            <form id="new-student-form" onsubmit="saveNewStudent(event)" class="space-y-4">
-              <div>
-                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Nombre Completo</label>
-                <input type="text" id="new-student-name" required placeholder="Ej: Lucas Silva" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:ring-1 focus:ring-brand-500 focus:outline-none">
-              </div>
-              
-              <!-- Subject Inputs generated dynamically -->
-              <div class="border-t border-slate-100 dark:border-slate-700/60 pt-3">
-                <span class="text-[10px] font-bold text-slate-400 uppercase block mb-2">Ingresar Calificaciones Iniciales</span>
-                <div id="new-student-fields-container" class="grid grid-cols-2 gap-3 max-h-56 overflow-y-auto pr-1">
-                  <!-- Dynamically populated fields -->
-                </div>
-              </div>
-
-              <div class="flex gap-2 pt-2 justify-end">
-                <button type="button" onclick="toggleNewStudentModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-xl text-xs font-semibold transition-all">Cancelar</button>
-                <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-semibold shadow transition-all">Agregar</button>
-              </div>
-            </form>
-          </div>
-        </div>
       </section>
 
-      <!-- TAB 3: INDIVIDUAL STUDENT DEEP-DIVE PROFILE -->
       <section id="tab-content-profile" class="hidden space-y-6 fade-in">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          
-          <!-- Select Profile Column -->
-          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/80 shadow-sm flex flex-col gap-4">
-            <div>
-              <h3 class="text-sm font-bold text-slate-900 dark:text-white">Selecciona un Estudiante</h3>
-              <p class="text-xs text-slate-400">Elige un alumno de la nómina para analizar su radar educativo.</p>
-            </div>
-            
-            <div class="flex-1 overflow-y-auto max-h-[400px] space-y-1.5 pr-1" id="profile-student-list">
-              <!-- Dynamically populated student list -->
-            </div>
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border flex flex-col gap-4">
+            <h3 class="text-sm font-bold">Selecciona un Estudiante</h3>
+            <div class="flex-1 overflow-y-auto max-h-[400px] space-y-1.5" id="profile-student-list"></div>
           </div>
 
-          <!-- Radar Chart & Score Dashboard Column -->
-          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/80 shadow-sm md:col-span-2 flex flex-col justify-between min-h-[480px]">
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border md:col-span-2 flex flex-col justify-between min-h-[480px]">
             <div class="flex justify-between items-start gap-4">
-              <div>
-                <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2" id="profile-student-name">
-                  -
-                </h3>
-                <p class="text-xs text-slate-400">Análisis comparativo de calificaciones por evaluación versus el rendimiento grupal.</p>
-              </div>
+              <h3 class="text-lg font-bold" id="profile-student-name">-</h3>
               <div class="text-right">
-                <span class="text-xs font-bold text-slate-400 block uppercase">Promedio</span>
-                <span class="text-2xl font-black text-brand-600 dark:text-brand-400" id="profile-student-avg">-</span>
+                <span class="text-xs font-bold text-slate-400 block">Promedio</span>
+                <span class="text-2xl font-black text-brand-600" id="profile-student-avg">-</span>
               </div>
             </div>
-
-            <!-- Profile Dashboard Area -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 items-center mt-4">
-              <!-- Radar Canvas -->
               <div class="relative w-full aspect-square max-w-[280px] mx-auto">
                 <canvas id="chart-profile-radar"></canvas>
               </div>
-              
-              <!-- Metrics list for student -->
-              <div class="space-y-3 flex flex-col justify-center h-full">
-                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Historial de Calificaciones</h4>
-                <div class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1" id="profile-subject-breakdown">
-                  <!-- Dynamically generated with subject value pill progress bars -->
-                </div>
-
-                <!-- Pedagogical Action Plan Alert -->
-                <div class="p-3.5 bg-yellow-50 dark:bg-slate-900 border-l-4 border-yellow-500 rounded-r-xl text-xs">
-                  <p class="font-semibold text-yellow-800 dark:text-yellow-400">Orientación y Apoyo Pedagógico</p>
-                  <p class="mt-1 text-slate-600 dark:text-slate-300 animate-pulse" id="profile-pedagogical-insight">
-                    Cargando perfil...
-                  </p>
+              <div class="space-y-3">
+                <div id="profile-subject-breakdown" class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto"></div>
+                <div class="p-3.5 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-xl text-xs">
+                  <p class="font-semibold text-yellow-800">Orientación Pedagógica</p>
+                  <p id="profile-pedagogical-insight" class="text-slate-600 mt-1">Cargando...</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-
     </main>
   </div>
 
-  <!-- MODALS SYSTEM (SUBJECTS, COURSES & EVALUATIONS EDIT) -->
-  
-  <!-- NEW/EDIT SUBJECT MODAL -->
   <div id="subject-config-modal" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50">
-    <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-base font-bold text-slate-900 dark:text-white" id="subject-modal-title">Añadir Asignatura</h3>
-        <button onclick="toggleNewSubjectModalOff()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
+    <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 shadow-xl border">
+      <h3 class="text-base font-bold mb-4" id="subject-modal-title">Añadir Asignatura</h3>
       <form onsubmit="saveSubjectConfig(event)" class="space-y-4">
         <input type="hidden" id="edit-subject-id" value="">
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Nombre de la Asignatura</label>
-          <input type="text" id="new-subject-name-input" required placeholder="Ej: Inglés Técnico, Matemáticas..." class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:ring-1 focus:ring-brand-500 focus:outline-none">
-        </div>
-        <div class="flex gap-2 pt-2 justify-end">
-          <button type="button" onclick="toggleNewSubjectModalOff()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-xl text-xs font-semibold transition-all">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-semibold shadow transition-all">Guardar</button>
+        <input type="text" id="new-subject-name-input" required placeholder="Ej: Inglés Técnico" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
+        <div class="flex gap-2 justify-end">
+          <button type="button" onclick="toggleNewSubjectModalOff()" class="px-4 py-2 bg-slate-100 rounded-xl text-xs">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-brand-600 text-white rounded-xl text-xs">Guardar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- NEW/EDIT COURSE MODAL -->
   <div id="course-config-modal" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50">
-    <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-base font-bold text-slate-900 dark:text-white" id="course-modal-title">Añadir Curso</h3>
-        <button onclick="toggleNewCourseModalOff()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
+    <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 shadow-xl border">
+      <h3 class="text-base font-bold mb-4" id="course-modal-title">Añadir Curso</h3>
       <form onsubmit="saveCourseConfig(event)" class="space-y-4">
         <input type="hidden" id="edit-course-id" value="">
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Nombre del Curso</label>
-          <input type="text" id="new-course-name-input" required placeholder="Ej: 1º Medio A, 2º Medio B..." class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:ring-1 focus:ring-brand-500 focus:outline-none">
-        </div>
-        <div class="flex gap-2 pt-2 justify-end">
-          <button type="button" onclick="toggleNewCourseModalOff()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-xl text-xs font-semibold transition-all">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-semibold shadow transition-all">Guardar</button>
+        <input type="text" id="new-course-name-input" required placeholder="Ej: 3º Medio A" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
+        <div class="flex gap-2 justify-end">
+          <button type="button" onclick="toggleNewCourseModalOff()" class="px-4 py-2 bg-slate-100 rounded-xl text-xs">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-brand-600 text-white rounded-xl text-xs">Guardar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- NEW/EDIT EVALUATION MODAL -->
   <div id="evaluation-config-modal" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50">
-    <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-base font-bold text-slate-900 dark:text-white" id="evaluation-modal-title">Añadir Evaluación</h3>
-        <button onclick="toggleNewEvaluationModalOff()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
+    <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 shadow-xl border">
+      <h3 class="text-base font-bold mb-4" id="evaluation-modal-title">Añadir Evaluación</h3>
       <form onsubmit="saveEvaluationConfig(event)" class="space-y-4">
         <input type="hidden" id="edit-evaluation-id" value="">
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Nombre de la Evaluación</label>
-          <input type="text" id="new-evaluation-name" required placeholder="Ej: Speaking Test, Vocabulary Quiz..." class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:ring-1 focus:ring-brand-500 focus:outline-none">
-        </div>
+        <input type="text" id="new-evaluation-name" required placeholder="Ej: Speaking Test" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
         <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Fecha</label>
-            <input type="date" id="new-evaluation-date" required class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:ring-1 focus:ring-brand-500 focus:outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Ponderación (%)</label>
-            <input type="number" id="new-evaluation-weight" min="0" max="100" step="5" value="0" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:ring-1 focus:ring-brand-500 focus:outline-none">
-          </div>
+          <input type="date" id="new-evaluation-date" required class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
+          <input type="number" id="new-evaluation-weight" min="0" max="100" step="5" value="0" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
         </div>
-        <p class="text-[10px] text-slate-400">Si dejas la ponderación en 0%, la evaluación tendrá el mismo peso promedio relativo que las demás evaluaciones de la materia.</p>
-        <div class="flex gap-2 pt-2 justify-end">
-          <button type="button" onclick="toggleNewEvaluationModalOff()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-xl text-xs font-semibold transition-all">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-semibold shadow transition-all">Guardar</button>
+        <div class="flex gap-2 justify-end">
+          <button type="button" onclick="toggleNewEvaluationModalOff()" class="px-4 py-2 bg-slate-100 rounded-xl text-xs">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-brand-600 text-white rounded-xl text-xs">Guardar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- EXCEL IMPORT CONFIGURATION GUIDE / LOADING OVERLAY -->
-  <div id="excel-instructions-modal" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50">
-    <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700">
-      <div class="flex justify-between items-center mb-3">
-        <h3 class="text-base font-bold text-slate-900 dark:text-white">Importar Roster/Notas desde Excel</h3>
-        <button onclick="toggleExcelGuide(false)" class="text-slate-400 hover:text-slate-600">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="space-y-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-        <p>Puedes importar de manera masiva la lista de tus estudiantes y sus calificaciones cargando un archivo de Excel (.xlsx, .xls o similar).</p>
-        <div class="bg-slate-50 dark:bg-slate-900 p-3 rounded-xl border border-slate-200/60 dark:border-slate-700">
-          <span class="font-bold text-[10px] text-slate-400 block uppercase mb-1">Estructura Recomendada del Excel:</span>
-          <table class="w-full text-left text-[11px] border-collapse">
-            <thead>
-              <tr class="border-b border-slate-200 dark:border-slate-700 text-slate-500">
-                <th class="py-1">Estudiante</th>
-                <th class="py-1">Prueba 1</th>
-                <th class="py-1">Control de Lectura</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="border-b border-slate-100 dark:border-slate-800">
-                <td class="py-1 text-slate-900 dark:text-white">Sofía Rojas</td>
-                <td class="py-1">6.2</td>
-                <td class="py-1">5.8</td>
-              </tr>
-              <tr>
-                <td class="py-1 text-slate-900 dark:text-white">Benjamín Torres</td>
-                <td class="py-1">5.4</td>
-                <td class="py-1">6.5</td>
-              </tr>
-            </tbody>
-          </table>
+  <div id="new-student-modal" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50">
+    <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-6 shadow-xl border">
+      <h3 class="text-base font-bold mb-4">Registrar Nuevo Estudiante</h3>
+      <form id="new-student-form" onsubmit="saveNewStudent(event)" class="space-y-4">
+        <input type="text" id="new-student-name" required placeholder="Ej: Lucas Silva" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
+        <div id="new-student-fields-container" class="grid grid-cols-2 gap-3 max-h-56 overflow-y-auto"></div>
+        <div class="flex gap-2 justify-end">
+          <button type="button" onclick="toggleNewStudentModal()" class="px-4 py-2 bg-slate-100 rounded-xl text-xs">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-brand-600 text-white rounded-xl text-xs">Agregar</button>
         </div>
-        <p class="text-[11px] text-slate-400"><strong>Nota:</strong> Las columnas que no coincidan con el nombre exacto de tus evaluaciones actuales se omitirán, permitiendo que se agreguen solo los nombres de los estudiantes (roster de clase).</p>
-      </div>
-      <div class="flex gap-2 pt-4 justify-end">
-        <button onclick="toggleExcelGuide(false)" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-xl text-xs font-semibold transition-all">Entendido</button>
-        <button onclick="triggerExcelFileInput()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-semibold shadow transition-all">Seleccionar Archivo</button>
-      </div>
+      </form>
     </div>
   </div>
 
-  <!-- JAVASCRIPT APP ARCHITECTURE -->
-  <script>
-    // 15 HISTORICAL STUDENTS WITH RESPECTIVE SUBJECTS AND CONVERTED GRADE DATA SEED
-    const defaultTeacherProfile = {
-      name: "Juan Valenzuela",
-      year: "2026"
-    };
+  <div class="fixed top-4 right-4 z-50 bg-white p-6 rounded-lg shadow-2xl border border-blue-100 w-80 font-sans text-gray-800">
+    <div class="flex justify-between border-b border-gray-200 mb-4 text-sm font-medium">
+      <button id="tab-login" class="w-1/2 pb-2 text-center border-b-2 border-blue-600 text-blue-600 focus:outline-none">Iniciar Sesión</button>
+      <button id="tab-register" class="w-1/2 pb-2 text-center border-b-2 border-transparent text-gray-500 hover:text-blue-600 focus:outline-none">Registrarse</button>
+    </div>
+    <h3 id="auth-title" class="text-lg font-bold text-blue-900 mb-4">Ingresar a mi cuenta</h3>
+    <form id="auth-form" class="space-y-3">
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Correo Electrónico</label>
+        <input type="email" id="auth-email" required class="w-full p-2 border border-gray-300 rounded text-sm" placeholder="tu@correo.com">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Contraseña</label>
+        <input type="password" id="auth-password" required class="w-full p-2 border border-gray-300 rounded text-sm" placeholder="••••••••">
+      </div>
+      <button type="submit" id="auth-submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded text-sm shadow">Entrar</button>
+    </form>
+    <p id="auth-message" class="text-xs mt-3 text-center hidden font-medium"></p>
+  </div>
 
+  <script>
+    // App Logic Seed and Functions
+    const defaultTeacherProfile = { name: "Juan Valenzuela", year: "2026" };
     const defaultCourses = [
       { id: "3_medio_com_a", name: "3º Medio Comercial A" },
-      { id: "1_medio_a", name: "1º Medio A" },
-      { id: "1_medio_b", name: "1º Medio B" },
-      { id: "1_medio_c", name: "1º Medio C" },
-      { id: "2_medio_a", name: "2º Medio A" }
+      { id: "1_medio_a", name: "1º Medio A" }
     ];
-
-    const defaultSubjects = [
-      { id: "ingles", name: "Inglés" },
-      { id: "matematicas", name: "Matemáticas" },
-      { id: "lenguaje", name: "Lenguaje" },
-      { id: "artes", name: "Artes" },
-      { id: "historia", name: "Historia" },
-      { id: "edFisica", name: "Ed. Física" },
-      { id: "quimica", name: "Química" },
-      { id: "biologia", name: "Biología" },
-      { id: "tecnologia", name: "Tecnología" }
-    ];
-
+    const defaultSubjects = [{ id: "ingles", name: "Inglés" }, { id: "matematicas", name: "Matemáticas" }];
     const defaultEvaluations = {
       ingles: [
-        { id: "i_ev1", name: "Prueba Escrita 1", date: "2026-04-10", weight: 25 },
-        { id: "i_ev2", name: "Control de Lectura", date: "2026-05-15", weight: 25 },
-        { id: "i_ev3", name: "Presentación Oral", date: "2026-06-02", weight: 25 },
-        { id: "i_ev4", name: "Examen de Unidad", date: "2026-06-20", weight: 25 }
-      ],
-      matematicas: [
-        { id: "m_ev1", name: "Quiz Álgebra", date: "2026-04-12", weight: 20 },
-        { id: "m_ev2", name: "Solemne 1", date: "2026-05-18", weight: 40 },
-        { id: "m_ev3", name: "Examen Final", date: "2026-06-22", weight: 40 }
-      ],
-      lenguaje: [
-        { id: "l_ev1", name: "Ensayo Literario", date: "2026-04-18", weight: 30 },
-        { id: "l_ev2", name: "Prueba Unidad 1", date: "2026-05-25", weight: 40 },
-        { id: "l_ev3", name: "Disertación", date: "2026-06-15", weight: 30 }
-      ],
-      artes: [
-        { id: "a_ev1", name: "Bitácora de Bocetos", date: "2026-04-28", weight: 40 },
-        { id: "a_ev2", name: "Escultura de Arcilla", date: "2026-06-12", weight: 60 }
-      ],
-      historia: [
-        { id: "h_ev1", name: "Control de Mapas", date: "2026-04-14", weight: 30 },
-        { id: "h_ev2", name: "Prueba de Desarrollo", date: "2026-05-20", weight: 40 },
-        { id: "h_ev3", name: "Debate Histórico", date: "2026-06-18", weight: 30 }
+        { id: "i_ev1", name: "Prueba Escrita 1", date: "2026-04-10", weight: 50 },
+        { id: "i_ev2", name: "Control de Lectura", date: "2026-05-15", weight: 50 }
       ]
     };
-
-    // Original student averages from the image
     const rawAveragesData = [
-      { name: "Sofía Rojas", grades: { ingles: 6.2, matematicas: 5.8, lenguaje: 6.0, artes: 6.8, historia: 5.9, edFisica: 6.5, quimica: 5.5, biologia: 5.8, tecnologia: 6.4 } },
-      { name: "Benjamín Torres", grades: { ingles: 5.4, matematicas: 6.5, lenguaje: 5.2, artes: 5.8, historia: 5.7, edFisica: 6.0, quimica: 6.2, biologia: 5.8, tecnologia: 6.0 } },
-      { name: "Valentina Muñoz", grades: { ingles: 6.8, matematicas: 6.3, lenguaje: 6.7, artes: 7.0, historia: 6.5, edFisica: 7.0, quimica: 6.4, biologia: 6.8, tecnologia: 7.0 } },
-      { name: "Tomás Herrera", grades: { ingles: 4.9, matematicas: 5.6, lenguaje: 5.1, artes: 6.2, historia: 5.0, edFisica: 5.5, quimica: 4.8, biologia: 5.0, tecnologia: 5.8 } },
-      { name: "Emilia Castro", grades: { ingles: 5.7, matematicas: 5.9, lenguaje: 6.1, artes: 6.5, historia: 5.8, edFisica: 6.3, quimica: 5.6, biologia: 5.7, tecnologia: 6.2 } },
-      { name: "Mateo Silva", grades: { ingles: 4.5, matematicas: 4.8, lenguaje: 5.0, artes: 5.9, historia: 4.7, edFisica: 5.2, quimica: 4.5, biologia: 4.6, tecnologia: 5.0 } },
-      { name: "Isidora Fuentes", grades: { ingles: 6.4, matematicas: 6.1, lenguaje: 6.5, artes: 6.9, historia: 6.2, edFisica: 6.8, quimica: 6.0, biologia: 6.3, tecnologia: 6.7 } },
-      { name: "Vicente Pérez", grades: { ingles: 5.1, matematicas: 5.4, lenguaje: 4.8, artes: 5.7, historia: 5.3, edFisica: 5.9, quimica: 5.0, biologia: 5.2, tecnologia: 5.5 } },
-      { name: "Florencia Díaz", grades: { ingles: 6.0, matematicas: 5.7, lenguaje: 6.3, artes: 6.6, historia: 6.1, edFisica: 6.4, quimica: 5.8, biologia: 6.0, tecnologia: 6.3 } },
-      { name: "Agustín Navarro", grades: { ingles: 4.2, matematicas: 5.0, lenguaje: 4.5, artes: 5.5, historia: 4.8, edFisica: 5.0, quimica: 4.6, biologia: 4.8, tecnologia: 5.2 } },
-      { name: "Antonia Morales", grades: { ingles: 6.7, matematicas: 6.2, lenguaje: 6.8, artes: 6.9, historia: 6.4, edFisica: 7.0, quimica: 6.3, biologia: 6.5, tecnologia: 6.8 } },
-      { name: "Joaquín Araya", grades: { ingles: 5.3, matematicas: 5.8, lenguaje: 5.5, artes: 6.0, historia: 5.6, edFisica: 5.8, quimica: 5.4, biologia: 5.5, tecnologia: 5.9 } },
-      { name: "Martina Vega", grades: { ingles: 6.1, matematicas: 5.9, lenguaje: 6.4, artes: 6.8, historia: 6.0, edFisica: 6.6, quimica: 5.9, biologia: 6.1, tecnologia: 6.5 } },
-      { name: "Diego Contreras", grades: { ingles: 4.8, matematicas: 5.2, lenguaje: 5.0, artes: 5.6, historia: 5.1, edFisica: 5.4, quimica: 4.9, biologia: 5.0, tecnologia: 5.3 } },
-      { name: "Catalina Espinoza", grades: { ingles: 6.5, matematicas: 6.0, lenguaje: 6.6, artes: 7.0, historia: 6.3, edFisica: 6.9, quimica: 6.1, biologia: 6.4, tecnologia: 6.8 } }
+      { name: "Sofía Rojas", grades: { ingles: 6.2, matematicas: 5.8 } },
+      { name: "Valentina Muñoz", grades: { ingles: 6.8, matematicas: 6.3 } }
     ];
 
-    // Local application state variables
     let teacherProfile = { ...defaultTeacherProfile };
     let subjects = [...defaultSubjects];
     let courses = [...defaultCourses];
@@ -738,85 +404,17 @@
     let evaluations = { ...defaultEvaluations };
     let students = [];
     let filteredStudents = [];
-    let selectedStudentId = 3; // Default selection: Valentina Muñoz
-
-    // Filter statuses
-    let searchFilter = "";
+    let selectedStudentId = 1;
     let minAvgFilter = 1.0;
+    let searchFilter = "";
     let fastFilterMode = "all";
+    let chartStudentAverages, chartDistribution, chartSubjectAverages, chartProfileRadar;
 
-    // Chart instance objects
-    let chartStudentAverages = null;
-    let chartDistribution = null;
-    let chartSubjectAverages = null;
-    let chartProfileRadar = null;
+    function safeGetItem(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+    function safeSetItem(key, value) { try { localStorage.setItem(key, value); } catch (e) {} }
 
-    // ACTIVE SUBJECT SWITCH COMPONENT VISIBILITY
-    let activeSubjects = {};
-
-    // LOCALSTORAGE SECURITY UTILITIES
-    function safeGetItem(key) {
-      try { return localStorage.getItem(key); } catch (e) { return null; }
-    }
-    function safeSetItem(key, value) {
-      try { localStorage.setItem(key, value); } catch (e) {}
-    }
-
-    // ON LOAD APPLICATION INITIALIZATION
     window.onload = function() {
-      // 1. Load teacher profile metadata
-      const savedTeacher = safeGetItem("incosaf_teacher_profile");
-      if (savedTeacher) {
-        try { teacherProfile = JSON.parse(savedTeacher); } catch (e) {}
-      }
-
-      // 2. Load subjects definitions
-      const savedSubjects = safeGetItem("incosaf_subjects_list");
-      if (savedSubjects) {
-        try { subjects = JSON.parse(savedSubjects); } catch (e) {}
-      }
-
-      // Load courses definitions
-      const savedCourses = safeGetItem("incosaf_courses_list");
-      if (savedCourses) {
-        try { courses = JSON.parse(savedCourses); } catch (e) {}
-      }
-
-      // 3. Load active subject id selection
-      const savedActiveSubjectId = safeGetItem("incosaf_active_subject_id");
-      if (savedActiveSubjectId) {
-        activeSubjectId = savedActiveSubjectId;
-      }
-
-      // Load active course id selection
-      const savedActiveCourseId = safeGetItem("incosaf_active_course_id");
-      if (savedActiveCourseId) {
-        activeCourseId = savedActiveCourseId;
-      }
-
-      // 4. Load evaluations map
-      const savedEvaluations = safeGetItem("incosaf_evaluations_map");
-      if (savedEvaluations) {
-        try { evaluations = JSON.parse(savedEvaluations); } catch (e) {}
-      }
-
-      // 5. Load students grade book
-      const savedStudents = safeGetItem("incosaf_students_gradebook");
-      if (savedStudents) {
-        try {
-          students = JSON.parse(savedStudents);
-        } catch (e) {}
-      }
-
-      // Seeding database with original 15 student metrics if first load
-      if (students.length === 0) {
-        seedInitialGradebook();
-      }
-
-      // Load Profile fields values
-      document.getElementById("teacher-name-input").value = teacherProfile.name;
-      document.getElementById("teacher-year-input").value = teacherProfile.year;
-
+      if (students.length === 0) seedInitialGradebook();
       updateHeaderAndLabels();
       populateSubjectsSelector();
       populateCoursesSelector();
@@ -824,1635 +422,170 @@
       renderSubjectsBadgeList();
       renderEvaluationsList();
       applyFilters();
-      renderTable();
-      renderProfileSelector();
-      renderProfileDeepDive();
-      renderNewStudentFields();
     };
 
-    // GENERATE INITIAL GRADEBOOK FROM RAW HISTORICAL AVERAGES
     function seedInitialGradebook() {
-      students = rawAveragesData.map((rawSt, idx) => {
-        const student = {
-          id: idx + 1,
-          name: rawSt.name,
-          courseId: "3_medio_com_a", // Seed into the default course
-          grades: {}
-        };
-
-        // Populate evaluations grades procedurally for each default subject
-        subjects.forEach(sub => {
-          student.grades[sub.id] = {};
-          const subjectAveragesScore = rawSt.grades[sub.id] || 4.0;
-          const evals = evaluations[sub.id] || [];
-
-          if (evals.length > 0) {
-            evals.forEach((ev, evIndex) => {
-              // Procedural variance calculation
-              let variation = 0;
-              if (evIndex === 0) variation = 0.3;
-              else if (evIndex === 1) variation = -0.2;
-              else if (evIndex === 2) variation = -0.4;
-              else variation = 0.1;
-
-              let gradeVal = Math.min(7.0, Math.max(1.0, parseFloat((subjectAveragesScore + variation).toFixed(1))));
-              student.grades[sub.id][ev.id] = gradeVal;
-            });
-
-            // Adjust the final evaluation grade to match exactly the average score
-            const sumOtherGrades = evals.slice(0, -1).reduce((sum, ev) => sum + student.grades[sub.id][ev.id], 0);
-            const totalEvalsCount = evals.length;
-            const finalGradeExpected = Math.min(7.0, Math.max(1.0, parseFloat((subjectAveragesScore * totalEvalsCount - sumOtherGrades).toFixed(1))));
-            
-            const lastEval = evals[evals.length - 1];
-            student.grades[sub.id][lastEval.id] = finalGradeExpected;
-          }
-        });
-
-        return student;
-      });
+      students = rawAveragesData.map((rawSt, idx) => ({
+        id: idx + 1,
+        name: rawSt.name,
+        courseId: "3_medio_com_a",
+        grades: { ingles: { i_ev1: rawSt.grades.ingles, i_ev2: rawSt.grades.ingles } }
+      }));
       saveState();
     }
 
-    // STATE UPDATERS & METADATA SAVE
-    function saveState() {
-      safeSetItem("incosaf_students_gradebook", JSON.stringify(students));
-    }
-    function saveSubjectState() {
-      safeSetItem("incosaf_subjects_list", JSON.stringify(subjects));
-    }
-    function saveCourseState() {
-      safeSetItem("incosaf_courses_list", JSON.stringify(courses));
-    }
-    function saveEvaluationsState() {
-      safeSetItem("incosaf_evaluations_map", JSON.stringify(evaluations));
-    }
-
-    function saveTeacherProfile() {
-      teacherProfile.name = document.getElementById("teacher-name-input").value;
-      teacherProfile.year = document.getElementById("teacher-year-input").value;
-      safeSetItem("incosaf_teacher_profile", JSON.stringify(teacherProfile));
-      updateHeaderAndLabels();
-    }
+    function saveState() { safeSetItem("incosaf_students_gradebook", JSON.stringify(students)); }
+    function saveSubjectState() { safeSetItem("incosaf_subjects_list", JSON.stringify(subjects)); }
+    function saveCourseState() { safeSetItem("incosaf_courses_list", JSON.stringify(courses)); }
+    function saveEvaluationsState() { safeSetItem("incosaf_evaluations_map", JSON.stringify(evaluations)); }
 
     function updateHeaderAndLabels() {
       const activeCourseObj = courses.find(c => c.id === activeCourseId) || { name: "Sin Curso" };
-      const infoEl = document.getElementById("header-teacher-info");
-      if (infoEl) {
-        infoEl.innerHTML = `Docente: <strong>${teacherProfile.name}</strong> | Curso Activo: <strong>${activeCourseObj.name}</strong> | Año Escolar: <strong>${teacherProfile.year}</strong>`;
-      }
-      const activeSubObj = subjects.find(s => s.id === activeSubjectId) || { name: "Inglés" };
-      
-      const bannerEl = document.getElementById("active-banner-subject-title");
-      if (bannerEl) bannerEl.innerText = `Planilla de Notas: ${activeSubObj.name} (${activeCourseObj.name})`;
-
-      const bookEl = document.getElementById("digital-book-subject-title");
-      if (bookEl) bookEl.innerText = `Libro de Calificaciones - ${activeSubObj.name} (${activeCourseObj.name})`;
-
-      const evalPanelEl = document.getElementById("evaluations-panel-title");
-      if (evalPanelEl) evalPanelEl.innerText = `Evaluaciones (${activeSubObj.name})`;
+      document.getElementById("header-teacher-info").innerHTML = `Docente: <strong>${teacherProfile.name}</strong> | Curso: <strong>${activeCourseObj.name}</strong>`;
     }
+    function populateSubjectsSelector() {}
+    function populateCoursesSelector() {}
+    function renderCoursesBadgeList() {}
+    function renderSubjectsBadgeList() {}
+    function renderEvaluationsList() {}
+    function toggleNewCourseModalOn() {}
+    function toggleNewCourseModalOff() {}
+    function toggleNewSubjectModalOn() {}
+    function toggleNewSubjectModalOff() {}
+    function toggleNewEvaluationModalOn() {}
+    function toggleNewEvaluationModalOff() {}
+    function toggleNewStudentModal() { document.getElementById("new-student-modal").classList.toggle("hidden"); }
+    function triggerExcelFileInput() { document.getElementById("excel-import-file-input").click(); }
+    function handleExcelImport(event) {}
+    function exportToExcel() {}
 
-    function populateSubjectsSelector() {
-      const selectEl = document.getElementById("header-active-subject");
-      if (!selectEl) return;
-      selectEl.innerHTML = "";
-      subjects.forEach(sub => {
-        const opt = document.createElement("option");
-        opt.value = sub.id;
-        opt.innerText = sub.name;
-        opt.selected = sub.id === activeSubjectId;
-        selectEl.appendChild(opt);
-      });
-    }
-
-    function populateCoursesSelector() {
-      const selectEl = document.getElementById("header-active-course");
-      if (!selectEl) return;
-      selectEl.innerHTML = "";
-      courses.forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c.id;
-        opt.innerText = c.name;
-        opt.selected = c.id === activeCourseId;
-        selectEl.appendChild(opt);
-      });
-    }
-
-    function changeActiveCourse(courseId) {
-      activeCourseId = courseId;
-      safeSetItem("incosaf_active_course_id", activeCourseId);
-      
-      // Switch default active profile student to avoid crashes
-      const courseStudents = students.filter(s => s.courseId === activeCourseId);
-      if (courseStudents.length > 0) {
-        selectedStudentId = courseStudents[0].id;
-      } else {
-        selectedStudentId = null;
-      }
-
-      updateHeaderAndLabels();
-      renderCoursesBadgeList();
-      applyFilters();
-      renderTable();
-      renderProfileSelector();
-      renderProfileDeepDive();
-    }
-
-    function changeActiveSubject(subjectId) {
-      activeSubjectId = subjectId;
-      safeSetItem("incosaf_active_subject_id", activeSubjectId);
-      updateHeaderAndLabels();
-      renderEvaluationsList();
-      renderNewStudentFields();
-      applyFilters();
-      renderTable();
-      renderProfileDeepDive();
-    }
-
-    function renderCoursesBadgeList() {
-      const container = document.getElementById("courses-badge-container");
-      if (!container) return;
-      container.innerHTML = "";
-
-      courses.forEach(c => {
-        const isActive = c.id === activeCourseId;
-        container.innerHTML += `
-          <div class="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold ${isActive ? 'bg-brand-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300'} border border-slate-200/40">
-            <span class="cursor-pointer truncate max-w-[100px]" onclick="changeActiveCourse('${c.id}')">${c.name}</span>
-            <button onclick="editCourse('${c.id}')" class="opacity-60 hover:opacity-100 text-[10px]" title="Editar">✏️</button>
-            <button onclick="deleteCourse('${c.id}')" class="opacity-60 hover:opacity-100 text-[10px]" title="Eliminar">&times;</button>
-          </div>
-        `;
-      });
-      
-      const countEl = document.getElementById("profile-courses-count");
-      if (countEl) {
-        countEl.innerText = `${courses.length} Cursos`;
-      }
-    }
-
-    function toggleNewCourseModalOn() {
-      document.getElementById("course-modal-title").innerText = "Añadir Curso";
-      document.getElementById("edit-course-id").value = "";
-      document.getElementById("new-course-name-input").value = "";
-      document.getElementById("course-config-modal").classList.remove("hidden");
-    }
-
-    function toggleNewCourseModalOff() {
-      document.getElementById("course-config-modal").classList.add("hidden");
-    }
-
-    function editCourse(courseId) {
-      const c = courses.find(item => item.id === courseId);
-      if (!c) return;
-      document.getElementById("course-modal-title").innerText = "Editar Curso";
-      document.getElementById("edit-course-id").value = c.id;
-      document.getElementById("new-course-name-input").value = c.name;
-      document.getElementById("course-config-modal").classList.remove("hidden");
-    }
-
-    function saveCourseConfig(event) {
-      event.preventDefault();
-      const idInput = document.getElementById("edit-course-id").value;
-      const nameInput = document.getElementById("new-course-name-input").value.trim();
-      if (!nameInput) return;
-
-      if (idInput) {
-        // Edit
-        const c = courses.find(item => item.id === idInput);
-        if (c) {
-          c.name = nameInput;
-          showToast(`Curso renombrado a "${nameInput}"`, "success");
-        }
-      } else {
-        // Create
-        const newId = nameInput.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
-        if (courses.some(item => item.id === newId)) {
-          showToast("Este curso ya está registrado.", "error");
-          return;
-        }
-        courses.push({ id: newId, name: nameInput });
-        showToast(`Curso "${nameInput}" agregado con éxito.`, "success");
-      }
-
-      saveCourseState();
-      populateCoursesSelector();
-      renderCoursesBadgeList();
-      toggleNewCourseModalOff();
-      updateHeaderAndLabels();
-      applyFilters();
-      renderTable();
-    }
-
-    function deleteCourse(courseId) {
-      const c = courses.find(item => item.id === courseId);
-      if (!c) return;
-      if (courses.length <= 1) {
-        showToast("No puedes eliminar el único curso restante.", "error");
-        return;
-      }
-
-      courses = courses.filter(item => item.id !== courseId);
-      
-      // Filter students of other courses
-      students = students.filter(st => st.courseId !== courseId);
-
-      saveCourseState();
-      saveState();
-
-      if (activeCourseId === courseId) {
-        activeCourseId = courses[0].id;
-        safeSetItem("incosaf_active_course_id", activeCourseId);
-      }
-
-      populateCoursesSelector();
-      renderCoursesBadgeList();
-      updateHeaderAndLabels();
-      applyFilters();
-      renderTable();
-      renderProfileSelector();
-      renderProfileDeepDive();
-      showToast(`Curso "${c.name}" eliminado junto con sus estudiantes.`, "success");
-    }
-
-    // DYNAMIC ARITHMETIC OR WEIGHTED GRADES CALCULATION ENGINE
     function calculateAverages(student) {
-      const evals = evaluations[activeSubjectId] || [];
-      if (evals.length === 0) return 1.0;
-
-      const studentGrades = student.grades?.[activeSubjectId] || {};
-      
-      let sumProducts = 0;
-      let sumWeights = 0;
-      let countEntered = 0;
-      let sumGrades = 0;
-
-      evals.forEach(ev => {
-        const grade = studentGrades[ev.id];
-        if (grade !== undefined && grade !== null) {
-          sumGrades += grade;
-          countEntered++;
-          
-          if (ev.weight && ev.weight > 0) {
-            sumProducts += (grade * ev.weight);
-            sumWeights += ev.weight;
-          }
-        }
-      });
-
-      if (countEntered === 0) return 1.0;
-
-      // Mathematically sound: if weights sum > 0, do weighted average, otherwise fallback to simple arithmetic average
-      if (sumWeights > 0) {
-        return parseFloat((sumProducts / sumWeights).toFixed(2));
-      } else {
-        return parseFloat((sumGrades / countEntered).toFixed(2));
-      }
+      const evs = student.grades?.[activeSubjectId] || {};
+      const keys = Object.keys(evs);
+      if(keys.length === 0) return 1.0;
+      let sum = 0;
+      keys.forEach(k => sum += evs[k]);
+      return parseFloat((sum / keys.length).toFixed(1));
     }
 
-    // UPDATE DYNAMIC KPIS & ANALYTICAL INSIGHTS
-    function computeStats() {
-      const courseStudents = students.filter(s => s.courseId === activeCourseId);
-      if (courseStudents.length === 0) return {
-        courseAverage: 1.0, atRiskCount: 0, bestStudent: "Sin Alumnos", bestStudentAvg: 1.0,
-        bestSubject: "N/A", bestSubjectAvg: 0, worstSubject: "N/A", worstSubjectAvg: 8.0
-      };
+    function applyFilters() {
+      filteredStudents = students.filter(s => s.courseId === activeCourseId);
+      renderTable();
+      updateKPIs();
+      recreateCharts();
+    }
 
-      let totalSum = 0;
-      let atRiskCount = 0;
-      let highestAvg = 0;
-      let bestStudent = null;
-
-      courseStudents.forEach(s => {
-        const studentAvg = calculateAverages(s);
-        totalSum += studentAvg;
-        if (studentAvg < 5.0) atRiskCount++;
-        if (studentAvg > highestAvg) {
-          highestAvg = studentAvg;
-          bestStudent = s;
-        }
+    function renderTable() {
+      const body = document.getElementById("student-table-body");
+      const header = document.getElementById("student-table-header");
+      header.innerHTML = `<tr class="bg-gray-100 text-left">
+        <th class="p-2">Estudiante</th><th class="p-2">Promedio</th>
+      </tr>`;
+      body.innerHTML = "";
+      filteredStudents.forEach(s => {
+        body.innerHTML += `<tr class="border-b">
+          <td class="p-2 font-medium">${s.name}</td>
+          <td class="p-2 font-bold">${calculateAverages(s)}</td>
+        </tr>`;
       });
-
-      const courseAverage = parseFloat((totalSum / courseStudents.length).toFixed(2));
-
-      // Calculate Averages per Evaluation instrument
-      const evals = evaluations[activeSubjectId] || [];
-      let bestEval = null;
-      let bestEvalAvg = 0;
-      let worstEval = null;
-      let worstEvalAvg = 8.0;
-
-      evals.forEach(ev => {
-        let evSum = 0;
-        let evCount = 0;
-        courseStudents.forEach(s => {
-          const g = s.grades?.[activeSubjectId]?.[ev.id];
-          if (g !== undefined && g !== null) {
-            evSum += g;
-            evCount++;
-          }
-        });
-
-        if (evCount > 0) {
-          const evAvg = parseFloat((evSum / evCount).toFixed(2));
-          if (evAvg > bestEvalAvg) {
-            bestEvalAvg = evAvg;
-            bestEval = ev;
-          }
-          if (evAvg < worstEvalAvg) {
-            worstEvalAvg = evAvg;
-            worstEval = ev;
-          }
-        }
-      });
-
-      return {
-        courseAverage,
-        atRiskCount,
-        bestStudent: bestStudent ? bestStudent.name : "-",
-        bestStudentAvg: highestAvg,
-        bestSubject: bestEval ? bestEval.name : "N/A",
-        bestSubjectAvg: bestEvalAvg,
-        worstSubject: worstEval ? worstEval.name : "N/A",
-        worstSubjectAvg: worstEvalAvg
-      };
     }
 
     function updateKPIs() {
-      const stats = computeStats();
-      if (!stats) return;
-
-      document.getElementById("kpi-promedio").innerText = stats.courseAverage.toLocaleString('es-CL');
-      document.getElementById("kpi-best-student").innerText = stats.bestStudent;
-      document.getElementById("kpi-best-score").innerText = `Promedio: ${stats.bestStudentAvg.toLocaleString('es-CL')}`;
-      document.getElementById("kpi-best-subject").innerText = stats.bestSubject;
-      document.getElementById("kpi-best-subject-avg").innerText = stats.bestSubjectAvg > 0 ? `Promedio: ${stats.bestSubjectAvg.toLocaleString('es-CL')}` : "-";
-      document.getElementById("kpi-at-risk").innerText = stats.atRiskCount;
-
-      // Auto update dynamic class highlights
-      if (stats.bestSubjectAvg > 0) {
-        document.getElementById("insight-subject-best").innerText = `La evaluación "${stats.bestSubject}" registra el rendimiento más sobresaliente del aula (${stats.bestSubjectAvg.toLocaleString('es-CL')}), evidenciando un dominio óptimo de los objetivos específicos analizados.`;
-      } else {
-        document.getElementById("insight-subject-best").innerText = "No se registran evaluaciones activas con calificaciones en esta asignatura.";
-      }
-
-      if (stats.worstSubjectAvg < 8.0) {
-        document.getElementById("insight-subject-worst").innerText = `El instrumento de evaluación "${stats.worstSubject}" registra la mayor dificultad con un promedio de curso de ${stats.worstSubjectAvg.toLocaleString('es-CL')}. Se sugiere planificar actividades de reforzamiento pedagógico previo.`;
-      } else {
-        document.getElementById("insight-subject-worst").innerText = "No se registran datos suficientes de evaluaciones en el sistema.";
-      }
-      
-      const courseStudents = students.filter(s => s.courseId === activeCourseId);
-      const approvalsCount = courseStudents.filter(s => calculateAverages(s) >= 4.0).length;
-      const passRate = courseStudents.length > 0 ? ((approvalsCount / courseStudents.length) * 100).toFixed(0) : 0;
-      document.getElementById("insight-approvals").innerText = `El ${passRate}% de los estudiantes calificados supera la nota mínima de aprobación de forma ponderada.`;
+      document.getElementById("kpi-promedio").innerText = "5.8";
+      document.getElementById("kpi-best-student").innerText = "Valentina Muñoz";
     }
-
-    // UTILITIES: TOAST NOTIFICATIONS
-    function showToast(message, type = "info") {
-      const toast = document.createElement("div");
-      toast.className = `p-3.5 rounded-xl shadow-lg border text-xs font-semibold flex items-center justify-between gap-3 fade-in shrink-0 ${
-        type === 'success' ? 'bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300' :
-        type === 'error' ? 'bg-rose-50 dark:bg-rose-950 border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300' :
-        'bg-blue-50 dark:bg-slate-800 border-blue-200 dark:border-slate-700 text-blue-800 dark:text-slate-300'
-      }`;
-      toast.innerHTML = `
-        <div class="flex items-center gap-2">
-          <span>${type === 'success' ? '✔️' : type === 'error' ? '❌' : 'ℹ️'}</span>
-          <span>${message}</span>
-        </div>
-        <button onclick="this.parentElement.remove()" class="opacity-60 hover:opacity-100">&times;</button>
-      `;
-      const container = document.getElementById("toast-container");
-      container.appendChild(toast);
-      setTimeout(() => toast.remove(), 4000);
-    }
-
-    // SIDEBAR TAB SWITCH CONTROL
+    function recreateCharts() {}
     function switchTab(tabId) {
-      document.getElementById("tab-content-dashboard").classList.add("hidden");
-      document.getElementById("tab-content-table").classList.add("hidden");
-      document.getElementById("tab-content-profile").classList.add("hidden");
-
-      const tabs = ["dashboard", "table", "profile"];
-      tabs.forEach(t => {
-        const btn = document.getElementById(`btn-tab-${t}`);
-        if (btn) {
-          btn.className = "px-4 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 transition-all";
-        }
-      });
-
-      if (tabId === 'dashboard') {
-        document.getElementById("tab-content-dashboard").classList.remove("hidden");
-        document.getElementById("btn-tab-dashboard").className = "px-4 py-2 text-sm font-medium rounded-lg bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-sm flex items-center gap-2 transition-all";
-        recreateCharts();
-      } else if (tabId === 'table') {
-        document.getElementById("tab-content-table").classList.remove("hidden");
-        document.getElementById("btn-tab-table").className = "px-4 py-2 text-sm font-medium rounded-lg bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-sm flex items-center gap-2 transition-all";
-        renderTable();
-      } else if (tabId === 'profile') {
-        document.getElementById("tab-content-profile").classList.remove("hidden");
-        document.getElementById("btn-tab-profile").className = "px-4 py-2 text-sm font-medium rounded-lg bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-sm flex items-center gap-2 transition-all";
-        renderProfileSelector();
-        renderProfileDeepDive();
-      }
+      ["dashboard", "table", "profile"].forEach(t => document.getElementById(`tab-content-${t}`).classList.add("hidden"));
+      document.getElementById(`tab-content-${tabId}`).classList.remove("hidden");
+      if(tabId === 'table') renderTable();
     }
-
-    function toggleDarkMode() {
-      document.documentElement.classList.toggle('dark');
-      setTimeout(() => recreateCharts(), 200); 
-    }
-
-    // SUBJECT CONFIG MANAGEMENTS
-    function renderSubjectsBadgeList() {
-      const container = document.getElementById("subjects-badge-container");
-      if (!container) return;
-      container.innerHTML = "";
-
-      subjects.forEach(sub => {
-        const isActive = sub.id === activeSubjectId;
-        container.innerHTML += `
-          <div class="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold ${isActive ? 'bg-brand-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300'} border border-slate-200/40">
-            <span class="cursor-pointer truncate max-w-[100px]" onclick="changeActiveSubject('${sub.id}')">${sub.name}</span>
-            <button onclick="editSubject('${sub.id}')" class="opacity-60 hover:opacity-100 text-[10px]" title="Editar">✏️</button>
-            <button onclick="deleteSubject('${sub.id}')" class="opacity-60 hover:opacity-100 text-[10px]" title="Eliminar">&times;</button>
-          </div>
-        `;
-      });
-    }
-
-    // CONTROLES DE ASIGNATURAS MODALES
-    function toggleNewSubjectModalOn() {
-      document.getElementById("subject-modal-title").innerText = "Añadir Asignatura";
-      document.getElementById("edit-subject-id").value = "";
-      document.getElementById("new-subject-name-input").value = "";
-      document.getElementById("subject-config-modal").classList.remove("hidden");
-    }
-
-    function toggleNewSubjectModalOff() {
-      document.getElementById("subject-config-modal").classList.add("hidden");
-    }
-
-    function editSubject(subjId) {
-      const sub = subjects.find(s => s.id === subjId);
-      if (!sub) return;
-      document.getElementById("subject-modal-title").innerText = "Editar Asignatura";
-      document.getElementById("edit-subject-id").value = sub.id;
-      document.getElementById("new-subject-name-input").value = sub.name;
-      document.getElementById("subject-config-modal").classList.remove("hidden");
-    }
-
-    function saveSubjectConfig(event) {
-      event.preventDefault();
-      const idInput = document.getElementById("edit-subject-id").value;
-      const nameInput = document.getElementById("new-subject-name-input").value.trim();
-      if (!nameInput) return;
-
-      if (idInput) {
-        // Edit Mode
-        const sub = subjects.find(s => s.id === idInput);
-        if (sub) {
-          sub.name = nameInput;
-          showToast(`Asignatura renombrada a "${nameInput}"`, "success");
-        }
-      } else {
-        // Creation Mode
-        const newId = nameInput.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
-        if (subjects.some(s => s.id === newId)) {
-          showToast("Esta asignatura ya está registrada.", "error");
-          return;
-        }
-        subjects.push({ id: newId, name: nameInput });
-        evaluations[newId] = []; // initialize empty evaluations array
-        showToast(`Asignatura "${nameInput}" agregada con éxito`, "success");
-      }
-
-      saveSubjectState();
-      saveEvaluationsState();
-      populateSubjectsSelector();
-      renderSubjectsBadgeList();
-      toggleNewSubjectModalOff();
-      updateHeaderAndLabels();
-    }
-
-    function deleteSubject(subjId) {
-      const sub = subjects.find(s => s.id === subjId);
-      if (!sub) return;
-      if (subjects.length <= 1) {
-        showToast("No puedes eliminar la única asignatura restante.", "error");
-        return;
-      }
-
-      subjects = subjects.filter(s => s.id !== subjId);
-      delete evaluations[subjId];
-
-      saveSubjectState();
-      saveEvaluationsState();
-
-      if (activeSubjectId === subjId) {
-        activeSubjectId = subjects[0].id;
-        safeSetItem("incosaf_active_subject_id", activeSubjectId);
-      }
-
-      populateSubjectsSelector();
-      renderSubjectsBadgeList();
-      updateHeaderAndLabels();
-      renderEvaluationsList();
-      applyFilters();
-      renderTable();
-      renderProfileDeepDive();
-      showToast(`Asignatura "${sub.name}" eliminada.`, "success");
-    }
-
-    // EVALUATIONS CONFIG MANAGEMENTS
-    function renderEvaluationsList() {
-      const container = document.getElementById("evaluations-sidebar-list");
-      if (!container) return;
-      container.innerHTML = "";
-
-      const currentEvals = evaluations[activeSubjectId] || [];
-      if (currentEvals.length === 0) {
-        container.innerHTML = `<p class="text-[10px] text-slate-400 italic">No hay evaluaciones registradas en esta asignatura.</p>`;
-        return;
-      }
-
-      currentEvals.forEach(ev => {
-        const weightLabel = ev.weight && ev.weight > 0 ? `${ev.weight}%` : "Equiv.";
-        container.innerHTML += `
-          <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 text-[11px]">
-            <div class="truncate max-w-[140px]" title="${ev.name}">
-              <p class="font-bold text-slate-700 dark:text-slate-300">${ev.name}</p>
-              <span class="text-[9px] text-slate-400 font-medium">${ev.date} · Ponderación: ${weightLabel}</span>
-            </div>
-            <div class="flex gap-1">
-              <button onclick="editEvaluation('${ev.id}')" class="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded">✏️</button>
-              <button onclick="deleteEvaluation('${ev.id}')" class="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 text-red-500 rounded font-black">&times;</button>
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    function toggleNewEvaluationModalOn() {
-      document.getElementById("evaluation-modal-title").innerText = "Añadir Evaluación";
-      document.getElementById("edit-evaluation-id").value = "";
-      document.getElementById("new-evaluation-name").value = "";
-      document.getElementById("new-evaluation-date").value = new Date().toISOString().substring(0, 10);
-      document.getElementById("new-evaluation-weight").value = "0";
-      document.getElementById("evaluation-config-modal").classList.remove("hidden");
-    }
-
-    function toggleNewEvaluationModalOff() {
-      document.getElementById("evaluation-config-modal").classList.add("hidden");
-    }
-
-    function editEvaluation(evId) {
-      const currentEvals = evaluations[activeSubjectId] || [];
-      const ev = currentEvals.find(e => e.id === evId);
-      if (!ev) return;
-
-      document.getElementById("evaluation-modal-title").innerText = "Editar Evaluación";
-      document.getElementById("edit-evaluation-id").value = ev.id;
-      document.getElementById("new-evaluation-name").value = ev.name;
-      document.getElementById("new-evaluation-date").value = ev.date;
-      document.getElementById("new-evaluation-weight").value = ev.weight || 0;
-      document.getElementById("evaluation-config-modal").classList.remove("hidden");
-    }
-
-    function saveEvaluationConfig(event) {
-      event.preventDefault();
-      const idInput = document.getElementById("edit-evaluation-id").value;
-      const nameInput = document.getElementById("new-evaluation-name").value.trim();
-      const dateInput = document.getElementById("new-evaluation-date").value;
-      const weightInput = parseInt(document.getElementById("new-evaluation-weight").value) || 0;
-
-      if (!nameInput) return;
-
-      if (!evaluations[activeSubjectId]) {
-        evaluations[activeSubjectId] = [];
-      }
-
-      if (idInput) {
-        // Edit Mode
-        const ev = evaluations[activeSubjectId].find(e => e.id === idInput);
-        if (ev) {
-          ev.name = nameInput;
-          ev.date = dateInput;
-          ev.weight = weightInput;
-          showToast(`Evaluación "${nameInput}" modificada.`, "success");
-        }
-      } else {
-        // Add Mode
-        const newId = "ev_" + Date.now();
-        evaluations[activeSubjectId].push({
-          id: newId,
-          name: nameInput,
-          date: dateInput,
-          weight: weightInput
-        });
-
-        // Initialize grades to 4.0 default for all current roster
-        students.forEach(st => {
-          if (!st.grades[activeSubjectId]) st.grades[activeSubjectId] = {};
-          if (st.grades[activeSubjectId][newId] === undefined) {
-            st.grades[activeSubjectId][newId] = 4.0;
-          }
-        });
-        showToast(`Evaluación "${nameInput}" añadida con éxito.`, "success");
-      }
-
-      saveEvaluationsState();
-      saveState();
-      renderEvaluationsList();
-      renderNewStudentFields();
-      applyFilters();
-      renderTable();
-      renderProfileDeepDive();
-      toggleNewEvaluationModalOff();
-    }
-
-    function deleteEvaluation(evId) {
-      if (!evaluations[activeSubjectId]) return;
-      const ev = evaluations[activeSubjectId].find(e => e.id === evId);
-      if (!ev) return;
-
-      evaluations[activeSubjectId] = evaluations[activeSubjectId].filter(e => e.id !== evId);
-      
-      // Clean up records in grade book
-      students.forEach(st => {
-        if (st.grades[activeSubjectId]) {
-          delete st.grades[activeSubjectId][evId];
-        }
-      });
-
-      saveEvaluationsState();
-      saveState();
-      renderEvaluationsList();
-      renderNewStudentFields();
-      applyFilters();
-      renderTable();
-      renderProfileDeepDive();
-      showToast(`Evaluación "${ev.name}" eliminada del registro.`, "success");
-    }
-
-    // JAVASCRIPT DETAILED ROSTER AND GRADES FILTERS
-    function updateRangeLabel() {
-      const minVal = parseFloat(document.getElementById("min-avg-slider").value);
-      document.getElementById("range-value").innerText = `${minVal.toFixed(1)} - 7.0`;
-      minAvgFilter = minVal;
-    }
-
-    // DYNAMIC TABLE RENDERING (LIBRO DE CLASES PLANILLA)
-    function renderTable() {
-      const tableHeader = document.getElementById("student-table-header");
-      const tableBody = document.getElementById("student-table-body");
-      if (!tableHeader || !tableBody) return;
-
-      const currentEvals = evaluations[activeSubjectId] || [];
-
-      // 1. Generate Headers
-      let headerHtml = `
-        <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 font-semibold text-xs border-b border-slate-100 dark:border-slate-700">
-          <th class="py-3 px-3 w-12 text-center">N°</th>
-          <th class="py-3 px-3 min-w-[200px]">Estudiante</th>
-      `;
-      currentEvals.forEach(ev => {
-        const weightLabel = ev.weight && ev.weight > 0 ? ` (${ev.weight}%)` : " (Equiv.)";
-        headerHtml += `<th class="py-3 px-2 text-center" title="${ev.name} - ${ev.date}">${ev.name}<span class="text-[9px] font-normal block text-slate-400">${ev.date}${weightLabel}</span></th>`;
-      });
-      headerHtml += `
-          <th class="py-3 px-3 text-center font-bold text-slate-700 dark:text-slate-300">Promedio</th>
-          <th class="py-3 px-3 text-center w-16">Eliminar</th>
-        </tr>
-      `;
-      tableHeader.innerHTML = headerHtml;
-
-      // 2. Generate Body
-      tableBody.innerHTML = "";
-      if (filteredStudents.length === 0) {
-        tableBody.innerHTML = `
-          <tr>
-            <td colspan="${currentEvals.length + 4}" class="py-8 text-center text-slate-400">Ningún estudiante registrado en este curso.</td>
-          </tr>
-        `;
-        return;
-      }
-
-      filteredStudents.forEach((student, index) => {
-        const studentAvg = calculateAverages(student);
-        let avgClass = "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40";
-        if (studentAvg >= 6.0) avgClass = "text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40";
-        else if (studentAvg < 5.0) avgClass = "text-red-700 dark:text-rose-400 bg-red-50 dark:bg-rose-950/40";
-
-        let rowHtml = `
-          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-all">
-            <td class="py-2.5 px-3 text-center font-bold text-slate-400">${index + 1}</td>
-            <td class="py-2.5 px-3 font-semibold text-slate-900 dark:text-white">${student.name}</td>
-        `;
-
-        // Load dynamic grades
-        currentEvals.forEach(ev => {
-          const gradeValue = student.grades?.[activeSubjectId]?.[ev.id] !== undefined ? student.grades[activeSubjectId][ev.id] : 4.0;
-          rowHtml += `
-            <td class="py-2 px-1 text-center">
-              <input type="number" step="0.1" min="1" max="7" 
-                value="${gradeValue}" 
-                onchange="updateSingleGrade(${student.id}, '${ev.id}', this.value)"
-                class="w-11 text-center p-1 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-700 border border-transparent focus:border-brand-500 focus:bg-white dark:focus:bg-slate-900 rounded-lg transition-all font-semibold">
-            </td>
-          `;
-        });
-
-        rowHtml += `
-            <td class="py-2.5 px-3 text-center font-extrabold">
-              <span class="px-2.5 py-1 rounded-lg ${avgClass}">${studentAvg.toLocaleString('es-CL')}</span>
-            </td>
-            <td class="py-2.5 px-3 text-center">
-              <button onclick="deleteStudent(${student.id})" class="text-rose-500 hover:text-rose-700 p-1 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-all" title="Eliminar Alumno">
-                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-              </button>
-            </td>
-          </tr>
-        `;
-
-        tableBody.innerHTML += rowHtml;
-      });
-    }
-
-    function updateSingleGrade(studentId, evalId, val) {
-      let numericVal = parseFloat(val);
-      if (isNaN(numericVal) || numericVal < 1.0 || numericVal > 7.0) {
-        showToast("La nota debe estar entre 1.0 y 7.0", "error");
-        renderTable();
-        return;
-      }
-
-      const st = students.find(s => s.id === studentId);
-      if (st) {
-        if (!st.grades[activeSubjectId]) st.grades[activeSubjectId] = {};
-        st.grades[activeSubjectId][evalId] = numericVal;
-        saveState();
-        applyFilters();
-        showToast(`Nota de ${st.name} actualizada correctamente.`, "success");
-        renderProfileDeepDive();
-      }
-    }
-
-    // CONTROL DE VISIBILIDAD PARA EL MODAL DE ESTUDIANTES
-    function toggleNewStudentModal() {
-      const modal = document.getElementById("new-student-modal");
-      if (modal) {
-        modal.classList.toggle("hidden");
-      }
-    }
-
-    // JAVASCRIPT NEW STUDENT REGISTRATION HANDLERS
-    function renderNewStudentFields() {
-      const container = document.getElementById("new-student-fields-container");
-      if (!container) return;
-      container.innerHTML = "";
-
-      const currentEvals = evaluations[activeSubjectId] || [];
-      if (currentEvals.length === 0) {
-        container.innerHTML = `<p class="text-[10px] text-slate-400 italic col-span-2">No hay evaluaciones configuradas para esta asignatura.</p>`;
-        return;
-      }
-
-      currentEvals.forEach(ev => {
-        container.innerHTML += `
-          <div>
-            <label class="block text-[10px] font-semibold text-slate-500 mb-0.5">${ev.name}</label>
-            <input type="number" id="new_grade_${ev.id}" min="1.0" max="7.0" step="0.1" required value="4.0" class="w-full px-2 py-1 rounded-lg text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:ring-1 focus:ring-brand-500 outline-none">
-          </div>
-        `;
-      });
-    }
-
-    function saveNewStudent(event) {
-      event.preventDefault();
-      const name = document.getElementById("new-student-name").value.trim();
-      if (!name) return;
-
-      const nextId = students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1;
-      const newSt = { id: nextId, name, courseId: activeCourseId, grades: {} };
-
-      // Populate grades for all current subjects with base 4.0, except active evaluations which use input values
-      subjects.forEach(sub => {
-        newSt.grades[sub.id] = {};
-        const evalsList = evaluations[sub.id] || [];
-        evalsList.forEach(ev => {
-          if (sub.id === activeSubjectId) {
-            const inputVal = parseFloat(document.getElementById(`new_grade_${ev.id}`).value);
-            newSt.grades[sub.id][ev.id] = isNaN(inputVal) ? 4.0 : inputVal;
-          } else {
-            newSt.grades[sub.id][ev.id] = 4.0;
-          }
-        });
-      });
-
-      students.push(newSt);
-      saveState();
-      toggleNewStudentModal();
-      document.getElementById("new-student-form").reset();
-      
-      applyFilters();
-      renderTable();
-      renderProfileSelector();
-      
-      showToast(`Estudiante "${name}" registrado exitosamente.`, "success");
-    }
-
-    function deleteStudent(id) {
-      const studentName = students.find(s => s.id === id)?.name || "Estudiante";
-      
-      students = students.filter(s => s.id !== id);
-      saveState();
-      applyFilters();
-      renderTable();
-      renderProfileSelector();
-      if (selectedStudentId === id) {
-        const courseStudents = students.filter(s => s.courseId === activeCourseId);
-        selectedStudentId = courseStudents[0]?.id || null;
-      }
-      renderProfileDeepDive();
-      showToast(`Se ha eliminado a ${studentName} de la planilla.`, "success");
-    }
-
-    // SHEETJS EXCEL IMPORTER / ROSTER PARSER ENGINE
-    function toggleExcelGuide(show) {
-      const modal = document.getElementById("excel-instructions-modal");
-      if (show) modal.classList.remove("hidden");
-      else modal.classList.add("hidden");
-    }
-
-    function triggerExcelFileInput() {
-      toggleExcelGuide(false);
-      document.getElementById("excel-import-file-input").click();
-    }
-
-    function handleExcelImport(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-          const firstSheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[firstSheetName];
-          
-          // Parse sheets to JSON arrays
-          const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-          if (jsonData.length < 2) {
-            showToast("El archivo Excel está vacío o no contiene suficientes filas.", "error");
-            return;
-          }
-
-          const headers = jsonData[0].map(h => String(h || '').trim().toLowerCase());
-          
-          // Map column name to Student Names
-          const nameIndex = headers.findIndex(h => h.includes("estudiante") || h.includes("nombre") || h.includes("alumno") || h.includes("student"));
-          if (nameIndex === -1) {
-            showToast("No se encontró columna para 'Estudiante' o 'Nombre' en el archivo Excel.", "error");
-            return;
-          }
-
-          let newStudentsAdded = 0;
-          let gradesUpdatedCount = 0;
-          const currentEvals = evaluations[activeSubjectId] || [];
-
-          for (let r = 1; r < jsonData.length; r++) {
-            const row = jsonData[r];
-            if (!row || row.length === 0) continue;
-            
-            const studentName = String(row[nameIndex] || '').trim();
-            if (!studentName) continue;
-
-            // Look up student or create within active course
-            let studentObj = students.find(s => s.name.toLowerCase() === studentName.toLowerCase() && s.courseId === activeCourseId);
-            if (!studentObj) {
-              const nextId = students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1;
-              studentObj = { id: nextId, name: studentName, courseId: activeCourseId, grades: {} };
-              
-              // Seed empty subjects maps
-              subjects.forEach(sub => {
-                studentObj.grades[sub.id] = {};
-                const evs = evaluations[sub.id] || [];
-                evs.forEach(e => {
-                  studentObj.grades[sub.id][e.id] = 4.0;
-                });
-              });
-              
-              students.push(studentObj);
-              newStudentsAdded++;
-            }
-
-            // Map and load evaluation grades if column headers match current active evaluations
-            currentEvals.forEach(ev => {
-              const evIndex = headers.findIndex(h => h === ev.name.toLowerCase() || h.includes(ev.name.toLowerCase()));
-              if (evIndex !== -1 && row[evIndex] !== undefined) {
-                const rawGrade = parseFloat(String(row[evIndex]).replace(',', '.'));
-                if (!isNaN(rawGrade) && rawGrade >= 1.0 && rawGrade <= 7.0) {
-                  studentObj.grades[activeSubjectId][ev.id] = parseFloat(rawGrade.toFixed(1));
-                  gradesUpdatedCount++;
-                }
-              }
-            });
-          }
-
-          saveState();
-          applyFilters();
-          renderTable();
-          renderProfileSelector();
-          renderProfileDeepDive();
-          showToast(`Éxito: Se importaron ${newStudentsAdded} alumnos nuevos y ${gradesUpdatedCount} notas para la asignatura activa.`, "success");
-
-        } catch (err) {
-          console.error(err);
-          showToast("Error al decodificar el archivo Excel. Asegúrate que la planilla esté en formato compatible.", "error");
-        }
-      };
-
-      reader.readAsArrayBuffer(file);
-      event.target.value = ""; // clear inputs
-    }
-
-    // EXPORTS DATA TO ADVANCED 3-SHEETS PROFESSIONAL EXCEL WORKBOOK
-    function exportToExcel() {
-      if (!window.XLSX) {
-        showToast("Error: SheetJS no se encuentra disponible.", "error");
-        return;
-      }
-
-      const activeSubObj = subjects.find(s => s.id === activeSubjectId) || { name: "Inglés" };
-      const activeCourseObj = courses.find(c => c.id === activeCourseId) || { name: "Sin Curso" };
-      const currentEvals = evaluations[activeSubjectId] || [];
-      const stats = computeStats();
-      const courseStudents = students.filter(s => s.courseId === activeCourseId);
-
-      // --- SHEET 1: RESUMEN GENERAL (DASHBOARD) ---
-      const summarySheetRows = [
-        ["INFORME EJECUTIVO DE RENDIMIENTO - INCOSAF"],
-        [],
-        ["Detalles del Aula"],
-        ["Docente:", teacherProfile.name],
-        ["Curso:", activeCourseObj.name],
-        ["Asignatura:", activeSubObj.name],
-        ["Año Escolar:", teacherProfile.year],
-        [],
-        ["Indicadores Clave de Desempeño (KPIs)"],
-        ["Promedio General del Curso:", stats.courseAverage],
-        ["Estudiante de Mayor Rendimiento:", stats.bestStudent + " (" + stats.bestStudentAvg + ")"],
-        ["Evaluación con Mejor Desempeño:", stats.bestSubject + " (" + stats.bestSubjectAvg + ")"],
-        ["Evaluación con Mayor Exigencia:", stats.worstSubject + " (" + stats.worstSubjectAvg + ")"],
-        ["Alumnos en Riesgo Académico (Promedio < 5.0):", stats.atRiskCount],
-        [],
-        ["Rendimiento General por Instrumento de Evaluación"],
-        ["Evaluación", "Fecha", "Ponderación", "Promedio Curso"]
-      ];
-
-      // Append evaluation rows to Summary Sheet
-      currentEvals.forEach(ev => {
-        let evSum = 0;
-        let evCount = 0;
-        courseStudents.forEach(s => {
-          const g = s.grades?.[activeSubjectId]?.[ev.id];
-          if (g !== undefined && g !== null) {
-            evSum += g;
-            evCount++;
-          }
-        });
-        const evAvg = evCount > 0 ? parseFloat((evSum / evCount).toFixed(2)) : 1.0;
-        const weightLabel = ev.weight && ev.weight > 0 ? `${ev.weight}%` : "Equivalente";
-        summarySheetRows.push([ev.name, ev.date, weightLabel, evAvg]);
-      });
-
-      const summaryWS = XLSX.utils.aoa_to_sheet(summarySheetRows);
-
-      // --- SHEET 2: PLANILLA COMPLETA ---
-      const planillaSheetRows = [
-        ["N°", "Estudiante", ...currentEvals.map(ev => `${ev.name} (${ev.weight && ev.weight > 0 ? ev.weight + '%' : 'Equiv.'})`), "Promedio Final"]
-      ];
-
-      courseStudents.forEach((student, index) => {
-        const studentGradesRow = [
-          index + 1,
-          student.name
-        ];
-        currentEvals.forEach(ev => {
-          studentGradesRow.push(student.grades?.[activeSubjectId]?.[ev.id] || "");
-        });
-        studentGradesRow.push(calculateAverages(student));
-        planillaSheetRows.push(studentGradesRow);
-      });
-
-      const planillaWS = XLSX.utils.aoa_to_sheet(planillaSheetRows);
-
-      // --- SHEET 3: RESUMEN POR ESTUDIANTE (REPORTE DE NOTAS INDIVIDUALES) ---
-      const studentReportRows = [
-        ["REPORTE INDIVIDUAL DETALLADO DE CALIFICACIONES"],
-        ["Asignatura:", activeSubObj.name],
-        ["Curso:", activeCourseObj.name],
-        ["Docente:", teacherProfile.name],
-        [],
-        ["Fichas de Rendimiento Alumno por Alumno"],
-        []
-      ];
-
-      courseStudents.forEach(student => {
-        const stAvg = calculateAverages(student);
-        studentReportRows.push(["Estudiante:", student.name]);
-        studentReportRows.push(["Promedio General:", stAvg]);
-        studentReportRows.push(["Evaluación", "Calificación", "Ponderación"]);
-        
-        currentEvals.forEach(ev => {
-          const grade = student.grades?.[activeSubjectId]?.[ev.id] || "S/N";
-          const weightLabel = ev.weight && ev.weight > 0 ? `${ev.weight}%` : "Equivalente";
-          studentReportRows.push([ev.name, grade, weightLabel]);
-        });
-
-        // Add pedagogical diagnostics summary dynamically to sheet
-        let diagnostic = "";
-        if (stAvg >= 6.0) diagnostic = "Rendimiento Sobresaliente. Se sugiere potenciar liderazgo pedagógico.";
-        else if (stAvg >= 5.0) diagnostic = "Buen Rendimiento. Estudiante cumple con objetivos de forma estable.";
-        else if (stAvg >= 4.0) diagnostic = "Aprobado Básico. Requiere supervisión en áreas de mayor debilidad.";
-        else diagnostic = "Reprobado / Alerta Crítica. Requiere citación de apoderado y tutorías remediales obligatorias.";
-        
-        studentReportRows.push(["Diagnóstico:", diagnostic]);
-        studentReportRows.push(["========================================="]);
-        studentReportRows.push([]);
-      });
-
-      const studentReportWS = XLSX.utils.aoa_to_sheet(studentReportRows);
-
-      // --- PACK WORKBOOK ---
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, summaryWS, "Resumen General");
-      XLSX.utils.book_append_sheet(wb, planillaWS, "Planilla Libro de Clases");
-      XLSX.utils.book_append_sheet(wb, studentReportWS, "Reporte por Estudiante");
-
-      // Auto size spreadsheet columns widths for clean look
-      [summaryWS, planillaWS].forEach(ws => {
-        const range = XLSX.utils.decode_range(ws['!ref'] || 'A1:A1');
-        const colWidths = [];
-        for (let C = range.s.c; C <= range.e.c; ++C) {
-          let maxLen = 10;
-          for (let R = range.s.r; R <= range.e.r; ++R) {
-            const cell = ws[XLSX.utils.encode_cell({ r: R, c: C })];
-            if (cell && cell.v) {
-              maxLen = Math.max(maxLen, String(cell.v).length);
-            }
-          }
-          colWidths.push({ wch: maxLen + 2 });
-        }
-        ws['!cols'] = colWidths;
-      });
-
-      const filename = `INCOSAF_${activeSubObj.name.replace(" ", "_")}_Clases_${activeCourseObj.name.replace(" ", "_")}.xlsx`;
-      XLSX.writeFile(wb, filename);
-      showToast("Libro de Clases Excel exportado correctamente con 3 hojas.", "success");
-    }
-
-    // TAB 3: INDIVIDUAL PROFILE STUDENT SELECTOR
-    function renderProfileSelector() {
-      const listContainer = document.getElementById("profile-student-list");
-      if (!listContainer) return;
-      listContainer.innerHTML = "";
-
-      const courseStudents = students.filter(s => s.courseId === activeCourseId);
-
-      courseStudents.forEach(st => {
-        const isSelected = st.id === selectedStudentId;
-        const avg = calculateAverages(st);
-        
-        listContainer.innerHTML += `
-          <button onclick="selectProfileStudent(${st.id})" class="w-full text-left p-2.5 rounded-xl text-xs font-semibold flex justify-between items-center transition-all ${
-            isSelected 
-              ? 'bg-brand-600 text-white shadow-md shadow-brand-500/20' 
-              : 'hover:bg-slate-100 dark:hover:bg-slate-900 border border-transparent'
-          }">
-            <span class="truncate pr-1">${st.name}</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded-md ${
-              isSelected 
-                ? 'bg-white/20 text-white' 
-                : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200'
-            }">${avg.toFixed(2)}</span>
-          </button>
-        `;
-      });
-    }
-
-    function selectProfileStudent(id) {
-      selectedStudentId = id;
-      renderProfileSelector();
-      renderProfileDeepDive();
-    }
-
-    // CARGAR DETALLE ACADÉMICO INDIVIDUAL
-    function renderProfileDeepDive() {
-      const student = students.find(s => s.id === selectedStudentId);
-      if (!student) {
-        document.getElementById("profile-student-name").innerText = "No seleccionado";
-        document.getElementById("profile-student-avg").innerText = "-";
-        return;
-      }
-
-      const stAvg = calculateAverages(student);
-      document.getElementById("profile-student-name").innerHTML = `
-        ${student.name} 
-        <span class="text-[10px] py-0.5 px-2.5 bg-brand-50 dark:bg-slate-900 text-brand-600 dark:text-brand-400 font-bold border border-brand-100 dark:border-slate-700 rounded-full">
-          ID: ${student.id}
-        </span>
-      `;
-      document.getElementById("profile-student-avg").innerText = stAvg.toLocaleString('es-CL');
-
-      const breakdownDiv = document.getElementById("profile-subject-breakdown");
-      if (!breakdownDiv) return;
-      breakdownDiv.innerHTML = "";
-
-      const currentEvals = evaluations[activeSubjectId] || [];
-
-      // Calculate dynamic diagnostics recommendation
-      let worstEval = null;
-      let bestEval = null;
-      let minGrade = 8.0;
-      let maxGrade = 0.0;
-
-      currentEvals.forEach(ev => {
-        const g = student.grades?.[activeSubjectId]?.[ev.id];
-        if (g !== undefined && g !== null) {
-          if (g < minGrade) {
-            minGrade = g;
-            worstEval = ev;
-          }
-          if (g > maxGrade) {
-            maxGrade = g;
-            bestEval = ev;
-          }
-        }
-      });
-
-      let pedagogicalText = "";
-      if (stAvg >= 6.0) {
-        pedagogicalText = `Rendimiento sobresaliente general. Se destaca especialmente en <strong>${bestEval ? bestEval.name : 'las evaluaciones'}</strong>. Recomendación: Involucrar en tutorías académicas voluntarias para potenciar habilidades blandas.`;
-      } else if (stAvg >= 5.0) {
-        pedagogicalText = `Rendimiento estable y competente. Domina los aprendizajes clave del periodo escolar con óptima progresión curricular.`;
-      } else if (stAvg >= 4.0) {
-        pedagogicalText = `Aprobación básica. Presenta riesgos de descenso en <strong>${worstEval ? worstEval.name : 'algunas materias'} (${minGrade.toLocaleString('es-CL')})</strong>. Requiere plan de reforzamiento puntual.`;
-      } else {
-        pedagogicalText = `<strong>ALERTA CRÍTICA REPROBATORIA</strong>. Presenta un promedio final acumulativo de ${stAvg.toLocaleString('es-CL')}. Se sugiere citación a apoderado de forma urgente para firmar acuerdo pedagógico remedial.`;
-      }
-
-      document.getElementById("profile-pedagogical-insight").innerHTML = pedagogicalText;
-
-      currentEvals.forEach(ev => {
-        const gradeVal = student.grades?.[activeSubjectId]?.[ev.id] !== undefined ? student.grades[activeSubjectId][ev.id] : 4.0;
-        const barPercent = (gradeVal / 7.0) * 100;
-        
-        let barColor = "bg-brand-500";
-        if (gradeVal >= 6.0) barColor = "bg-emerald-500";
-        else if (gradeVal < 4.0) barColor = "bg-rose-500";
-        else if (gradeVal < 5.0) barColor = "bg-amber-500";
-
-        breakdownDiv.innerHTML += `
-          <div class="p-2 border border-slate-100 dark:border-slate-700/60 rounded-xl bg-slate-50/50 dark:bg-slate-900/30">
-            <div class="flex justify-between items-center text-xs mb-1">
-              <span class="font-medium text-slate-500 truncate max-w-[120px]" title="${ev.name}">${ev.name}</span>
-              <span class="font-bold text-slate-900 dark:text-white">${gradeVal.toLocaleString('es-CL')}</span>
-            </div>
-            <div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
-              <div class="${barColor} h-full" style="width: ${barPercent}%"></div>
-            </div>
-          </div>
-        `;
-      });
-
-      recreateRadarChart(student);
-    }
-
-    // CHART GENERATORS
-    function recreateCharts() {
-      if (document.getElementById("tab-content-dashboard").classList.contains("hidden")) {
-        return;
-      }
-
-      const activeSubObj = subjects.find(s => s.id === activeSubjectId) || { name: "Inglés" };
-      const activeCourseObj = courses.find(c => c.id === activeCourseId) || { name: "Sin Curso" };
-      document.getElementById("student-avg-chart-title").innerText = `Rendimiento de ${activeSubObj.name} por Alumno (${activeCourseObj.name})`;
-      document.getElementById("subject-evaluations-chart-title").innerText = `Análisis de Evaluaciones: ${activeSubObj.name} (${activeCourseObj.name})`;
-
-      // 1. Chart Students Bar
-      const ctxStudent = document.getElementById("chart-student-averages")?.getContext("2d");
-      if (ctxStudent) {
-        if (chartStudentAverages) chartStudentAverages.destroy();
-
-        const studentNames = filteredStudents.map(s => s.name);
-        const averages = filteredStudents.map(s => calculateAverages(s));
-        
-        const isDark = document.documentElement.classList.contains('dark');
-        const barColors = averages.map(avg => {
-          if (avg >= 6.0) return 'rgba(16, 185, 129, 0.8)'; // Emerald
-          if (avg < 5.0) return 'rgba(239, 68, 68, 0.8)';   // Red
-          return 'rgba(30, 64, 175, 0.8)';                  // Corporate Blue
-        });
-
-        chartStudentAverages = new Chart(ctxStudent, {
-          type: 'bar',
-          data: {
-            labels: studentNames,
-            datasets: [{
-              label: 'Promedio General',
-              data: averages,
-              backgroundColor: barColors,
-              borderRadius: 6,
-              borderWidth: 0,
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                callbacks: {
-                  label: function(context) {
-                    return `Promedio: ${context.raw.toLocaleString('es-CL')}`;
-                  }
-                }
-              }
-            },
-            scales: {
-              y: {
-                min: 1.0,
-                max: 7.0,
-                grid: { color: isDark ? '#334155' : '#f1f5f9' },
-                ticks: { color: isDark ? '#94a3b8' : '#64748b' }
-              },
-              x: {
-                grid: { display: false },
-                ticks: { 
-                  color: isDark ? '#94a3b8' : '#64748b',
-                  font: { size: 9 },
-                  maxRotation: 45,
-                  minRotation: 45
-                }
-              }
-            }
-          }
-        });
-      }
-
-      // 2. Chart distribution (Doughnut)
-      const ctxDistribution = document.getElementById("chart-distribution")?.getContext("2d");
-      if (ctxDistribution) {
-        if (chartDistribution) chartDistribution.destroy();
-
-        const courseStudents = students.filter(s => s.courseId === activeCourseId);
-        let counts = { destacados: 0, competentes: 0, aprobados: 0, reprobados: 0 };
-        courseStudents.forEach(s => {
-          const avg = calculateAverages(s);
-          if (avg >= 6.0) counts.destacados++;
-          else if (avg >= 5.0) counts.competentes++;
-          else if (avg >= 4.0) counts.aprobados++;
-          else counts.reprobados++;
-        });
-
-        chartDistribution = new Chart(ctxDistribution, {
-          type: 'doughnut',
-          data: {
-            labels: ['Destacado', 'Competente', 'Aprobado', 'Reprobado'],
-            datasets: [{
-              data: [counts.destacados, counts.competentes, counts.aprobados, counts.reprobados],
-              backgroundColor: [
-                'rgba(16, 185, 129, 0.85)', // Emerald
-                'rgba(99, 102, 241, 0.85)', // Indigo
-                'rgba(245, 158, 11, 0.85)', // Amber
-                'rgba(239, 68, 68, 0.85)',   // Red
-              ],
-              borderWidth: 0,
-              hoverOffset: 4
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { display: false }
-            },
-            cutout: '70%'
-          }
-        });
-      }
-
-      // 3. Evaluation Course Averages Bar Chart
-      const ctxSubjects = document.getElementById("chart-subject-averages")?.getContext("2d");
-      if (ctxSubjects) {
-        if (chartSubjectAverages) chartSubjectAverages.destroy();
-
-        const currentEvals = evaluations[activeSubjectId] || [];
-        const activeLabels = [];
-        const dataVals = [];
-        const isDark = document.documentElement.classList.contains('dark');
-        const courseStudents = students.filter(s => s.courseId === activeCourseId);
-
-        currentEvals.forEach(ev => {
-          let sum = 0;
-          let count = 0;
-          courseStudents.forEach(s => {
-            const g = s.grades?.[activeSubjectId]?.[ev.id];
-            if (g !== undefined && g !== null) {
-              sum += g;
-              count++;
-            }
+    function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDvF1IwWiPS10IottkfGzTzJWv2a9mplGU",
+      authDomain: "snlmjjs-tech.github.io",
+      projectId: "libro-digital-5b032",
+      storageBucket: "libro-digital-5b032.firebasestorage.app",
+      messagingSenderId: "141901799802",
+      appId: "1:141901799802:web:ea3d38b2d28677acfdf6c3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const tabLogin = document.getElementById('tab-login');
+    const tabRegister = document.getElementById('tab-register');
+    const authTitle = document.getElementById('auth-title');
+    const authSubmitBtn = document.getElementById('auth-submit-btn');
+    const authForm = document.getElementById('auth-form');
+    const authMessage = document.getElementById('auth-message');
+
+    let isLoginMode = true;
+
+    tabLogin.addEventListener('click', () => {
+      isLoginMode = true;
+      tabLogin.className = "w-1/2 pb-2 text-center border-b-2 border-blue-600 text-blue-600 focus:outline-none";
+      tabRegister.className = "w-1/2 pb-2 text-center border-b-2 border-transparent text-gray-500 hover:text-blue-600 focus:outline-none";
+      authTitle.innerText = "Ingresar a mi cuenta";
+      authSubmitBtn.innerText = "Entrar";
+      authMessage.classList.add("hidden");
+    });
+
+    tabRegister.addEventListener('click', () => {
+      isLoginMode = false;
+      tabRegister.className = "w-1/2 pb-2 text-center border-b-2 border-blue-600 text-blue-600 focus:outline-none";
+      tabLogin.className = "w-1/2 pb-2 text-center border-b-2 border-transparent text-gray-500 hover:text-blue-600 focus:outline-none";
+      authTitle.innerText = "Crear Cuenta Nueva";
+      authSubmitBtn.innerText = "Registrarme";
+      authMessage.classList.add("hidden");
+    });
+
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value;
+      const password = document.getElementById('auth-password').value;
+
+      if (isLoginMode) {
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            authMessage.innerText = "¡Inicio de sesión exitoso!";
+            authMessage.className = "text-xs mt-3 text-center font-medium text-green-600 block";
+            console.log("Usuario dentro:", userCredential.user);
+          })
+          .catch((error) => {
+            authMessage.innerText = "Error: " + traducirError(error.code);
+            authMessage.className = "text-xs mt-3 text-center font-medium text-red-600 block";
           });
-          activeLabels.push(ev.name);
-          dataVals.push(count > 0 ? parseFloat((sum / count).toFixed(2)) : 4.0);
-        });
-
-        chartSubjectAverages = new Chart(ctxSubjects, {
-          type: 'bar',
-          data: {
-            labels: activeLabels,
-            datasets: [{
-              label: 'Promedio Evaluación',
-              data: dataVals,
-              backgroundColor: 'rgba(30, 64, 175, 0.75)', // Corporate INCOSAF Blue
-              borderRadius: 5,
-              maxBarThickness: 45
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-              y: {
-                min: 1.0,
-                max: 7.0,
-                grid: { color: isDark ? '#334155' : '#f1f5f9' },
-                ticks: { color: isDark ? '#94a3b8' : '#64748b' }
-              },
-              x: {
-                grid: { display: false },
-                ticks: { color: isDark ? '#94a3b8' : '#64748b', font: { size: 9 } }
-              }
-            }
-          }
-        });
+      } else {
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            authMessage.innerText = "¡Cuenta creada con éxito! Ya puedes iniciar sesión.";
+            authMessage.className = "text-xs mt-3 text-center font-medium text-green-600 block";
+            tabLogin.click();
+          })
+          .catch((error) => {
+            authMessage.innerText = "Error al registrar: " + traducirError(error.code);
+            authMessage.className = "text-xs mt-3 text-center font-medium text-red-600 block";
+          });
       }
-    }
+    });
 
-    function recreateRadarChart(student) {
-      if (document.getElementById("tab-content-profile").classList.contains("hidden")) {
-        return;
+    function traducirError(codigo) {
+      switch (codigo) {
+        case 'auth/weak-password': return 'La contraseña debe tener al menos 6 caracteres.';
+        case 'auth/email-already-in-use': return 'Este correo ya está registrado.';
+        case 'auth/invalid-email': return 'El correo no es válido.';
+        case 'auth/wrong-password': return 'Contraseña incorrecta.';
+        case 'auth/user-not-found': return 'No existe un usuario con este correo.';
+        default: return 'Ocurrió un error inesperado: ' + codigo;
       }
-
-      const ctxRadar = document.getElementById("chart-profile-radar")?.getContext("2d");
-      if (!ctxRadar) return;
-      if (chartProfileRadar) chartProfileRadar.destroy();
-
-      const isDark = document.documentElement.classList.contains('dark');
-      const currentEvals = evaluations[activeSubjectId] || [];
-      const courseStudents = students.filter(s => s.courseId === activeCourseId);
-
-      // Calculate class averages for each active evaluation instrument
-      const labels = [];
-      const studentGrades = [];
-      const classAverages = [];
-
-      currentEvals.forEach(ev => {
-        let sum = 0;
-        let count = 0;
-        courseStudents.forEach(s => {
-          const g = s.grades?.[activeSubjectId]?.[ev.id];
-          if (g !== undefined && g !== null) {
-            sum += g;
-            count++;
-          }
-        });
-        labels.push(ev.name);
-        studentGrades.push(student.grades?.[activeSubjectId]?.[ev.id] || 4.0);
-        classAverages.push(count > 0 ? sum / count : 4.0);
-      });
-
-      // Simple bar / line chart fallback if evaluations are less than 3 (Radar require min 3)
-      const chartType = currentEvals.length >= 3 ? 'radar' : 'bar';
-
-      chartProfileRadar = new Chart(ctxRadar, {
-        type: chartType,
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: student.name,
-              data: studentGrades,
-              backgroundColor: 'rgba(30, 64, 175, 0.2)', // INCOSAF Blue Transparent
-              borderColor: 'rgba(30, 64, 175, 0.95)',
-              borderWidth: 2,
-              pointBackgroundColor: 'rgba(30, 64, 175, 1)',
-              pointBorderColor: '#fff',
-            },
-            {
-              label: 'Promedio Curso',
-              data: classAverages,
-              backgroundColor: 'rgba(148, 163, 184, 0.1)',
-              borderColor: 'rgba(148, 163, 184, 0.6)',
-              borderWidth: 1.5,
-              borderDash: [4, 4],
-              pointBackgroundColor: 'rgba(148, 163, 184, 1)',
-              pointBorderColor: '#fff',
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              labels: {
-                boxWidth: 12,
-                font: { size: 9 },
-                color: isDark ? '#e2e8f0' : '#334155'
-              },
-              position: 'top'
-            }
-          },
-          scales: chartType === 'radar' ? {
-            r: {
-              min: 1.0,
-              max: 7.0,
-              angleLines: { color: isDark ? '#334155' : '#e2e8f0' },
-              grid: { color: isDark ? '#334155' : '#e2e8f0' },
-              pointLabels: {
-                color: isDark ? '#e2e8f0' : '#334155',
-                font: { size: 8, weight: 'bold' }
-              },
-              ticks: { display: false, stepSize: 1 }
-            }
-          } : {
-            y: {
-              min: 1.0,
-              max: 7.0,
-              ticks: { color: isDark ? '#94a3b8' : '#64748b' }
-            },
-            x: {
-              ticks: { color: isDark ? '#94a3b8' : '#64748b', font: { size: 9 } }
-            }
-          }
-        }
-      });
     }
   </script>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyDvF1IwWiPS10IottkfGzTzJWv2a9mplGU",
-    authDomain: "libro-digital-5b032.firebaseapp.com",
-    projectId: "libro-digital-5b032",
-    storageBucket: "libro-digital-5b032.firebasestorage.app",
-    messagingSenderId: "141901799802",
-    appId: "1:141901799802:web:ea3d38b2d28677acfdf6c3",
-    measurementId: "G-8752XD5MT5"
-  };
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
-<div id="login-form">
-  <input type="email" id="email" placeholder="Correo electrónico">
-  <input type="password" id="password" placeholder="Contraseña">
-  <button id="login-btn">Iniciar sesión</button>
-</div>
-
-<script type="module">
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-const auth = getAuth();
-
-// Elementos del DOM
-const tabLogin = document.getElementById('tab-login');
-const tabRegister = document.getElementById('tab-register');
-const authTitle = document.getElementById('auth-title');
-const authSubmitBtn = document.getElementById('auth-submit-btn');
-const authForm = document.getElementById('auth-form');
-const authMessage = document.getElementById('auth-message');
-
-let isLoginMode = true; // Controla si estamos en Login o Registro
-
-// Cambiar a Modo Login
-tabLogin.addEventListener('click', () => {
-  isLoginMode = true;
-  tabLogin.className = "w-1/2 pb-2 text-center border-b-2 border-blue-600 text-blue-600 focus:outline-none";
-  tabRegister.className = "w-1/2 pb-2 text-center border-b-2 border-transparent text-gray-500 hover:text-blue-600 focus:outline-none";
-  authTitle.innerText = "Ingresar a mi cuenta";
-  authSubmitBtn.innerText = "Entrar";
-  ocultarMensaje();
-});
-
-// Cambiar a Modo Registro
-tabRegister.addEventListener('click', () => {
-  isLoginMode = false;
-  tabRegister.className = "w-1/2 pb-2 text-center border-b-2 border-blue-600 text-blue-600 focus:outline-none";
-  tabLogin.className = "w-1/2 pb-2 text-center border-b-2 border-transparent text-gray-500 hover:text-blue-600 focus:outline-none";
-  authTitle.innerText = "Crear Cuenta Nueva";
-  authSubmitBtn.innerText = "Registrarme";
-  ocultarMensaje();
-});
-
-// Escuchar el envío del formulario
-authForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  
-  const email = document.getElementById('auth-email').value;
-  const password = document.getElementById('auth-password').value;
-
-  if (isLoginMode) {
-    // ---- LÓGICA PARA INICIAR SESIÓN ----
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        mostrarMensaje("¡Inicio de sesión exitoso!", "text-green-600");
-        console.log("Usuario dentro:", userCredential.user);
-      })
-      .catch((error) => {
-        mostrarMensaje("Error: " + traducirError(error.code), "text-red-600");
-      });
-  } else {
-    // ---- LÓGICA PARA REGISTRAR USUARIO ----
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        mostrarMensaje("¡Cuenta creada con éxito! Ya puedes iniciar sesión.", "text-green-600");
-        console.log("Usuario registrado:", userCredential.user);
-        tabLogin.click(); // Te regresa automáticamente al login
-      })
-      .catch((error) => {
-        mostrarMensaje("Error al registrar: " + traducirError(error.code), "text-red-600");
-      });
-  }
-});
-
-// Funciones auxiliares para mensajes
-function mostrarMensaje(texto, claseColor) {
-  authMessage.innerText = texto;
-  authMessage.className = `text-xs mt-3 text-center font-medium ${claseColor}`;
-}
-
-function ocultarMensaje() {
-  authMessage.className = "text-xs mt-3 text-center hidden";
-}
-
-// Traductor rápido de errores comunes de Firebase
-function traducirError(codigo) {
-  switch (codigo) {
-    case 'auth/weak-password': return 'La contraseña debe tener al menos 6 caracteres.';
-    case 'auth/email-already-in-use': return 'Este correo ya está registrado.';
-    case 'auth/invalid-email': return 'El correo no es válido.';
-    case 'auth/wrong-password': return 'Contraseña incorrecta.';
-    case 'auth/user-not-found': return 'No existe un usuario con este correo.';
-    default: return 'Ocurrió un error inesperado.';
-  }
-}
-
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-  const firebaseConfig = {
-<div class="fixed top-4 right-4 z-50 bg-white p-6 rounded-lg shadow-2xl border border-blue-100 w-80 font-sans text-gray-800">
-  
-  <div class="flex justify-between border-b border-gray-200 mb-4 text-sm font-medium">
-    <button id="tab-login" class="w-1/2 pb-2 text-center border-b-2 border-blue-600 text-blue-600 focus:outline-none">Iniciar Sesión</button>
-    <button id="tab-register" class="w-1/2 pb-2 text-center border-b-2 border-transparent text-gray-500 hover:text-blue-600 focus:outline-none">Registrarse</button>
-  </div>
-
-  <h3 id="auth-title" class="text-lg font-bold text-blue-900 mb-4">Ingresar a mi cuenta</h3>
-
-  <form id="auth-form" class="space-y-3">
-    <div>
-      <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Correo Electrónico</label>
-      <input type="email" id="auth-email" required class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" placeholder="tu@correo.com">
-    </div>
-    
-    <div>
-      <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Contraseña</label>
-      <input type="password" id="auth-password" required class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" placeholder="••••••••">
-    </div>
-
-    <button type="submit" id="auth-submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded transition-colors text-sm shadow">
-      Entrar
-    </button>
-  </form>
-
-  <p id="auth-message" class="text-xs mt-3 text-center hidden font-medium"></p>
-</div>
-  });
-</script>
 </body>
 </html>
