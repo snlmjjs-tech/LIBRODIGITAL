@@ -16,7 +16,7 @@
             brand: {
               50: '#f0f4fe',
               100: '#dee7fc',
-              500: '#1e40af', // INCOSAF Corporate Blue
+              500: '#1e40af', 
               600: '#1d4ed8',
               700: '#1d4ed8',
               800: '#1e40af',
@@ -28,29 +28,12 @@
     }
   </script>
   <style>
-    /* Custom Scrollbar for modern look */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
-    }
-    .dark ::-webkit-scrollbar-thumb {
-      background: #475569;
-    }
-    /* Simple Animation */
-    .fade-in {
-      animation: fadeIn 0.3s ease-out forwards;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .dark ::-webkit-scrollbar-thumb { background: #475569; }
+    .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
@@ -64,40 +47,30 @@
       </div>
       <div>
         <h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-          PORTAL DOCENTE INCOSAF <span class="text-[10px] bg-brand-500/10 text-brand-600 dark:text-brand-400 font-semibold px-2 py-0.5 rounded border border-brand-500/20">LIBRO DE CLASES v2.1</span>
+          PORTAL DOCENTE INCOSAF <span class="text-[10px] bg-brand-500/10 text-brand-600 dark:text-brand-400 font-semibold px-2 py-0.5 rounded border border-brand-500/20">LIBRO DE CLASES v2.2</span>
         </h1>
-        <p class="text-xs text-slate-500 dark:text-slate-400" id="header-teacher-info">
-          Cargando datos del docente...
-        </p>
+        <p class="text-xs text-slate-500 dark:text-slate-400" id="header-teacher-info">Cargando datos del docente...</p>
       </div>
     </div>
 
     <div class="flex flex-wrap items-center gap-3">
       <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-700/50 p-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700">
         <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider px-2">Curso:</label>
-        <select id="header-active-course" onchange="changeActiveCourse(this.value)" class="text-xs font-bold text-brand-700 dark:text-brand-400 bg-white dark:bg-slate-800 border-none rounded-lg py-1 px-2.5 focus:ring-2 focus:ring-brand-500 outline-none cursor-pointer">
-        </select>
+        <select id="header-active-course" onchange="changeActiveCourse(this.value)" class="text-xs font-bold text-brand-700 dark:text-brand-400 bg-white dark:bg-slate-800 border-none rounded-lg py-1 px-2.5 focus:ring-2 focus:ring-brand-500 outline-none cursor-pointer"></select>
       </div>
 
       <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-700/50 p-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700">
         <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider px-2">Asignatura:</label>
-        <select id="header-active-subject" onchange="changeActiveSubject(this.value)" class="text-xs font-bold text-brand-700 dark:text-brand-400 bg-white dark:bg-slate-800 border-none rounded-lg py-1 px-2.5 focus:ring-2 focus:ring-brand-500 outline-none cursor-pointer">
-        </select>
+        <select id="header-active-subject" onchange="changeActiveSubject(this.value)" class="text-xs font-bold text-brand-700 dark:text-brand-400 bg-white dark:bg-slate-800 border-none rounded-lg py-1 px-2.5 focus:ring-2 focus:ring-brand-500 outline-none cursor-pointer"></select>
       </div>
 
       <nav class="flex space-x-1 bg-slate-100 dark:bg-slate-700/50 p-1 rounded-xl">
-        <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="px-4 py-2 text-sm font-medium rounded-lg bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-sm flex items-center gap-2 transition-all">
-          📊 Resumen
-        </button>
-        <button onclick="switchTab('table')" id="btn-tab-table" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 transition-all">
-          📋 Planilla
-        </button>
-        <button onclick="switchTab('profile')" id="btn-tab-profile" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 transition-all">
-          👤 Ficha Estudiante
-        </button>
+        <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="px-4 py-2 text-sm font-medium rounded-lg bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-sm flex items-center gap-2 transition-all">📊 Resumen</button>
+        <button onclick="switchTab('table')" id="btn-tab-table" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 transition-all">📋 Planilla</button>
+        <button onclick="switchTab('profile')" id="btn-tab-profile" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 transition-all">👤 Ficha Estudiante</button>
       </nav>
 
-      <button onclick="toggleDarkMode()" class="p-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 rounded-xl transition-all" title="Alternar Modo Oscuro/Claro">
+      <button onclick="toggleDarkMode()" class="p-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 rounded-xl transition-all">
         <svg id="sun-icon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
         <svg id="moon-icon" class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
       </button>
@@ -110,7 +83,6 @@
       <div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-700/60 flex flex-col gap-3">
         <div class="flex justify-between items-center">
           <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Perfil Docente</span>
-          <span class="text-[9px] bg-brand-500/10 text-brand-600 px-1.5 py-0.5 rounded font-bold">Auto-guardado</span>
         </div>
         <div class="space-y-2 text-xs">
           <div>
@@ -133,50 +105,25 @@
       <div class="border-b border-slate-100 dark:border-slate-700/80 pb-4">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Mis Cursos</h3>
-          <button onclick="toggleNewCourseModalOn()" class="text-[10px] text-brand-600 dark:text-brand-400 font-bold hover:underline flex items-center gap-0.5">➕ Agregar</button>
+          <button onclick="toggleNewCourseModalOn()" class="text-[10px] text-brand-600 dark:text-brand-400 font-bold hover:underline">➕ Agregar</button>
         </div>
-        <div id="courses-badge-container" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1"></div>
+        <div id="courses-badge-container" class="flex flex-col gap-1.5 max-h-32 overflow-y-auto pr-1"></div>
       </div>
 
       <div class="border-b border-slate-100 dark:border-slate-700/80 pb-4">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Mis Asignaturas</h3>
-          <button onclick="toggleNewSubjectModalOn()" class="text-[10px] text-brand-600 dark:text-brand-400 font-bold hover:underline flex items-center gap-0.5">➕ Agregar</button>
+          <button onclick="toggleNewSubjectModalOn()" class="text-[10px] text-brand-600 dark:text-brand-400 font-bold hover:underline">➕ Agregar</button>
         </div>
-        <div id="subjects-badge-container" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1"></div>
+        <div id="subjects-badge-container" class="flex flex-col gap-1.5 max-h-32 overflow-y-auto pr-1"></div>
       </div>
 
       <div class="border-b border-slate-100 dark:border-slate-700/80 pb-4">
         <div class="flex items-center justify-between mb-2">
-          <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider" id="evaluations-panel-title">Evaluaciones Activas</h3>
-          <button onclick="toggleNewEvaluationModalOn()" class="text-[10px] text-brand-600 dark:text-brand-400 font-bold hover:underline">➕ Añadir Prueba</button>
+          <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Evaluaciones Activas</h3>
+          <button onclick="toggleNewEvaluationModalOn()" class="text-[10px] text-brand-600 dark:text-brand-400 font-bold hover:underline">➕ Añadir</button>
         </div>
         <div id="evaluations-sidebar-list" class="space-y-1.5 max-h-48 overflow-y-auto pr-1"></div>
-      </div>
-
-      <div>
-        <h3 class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2.5">Filtros de Alumnos</h3>
-        <div class="relative mb-3">
-          <input type="text" id="search-input" oninput="applyFilters()" placeholder="Buscar Estudiante..." class="w-full pl-8 pr-3 py-1.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-1 focus:ring-brand-500 transition-all">
-        </div>
-
-        <div class="mb-3">
-          <div class="flex justify-between items-center mb-0.5">
-            <label class="text-[10px] font-semibold text-slate-500">Promedio General ≥</label>
-            <span id="range-value" class="text-[10px] font-bold text-brand-600 dark:text-brand-400">1.0</span>
-          </div>
-          <input type="range" id="min-avg-slider" min="1" max="7" step="0.1" value="1.0" oninput="updateRangeLabel(); applyFilters()" class="w-full accent-brand-500 h-1 bg-slate-100 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer">
-        </div>
-
-        <div>
-          <label class="block text-[10px] font-semibold text-slate-500 mb-1">Segmentación Rápida</label>
-          <div class="grid grid-cols-2 gap-1.5">
-            <button onclick="setFastFilter('all')" id="ff-all" class="text-[10px] py-1 px-1.5 bg-brand-500 text-white font-semibold rounded-lg text-center">Todos</button>
-            <button onclick="setFastFilter('destacados')" id="ff-destacados" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 font-semibold rounded-lg text-center">⭐ Destacados</button>
-            <button onclick="setFastFilter('enriesgo')" id="ff-enriesgo" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 font-semibold rounded-lg text-center">⚠️ En Riesgo</button>
-            <button onclick="setFastFilter('aprobados')" id="ff-aprobados" class="text-[10px] py-1 px-1.5 bg-slate-50 dark:bg-slate-900 text-slate-600 font-semibold rounded-lg text-center">✔️ Aprobados</button>
-          </div>
-        </div>
       </div>
     </aside>
 
@@ -184,60 +131,17 @@
       <div class="bg-gradient-to-r from-brand-900 to-brand-700 text-white rounded-2xl p-5 shadow-md flex justify-between items-center gap-4">
         <div>
           <span class="text-[10px] bg-white/20 text-white font-bold tracking-wider uppercase px-2.5 py-1 rounded-full">Gestión Escolar por Asignatura</span>
-          <h2 class="text-xl font-bold mt-2" id="active-banner-subject-title">Planilla de Notas: Inglés</h2>
+          <h2 class="text-xl font-bold mt-2" id="active-banner-subject-title">Planilla de Notas</h2>
         </div>
         <button onclick="switchTab('table')" class="bg-white text-brand-900 text-xs font-bold px-4 py-2 rounded-xl shadow">✏️ Ver Planilla de Curso</button>
       </div>
 
-      <section class="grid grid-cols-2 lg:grid-cols-4 gap-4 shrink-0">
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border flex items-center gap-4">
-          <div>
-            <p class="text-[10px] text-slate-500 font-semibold uppercase">Promedio Asignatura</p>
-            <h3 id="kpi-promedio" class="text-xl font-bold">-</h3>
-          </div>
-        </div>
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border flex items-center gap-4">
-          <div>
-            <p class="text-[10px] text-slate-500 font-semibold uppercase">Estudiante Destacado</p>
-            <h3 id="kpi-best-student" class="text-xs font-bold truncate max-w-[130px]">-</h3>
-            <span id="kpi-best-score" class="text-[10px] font-bold text-brand-600 block">-</span>
-          </div>
-        </div>
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border flex items-center gap-4">
-          <div>
-            <p class="text-[10px] text-slate-500 font-semibold uppercase">Mejor Evaluación</p>
-            <h3 id="kpi-best-subject" class="text-xs font-bold truncate max-w-[130px]">-</h3>
-            <span id="kpi-best-subject-avg" class="text-[10px] font-bold text-emerald-600 block">-</span>
-          </div>
-        </div>
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border flex items-center gap-4">
-          <div>
-            <p class="text-[10px] text-slate-500 font-semibold uppercase">Bajo Nota 5,0</p>
-            <h3 id="kpi-at-risk" class="text-xl font-bold">-</h3>
-          </div>
-        </div>
-      </section>
-
       <section id="tab-content-dashboard" class="space-y-6 fade-in">
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border xl:col-span-2 flex flex-col min-h-[380px]">
-            <div class="flex justify-between items-center mb-4">
-              <h4 class="text-sm font-bold" id="student-avg-chart-title">Rendimiento General por Alumno</h4>
-              <select id="sort-order" onchange="applyFilters()" class="text-xs px-2.5 py-1.5 rounded-lg border bg-slate-50 dark:bg-slate-900 font-medium">
-                <option value="high-low">De Mayor a Menor</option>
-                <option value="low-high">De Menor a Mayor</option>
-                <option value="alphabetical">Alfabético</option>
-              </select>
-            </div>
-            <div class="flex-1 relative min-h-[250px] w-full">
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border xl:col-span-3 flex flex-col min-h-[300px]">
+            <h4 class="text-sm font-bold mb-4">Rendimiento del Curso Actual</h4>
+            <div class="flex-1 relative w-full h-64">
               <canvas id="chart-student-averages"></canvas>
-            </div>
-          </div>
-
-          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border flex flex-col justify-between min-h-[380px]">
-            <h4 class="text-sm font-bold">Logro de Competencias Académicas</h4>
-            <div class="relative py-4 flex items-center justify-center max-h-[240px]">
-              <canvas id="chart-distribution" class="max-w-[210px] max-h-[210px]"></canvas>
             </div>
           </div>
         </div>
@@ -246,18 +150,12 @@
       <section id="tab-content-table" class="hidden space-y-6 fade-in">
         <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border flex flex-col gap-4">
           <div class="flex flex-wrap justify-between items-center gap-4">
-            <h3 class="text-base font-bold" id="digital-book-subject-title">Libro de Calificaciones Escolar</h3>
-            <div class="flex flex-wrap items-center gap-2">
-              <button onclick="triggerExcelFileInput()" class="px-3.5 py-2 bg-blue-50 text-blue-700 border rounded-xl text-xs font-bold">📥 Importar Roster/Notas</button>
-              <input type="file" id="excel-import-file-input" onchange="handleExcelImport(event)" class="hidden" accept=".xlsx, .xls, .ods">
-              <button onclick="toggleNewStudentModal()" class="px-3.5 py-2 bg-slate-900 text-white font-semibold rounded-xl text-xs">👤 Registrar Alumno</button>
-              <button onclick="exportToExcel()" class="px-3.5 py-2 bg-emerald-50 text-emerald-700 border rounded-xl text-xs font-bold">Descargar Reporte Excel</button>
-            </div>
+            <h3 class="text-base font-bold">Libro de Calificaciones Escolar</h3>
+            <button onclick="toggleNewStudentModal()" class="px-3.5 py-2 bg-slate-900 text-white font-semibold rounded-xl text-xs">👤 Registrar Alumno</button>
           </div>
-
           <div class="overflow-x-auto border rounded-xl">
-            <table class="w-full text-left border-collapse min-w-[1000px]">
-              <thead id="student-table-header"></thead>
+            <table class="w-full text-left border-collapse min-w-[800px]">
+              <thead id="student-table-header" class="bg-slate-100 dark:bg-slate-700 text-xs"></thead>
               <tbody id="student-table-body" class="text-xs divide-y"></tbody>
             </table>
           </div>
@@ -267,29 +165,33 @@
       <section id="tab-content-profile" class="hidden space-y-6 fade-in">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border flex flex-col gap-4">
-            <h3 class="text-sm font-bold">Selecciona un Estudiante</h3>
+            <h3 class="text-sm font-bold">Estudiantes</h3>
             <div class="flex-1 overflow-y-auto max-h-[400px] space-y-1.5" id="profile-student-list"></div>
           </div>
 
-          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border md:col-span-2 flex flex-col justify-between min-h-[480px]">
-            <div class="flex justify-between items-start gap-4">
-              <h3 class="text-lg font-bold" id="profile-student-name">-</h3>
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border md:col-span-2 flex flex-col min-h-[480px]">
+            <div class="flex justify-between items-start gap-4 border-b pb-4">
+              <h3 class="text-lg font-bold" id="profile-student-name">Selecciona un estudiante</h3>
               <div class="text-right">
-                <span class="text-xs font-bold text-slate-400 block">Promedio</span>
+                <span class="text-xs font-bold text-slate-400 block">Promedio Final</span>
                 <span class="text-2xl font-black text-brand-600" id="profile-student-avg">-</span>
               </div>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 items-center mt-4">
-              <div class="relative w-full aspect-square max-w-[280px] mx-auto">
+            <div id="profile-charts-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 items-center mt-4 hidden">
+              <div class="relative w-full aspect-square max-w-[260px] mx-auto">
                 <canvas id="chart-profile-radar"></canvas>
               </div>
               <div class="space-y-3">
-                <div id="profile-subject-breakdown" class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto"></div>
-                <div class="p-3.5 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-xl text-xs">
-                  <p class="font-semibold text-yellow-800">Orientación Pedagógica</p>
-                  <p id="profile-pedagogical-insight" class="text-slate-600 mt-1">Cargando...</p>
+                <h4 class="text-xs font-bold text-slate-400 uppercase">Rendimiento por Asignatura</h4>
+                <div id="profile-subject-breakdown" class="grid grid-cols-1 gap-2 max-h-48 overflow-y-auto"></div>
+                <div class="p-3.5 bg-blue-50 dark:bg-slate-700/30 border-l-4 border-blue-500 rounded-r-xl text-xs mt-2">
+                  <p class="font-semibold text-blue-800 dark:text-blue-300">Orientación Pedagógica</p>
+                  <p id="profile-pedagogical-insight" class="text-slate-600 dark:text-slate-300 mt-1"></p>
                 </div>
               </div>
+            </div>
+            <div id="profile-fallback-message" class="flex items-center justify-center flex-1 text-slate-400 italic text-sm">
+              Haz clic en un alumno para ver su ficha y gráfico de rendimiento.
             </div>
           </div>
         </div>
@@ -299,9 +201,8 @@
 
   <div id="subject-config-modal" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50">
     <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 shadow-xl border">
-      <h3 class="text-base font-bold mb-4" id="subject-modal-title">Añadir Asignatura</h3>
+      <h3 class="text-base font-bold mb-4">Añadir Asignatura</h3>
       <form onsubmit="saveSubjectConfig(event)" class="space-y-4">
-        <input type="hidden" id="edit-subject-id" value="">
         <input type="text" id="new-subject-name-input" required placeholder="Ej: Inglés Técnico" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
         <div class="flex gap-2 justify-end">
           <button type="button" onclick="toggleNewSubjectModalOff()" class="px-4 py-2 bg-slate-100 rounded-xl text-xs">Cancelar</button>
@@ -313,9 +214,8 @@
 
   <div id="course-config-modal" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50">
     <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 shadow-xl border">
-      <h3 class="text-base font-bold mb-4" id="course-modal-title">Añadir Curso</h3>
+      <h3 class="text-base font-bold mb-4">Añadir Curso</h3>
       <form onsubmit="saveCourseConfig(event)" class="space-y-4">
-        <input type="hidden" id="edit-course-id" value="">
         <input type="text" id="new-course-name-input" required placeholder="Ej: 3º Medio A" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
         <div class="flex gap-2 justify-end">
           <button type="button" onclick="toggleNewCourseModalOff()" class="px-4 py-2 bg-slate-100 rounded-xl text-xs">Cancelar</button>
@@ -327,13 +227,12 @@
 
   <div id="evaluation-config-modal" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50">
     <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 shadow-xl border">
-      <h3 class="text-base font-bold mb-4" id="evaluation-modal-title">Añadir Evaluación</h3>
+      <h3 class="text-base font-bold mb-4">Añadir Evaluación</h3>
       <form onsubmit="saveEvaluationConfig(event)" class="space-y-4">
-        <input type="hidden" id="edit-evaluation-id" value="">
         <input type="text" id="new-evaluation-name" required placeholder="Ej: Speaking Test" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
         <div class="grid grid-cols-2 gap-3">
           <input type="date" id="new-evaluation-date" required class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
-          <input type="number" id="new-evaluation-weight" min="0" max="100" step="5" value="0" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
+          <input type="number" id="new-evaluation-weight" min="0" max="100" step="5" value="50" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
         </div>
         <div class="flex gap-2 justify-end">
           <button type="button" onclick="toggleNewEvaluationModalOff()" class="px-4 py-2 bg-slate-100 rounded-xl text-xs">Cancelar</button>
@@ -346,9 +245,8 @@
   <div id="new-student-modal" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50">
     <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-6 shadow-xl border">
       <h3 class="text-base font-bold mb-4">Registrar Nuevo Estudiante</h3>
-      <form id="new-student-form" onsubmit="saveNewStudent(event)" class="space-y-4">
+      <form onsubmit="saveNewStudent(event)" class="space-y-4">
         <input type="text" id="new-student-name" required placeholder="Ej: Lucas Silva" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border">
-        <div id="new-student-fields-container" class="grid grid-cols-2 gap-3 max-h-56 overflow-y-auto"></div>
         <div class="flex gap-2 justify-end">
           <button type="button" onclick="toggleNewStudentModal()" class="px-4 py-2 bg-slate-100 rounded-xl text-xs">Cancelar</button>
           <button type="submit" class="px-4 py-2 bg-brand-600 text-white rounded-xl text-xs">Agregar</button>
@@ -378,82 +276,65 @@
   </div>
 
   <script>
-    // App Logic Seed and Functions
-    const defaultTeacherProfile = { name: "Juan Valenzuela", year: "2026" };
-    const defaultCourses = [
+    let teacherProfile = { name: "Sebastián Núñez", year: "2026" };
+    let subjects = [
+      { id: "ingles", name: "Inglés" },
+      { id: "matematicas", name: "Matemáticas" },
+      { id: "lenguaje", name: "Lenguaje" }
+    ];
+    let courses = [
       { id: "3_medio_com_a", name: "3º Medio Comercial A" },
       { id: "1_medio_a", name: "1º Medio A" }
     ];
-    const defaultSubjects = [{ id: "ingles", name: "Inglés" }, { id: "matematicas", name: "Matemáticas" }];
-    const defaultEvaluations = {
+    let activeSubjectId = "ingles";
+    let activeCourseId = "3_medio_com_a";
+    let evaluations = {
       ingles: [
         { id: "i_ev1", name: "Prueba Escrita 1", date: "2026-04-10", weight: 50 },
         { id: "i_ev2", name: "Control de Lectura", date: "2026-05-15", weight: 50 }
       ]
     };
-    const rawAveragesData = [
-      { name: "Sofía Rojas", grades: { ingles: 6.2, matematicas: 5.8 } },
-      { name: "Valentina Muñoz", grades: { ingles: 6.8, matematicas: 6.3 } }
+    
+    let students = [
+      { id: 1, name: "Sofía Rojas", courseId: "3_medio_com_a", grades: { ingles: { i_ev1: 6.2, i_ev2: 5.8 }, matematicas: { m1: 5.5 }, lenguaje: { l1: 6.0 } } },
+      { id: 2, name: "Valentina Muñoz", courseId: "3_medio_com_a", grades: { ingles: { i_ev1: 6.8, i_ev2: 6.4 }, matematicas: { m1: 6.0 }, lenguaje: { l1: 6.5 } } },
+      { id: 3, name: "Lucas Silva", courseId: "1_medio_a", grades: { ingles: { i_ev1: 4.5 }, matematicas: { m1: 4.2 } } }
     ];
 
-    let teacherProfile = { ...defaultTeacherProfile };
-    let subjects = [...defaultSubjects];
-    let courses = [...defaultCourses];
-    let activeSubjectId = "ingles";
-    let activeCourseId = "3_medio_com_a";
-    let evaluations = { ...defaultEvaluations };
-    let students = [];
-    let filteredStudents = [];
-    let selectedStudentId = 1;
-    let minAvgFilter = 1.0;
-    let searchFilter = "";
-    let fastFilterMode = "all";
+    let radarChartInstance = null;
+    let barChartInstance = null;
 
-    function safeGetItem(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
-    function safeSetItem(key, value) { try { localStorage.setItem(key, value); } catch (e) {} }
+    function safeGetItem(key) { return localStorage.getItem(key); }
+    function safeSetItem(key, value) { localStorage.setItem(key, value); }
 
     window.onload = function() {
-      // Intentar cargar datos previos o usar por defecto
-      if (safeGetItem("incosaf_subjects_list")) subjects = JSON.parse(safeGetItem("incosaf_subjects_list"));
-      if (safeGetItem("incosaf_courses_list")) courses = JSON.parse(safeGetItem("incosaf_courses_list"));
-      if (safeGetItem("incosaf_evaluations_map")) evaluations = JSON.parse(safeGetItem("incosaf_evaluations_map"));
-      
-      if (safeGetItem("incosaf_students_gradebook")) {
-        students = JSON.parse(safeGetItem("incosaf_students_gradebook"));
-      } else {
-        seedInitialGradebook();
-      }
+      if (safeGetItem("incosaf_subjects")) subjects = JSON.parse(safeGetItem("incosaf_subjects"));
+      if (safeGetItem("incosaf_courses")) courses = JSON.parse(safeGetItem("incosaf_courses"));
+      if (safeGetItem("incosaf_evaluations")) evaluations = JSON.parse(safeGetItem("incosaf_evaluations"));
+      if (safeGetItem("incosaf_students")) students = JSON.parse(safeGetItem("incosaf_students"));
       
       document.getElementById("teacher-name-input").value = teacherProfile.name;
       document.getElementById("teacher-year-input").value = teacherProfile.year;
 
-      updateHeaderAndLabels();
-      populateSubjectsSelector();
-      populateCoursesSelector();
-      renderCoursesBadgeList();
-      renderSubjectsBadgeList();
-      renderEvaluationsList();
-      applyFilters();
+      renderAll();
     };
 
-    function seedInitialGradebook() {
-      students = rawAveragesData.map((rawSt, idx) => ({
-        id: idx + 1,
-        name: rawSt.name,
-        courseId: "3_medio_com_a",
-        grades: { ingles: { i_ev1: rawSt.grades.ingles, i_ev2: rawSt.grades.ingles }, matematicas: { m_ev1: rawSt.grades.matematicas } }
-      }));
-      saveState();
+    function renderAll() {
+      updateHeaderAndLabels();
+      populateSelectors();
+      renderCoursesList();
+      renderSubjectsList();
+      renderEvaluationsList();
+      renderStudentListForProfile();
+      renderDashboardChart();
     }
 
-    function saveState() { safeSetItem("incosaf_students_gradebook", JSON.stringify(students)); }
-    function saveSubjectState() { safeSetItem("incosaf_subjects_list", JSON.stringify(subjects)); }
-    function saveCourseState() { safeSetItem("incosaf_courses_list", JSON.stringify(courses)); }
-    function saveEvaluationsState() { safeSetItem("incosaf_evaluations_map", JSON.stringify(evaluations)); }
-    function saveTeacherProfile() {
-      teacherProfile.name = document.getElementById("teacher-name-input").value;
-      teacherProfile.year = document.getElementById("teacher-year-input").value;
-      updateHeaderAndLabels();
+    function saveAndRefresh() {
+      safeSetItem("incosaf_subjects", JSON.stringify(subjects));
+      safeSetItem("incosaf_courses", JSON.stringify(courses));
+      safeSetItem("incosaf_evaluations", JSON.stringify(evaluations));
+      safeSetItem("incosaf_students", JSON.stringify(students));
+      renderAll();
     }
 
     function updateHeaderAndLabels() {
@@ -464,75 +345,94 @@
       document.getElementById("active-banner-subject-title").innerText = `Planilla de Notas: ${activeSub.name}`;
     }
 
-    function populateSubjectsSelector() {
-      const sel = document.getElementById("header-active-subject");
-      sel.innerHTML = subjects.map(s => `<option value="${s.id}" ${s.id === activeSubjectId ? 'selected':''}>${s.name}</option>`).join('');
+    function populateSelectors() {
+      document.getElementById("header-active-subject").innerHTML = subjects.map(s => `<option value="${s.id}" ${s.id === activeSubjectId ? 'selected':''}>${s.name}</option>`).join('');
+      document.getElementById("header-active-course").innerHTML = courses.map(c => `<option value="${c.id}" ${c.id === activeCourseId ? 'selected':''}>${c.name}</option>`).join('');
     }
 
-    function populateCoursesSelector() {
-      const sel = document.getElementById("header-active-course");
-      sel.innerHTML = courses.map(c => `<option value="${c.id}" ${c.id === activeCourseId ? 'selected':''}>${c.name}</option>`).join('');
-    }
-
-    function renderCoursesBadgeList() {
+    // LISTAS DE AGREGAR Y QUITAR ELEMENTOS (CORREGIDO)
+    function renderCoursesList() {
       const container = document.getElementById("courses-badge-container");
-      container.innerHTML = courses.map(c => `<span class="text-[10px] bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded font-medium">${c.name}</span>`).join('');
+      container.innerHTML = courses.map(c => `
+        <div class="flex justify-between items-center bg-slate-100 dark:bg-slate-700/60 px-2 py-1 rounded text-xs font-medium">
+          <span>${c.name}</span>
+          <button onclick="removeCourse('${c.id}')" class="text-red-500 hover:text-red-700 ml-2 font-bold">❌</button>
+        </div>
+      `).join('');
     }
 
-    function renderSubjectsBadgeList() {
+    function renderSubjectsList() {
       const container = document.getElementById("subjects-badge-container");
-      container.innerHTML = subjects.map(s => `<span class="text-[10px] bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded font-medium">${s.name}</span>`).join('');
+      container.innerHTML = subjects.map(s => `
+        <div class="flex justify-between items-center bg-slate-100 dark:bg-slate-700/60 px-2 py-1 rounded text-xs font-medium">
+          <span>${s.name}</span>
+          <button onclick="removeSubject('${s.id}')" class="text-red-500 hover:text-red-700 ml-2 font-bold">❌</button>
+        </div>
+      `).join('');
     }
 
     function renderEvaluationsList() {
       const container = document.getElementById("evaluations-sidebar-list");
       const evs = evaluations[activeSubjectId] || [];
       if(evs.length === 0) {
-        container.innerHTML = `<p class="text-[11px] text-slate-400 italic">No hay evaluaciones activas</p>`;
+        container.innerHTML = `<p class="text-[11px] text-slate-400 italic">No hay evaluaciones</p>`;
         return;
       }
       container.innerHTML = evs.map(e => `
-        <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-900/40 p-2 rounded border border-slate-100 dark:border-slate-800">
-          <span class="text-[11px] font-medium">${e.name}</span>
-          <span class="text-[10px] text-brand-600 font-bold">${e.weight}%</span>
+        <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-900/40 p-2 rounded border border-slate-100 dark:border-slate-800 text-xs">
+          <span>${e.name} (${e.weight}%)</span>
+          <button onclick="removeEvaluation('${e.id}')" class="text-red-500 hover:text-red-700 font-bold ml-1">❌</button>
         </div>
       `).join('');
     }
 
-    // Funciones para abrir/cerrar ventanas flotantes (Modals) arregladas
+    // ACCIONES DE ELIMINACIÓN
+    function removeCourse(id) {
+      courses = courses.filter(c => c.id !== id);
+      if(activeCourseId === id && courses.length > 0) activeCourseId = courses[0].id;
+      saveAndRefresh();
+    }
+
+    function removeSubject(id) {
+      subjects = subjects.filter(s => s.id !== id);
+      if(activeSubjectId === id && subjects.length > 0) activeSubjectId = subjects[0].id;
+      saveAndRefresh();
+    }
+
+    function removeEvaluation(id) {
+      if(evaluations[activeSubjectId]) {
+        evaluations[activeSubjectId] = evaluations[activeSubjectId].filter(e => e.id !== id);
+      }
+      saveAndRefresh();
+    }
+
+    // MODALS CONTROLS
     function toggleNewCourseModalOn() { document.getElementById("course-config-modal").classList.remove("hidden"); }
     function toggleNewCourseModalOff() { document.getElementById("course-config-modal").classList.add("hidden"); }
-    
     function toggleNewSubjectModalOn() { document.getElementById("subject-config-modal").classList.remove("hidden"); }
     function toggleNewSubjectModalOff() { document.getElementById("subject-config-modal").classList.add("hidden"); }
-    
     function toggleNewEvaluationModalOn() { document.getElementById("evaluation-config-modal").classList.remove("hidden"); }
     function toggleNewEvaluationModalOff() { document.getElementById("evaluation-config-modal").classList.add("hidden"); }
-    
     function toggleNewStudentModal() { document.getElementById("new-student-modal").classList.toggle("hidden"); }
 
     function saveCourseConfig(e) {
       e.preventDefault();
       const name = document.getElementById("new-course-name-input").value;
-      const id = name.toLowerCase().replace(/[^a-z0-9]/g, "_");
+      const id = "c_" + Date.now();
       courses.push({ id, name });
-      saveCourseState();
-      populateCoursesSelector();
-      renderCoursesBadgeList();
       toggleNewCourseModalOff();
       document.getElementById("new-course-name-input").value = "";
+      saveAndRefresh();
     }
 
     function saveSubjectConfig(e) {
       e.preventDefault();
       const name = document.getElementById("new-subject-name-input").value;
-      const id = name.toLowerCase().replace(/[^a-z0-9]/g, "_");
+      const id = "s_" + Date.now();
       subjects.push({ id, name });
-      saveSubjectState();
-      populateSubjectsSelector();
-      renderSubjectsBadgeList();
       toggleNewSubjectModalOff();
       document.getElementById("new-subject-name-input").value = "";
+      saveAndRefresh();
     }
 
     function saveEvaluationConfig(e) {
@@ -540,80 +440,167 @@
       const name = document.getElementById("new-evaluation-name").value;
       const date = document.getElementById("new-evaluation-date").value;
       const weight = parseInt(document.getElementById("new-evaluation-weight").value);
-      const id = "ev_" + Date.now();
-
       if(!evaluations[activeSubjectId]) evaluations[activeSubjectId] = [];
-      evaluations[activeSubjectId].push({ id, name, date, weight });
-      
-      saveEvaluationsState();
-      renderEvaluationsList();
+      evaluations[activeSubjectId].push({ id: "ev_" + Date.now(), name, date, weight });
       toggleNewEvaluationModalOff();
-      
       document.getElementById("new-evaluation-name").value = "";
-      document.getElementById("new-evaluation-date").value = "";
+      saveAndRefresh();
     }
 
-    function changeActiveCourse(val) {
-      activeCourseId = val;
-      updateHeaderAndLabels();
-      applyFilters();
+    function saveNewStudent(e) {
+      e.preventDefault();
+      const name = document.getElementById("new-student-name").value;
+      students.push({ id: Date.now(), name, courseId: activeCourseId, grades: {} });
+      toggleNewStudentModal();
+      document.getElementById("new-student-name").value = "";
+      saveAndRefresh();
     }
 
-    function changeActiveSubject(val) {
-      activeSubjectId = val;
-      updateHeaderAndLabels();
-      renderEvaluationsList();
-      applyFilters();
-    }
+    function changeActiveCourse(val) { activeCourseId = val; saveAndRefresh(); }
+    function changeActiveSubject(val) { activeSubjectId = val; saveAndRefresh(); }
 
-    function triggerExcelFileInput() { document.getElementById("excel-import-file-input").click(); }
-    function handleExcelImport(event) {}
-    function exportToExcel() {}
-
-    function calculateAverages(student) {
-      const evs = student.grades?.[activeSubjectId] || {};
-      const keys = Object.keys(evs);
-      if(keys.length === 0) return 1.0;
+    function getAverageForSubject(student, subId) {
+      const subGrades = student.grades?.[subId] || {};
+      const keys = Object.keys(subGrades);
+      if(keys.length === 0) return 0;
       let sum = 0;
-      keys.forEach(k => sum += evs[k]);
+      keys.forEach(k => sum += subGrades[k]);
       return parseFloat((sum / keys.length).toFixed(1));
     }
 
-    function applyFilters() {
-      filteredStudents = students.filter(s => s.courseId === activeCourseId);
-      renderTable();
-      updateKPIs();
+    function getGeneralAverage(student) {
+      let total = 0, count = 0;
+      subjects.forEach(s => {
+        const avg = getAverageForSubject(student, s.id);
+        if(avg > 0) { total += avg; count++; }
+      });
+      return count > 0 ? parseFloat((total / count).toFixed(1)) : 1.0;
     }
 
+    // RENDERIZADO DE TABLAS Y GRÁFICOS
     function renderTable() {
-      const body = document.getElementById("student-table-body");
       const header = document.getElementById("student-table-header");
-      header.innerHTML = `<tr class="bg-gray-100 text-left dark:bg-slate-800">
-        <th class="p-2">Estudiante</th><th class="p-2">Promedio</th>
+      const body = document.getElementById("student-table-body");
+      const courseStudents = students.filter(s => s.courseId === activeCourseId);
+      const currentEvs = evaluations[activeSubjectId] || [];
+
+      header.innerHTML = `<tr>
+        <th class="p-3">Estudiante</th>
+        ${currentEvs.map(e => `<th class="p-3">${e.name}</th>`).join('')}
+        <th class="p-3">Promedio ${activeSubjectId.toUpperCase()}</th>
       </tr>`;
-      body.innerHTML = "";
-      if(filteredStudents.length === 0) {
-        body.innerHTML = `<tr><td colspan="2" class="p-4 text-center text-slate-400 italic">No hay alumnos en este curso</td></tr>`;
+
+      if(courseStudents.length === 0) {
+        body.innerHTML = `<tr><td colspan="${currentEvs.length + 2}" class="p-4 text-center text-slate-400 italic">No hay alumnos</td></tr>`;
         return;
       }
-      filteredStudents.forEach(s => {
-        body.innerHTML += `<tr class="border-b dark:border-slate-700">
-          <td class="p-2 font-medium">${s.name}</td>
-          <td class="p-2 font-bold">${calculateAverages(s)}</td>
-        </tr>`;
+
+      body.innerHTML = courseStudents.map(s => {
+        const subAvg = getAverageForSubject(s, activeSubjectId);
+        return `
+          <tr class="border-b dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">
+            <td class="p-3 font-medium">${s.name}</td>
+            ${currentEvs.map(e => {
+              const grade = s.grades?.[activeSubjectId]?.[e.id] || "";
+              return `<td class="p-3"><input type="number" min="1" max="7" step="0.1" value="${grade}" onchange="updateGrade(${s.id}, '${activeSubjectId}', '${e.id}', this.value)" class="w-12 p-1 border rounded text-center dark:bg-slate-900"></td>`;
+            }).join('')}
+            <td class="p-3 font-bold text-brand-600">${subAvg > 0 ? subAvg : '-'}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function updateGrade(studentId, subId, evId, value) {
+      const student = students.find(s => s.id === studentId);
+      if(student) {
+        if(!student.grades[subId]) student.grades[subId] = {};
+        student.grades[subId][evId] = value ? parseFloat(value) : 0;
+        saveAndRefresh();
+      }
+    }
+
+    function renderDashboardChart() {
+      const ctx = document.getElementById('chart-student-averages');
+      if(!ctx) return;
+      const courseStudents = students.filter(s => s.courseId === activeCourseId);
+      const labels = courseStudents.map(s => s.name);
+      const data = courseStudents.map(s => getAverageForSubject(s, activeSubjectId) || 1.0);
+
+      if (barChartInstance) barChartInstance.destroy();
+      barChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{ label: `Promedio en ${activeSubjectId.toUpperCase()}`, data: data, backgroundColor: '#1d4ed8' }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 1, max: 7 } } }
       });
     }
 
-    function updateKPIs() {
-      if(filteredStudents.length > 0) {
-        let total = 0;
-        filteredStudents.forEach(s => total += calculateAverages(s));
-        document.getElementById("kpi-promedio").innerText = (total / filteredStudents.length).toFixed(1);
-        document.getElementById("kpi-best-student").innerText = filteredStudents[0].name;
-      } else {
-        document.getElementById("kpi-promedio").innerText = "-";
-        document.getElementById("kpi-best-student").innerText = "-";
-      }
+    // FICHA ESTUDIANTE + LÓGICA DE GRÁFICOS COMPLETA
+    function renderStudentListForProfile() {
+      const container = document.getElementById("profile-student-list");
+      const courseStudents = students.filter(s => s.courseId === activeCourseId);
+      container.innerHTML = courseStudents.map(s => `
+        <button onclick="viewStudentProfile(${s.id})" class="w-full text-left p-2.5 rounded-xl text-xs font-semibold bg-slate-50 dark:bg-slate-900 hover:bg-brand-50 border transition-all block">
+          👤 ${s.name}
+        </button>
+      `).join('');
+    }
+
+    function viewStudentProfile(studentId) {
+      const student = students.find(s => s.id === studentId);
+      if(!student) return;
+
+      document.getElementById("profile-fallback-message").classList.add("hidden");
+      document.getElementById("profile-charts-container").classList.remove("hidden");
+
+      document.getElementById("profile-student-name").innerText = student.name;
+      const generalAvg = getGeneralAverage(student);
+      document.getElementById("profile-student-avg").innerText = generalAvg;
+
+      // Desglose lateral
+      const breakdownContainer = document.getElementById("profile-subject-breakdown");
+      breakdownContainer.innerHTML = subjects.map(s => {
+        const avg = getAverageForSubject(student, s.id);
+        return `
+          <div class="flex justify-between p-2 bg-slate-50 dark:bg-slate-900 rounded border">
+            <span class="font-medium">${s.name}</span>
+            <span class="font-bold ${avg < 4 ? 'text-red-500':'text-brand-600'}">${avg > 0 ? avg : 'N/A'}</span>
+          </div>
+        `;
+      }).join('');
+
+      // Insight Pedagógico automático
+      const insight = document.getElementById("profile-pedagogical-insight");
+      if(generalAvg >= 6.0) insight.innerText = "Excelente rendimiento global. Se recomienda asignarle roles de liderazgo o tutoría entre pares para mantener la motivación.";
+      else if(generalAvg >= 4.0) insight.innerText = "Rendimiento regular y aprobado. Monitorear las materias con evaluaciones pendientes para consolidar los aprendizajes.";
+      else insight.innerText = "Alerta pedagógica activa. Requiere plan de reforzamiento prioritario y citación a apoderado debido a promedio bajo la nota mínima.";
+
+      // Crear Gráfico de Radar para el Estudiante
+      const ctx = document.getElementById('chart-profile-radar').getContext('2d');
+      const radarLabels = subjects.map(s => s.name);
+      const radarData = subjects.map(s => getAverageForSubject(student, s.id));
+
+      if (radarChartInstance) radarChartInstance.destroy();
+      radarChartInstance = new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels: radarLabels,
+          datasets: [{
+            label: 'Rendimiento por Materia',
+            data: radarData,
+            backgroundColor: 'rgba(29, 78, 216, 0.2)',
+            borderColor: '#1d4ed8',
+            pointBackgroundColor: '#1d4ed8'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { r: { min: 1, max: 7, ticks: { stepSize: 1 } } }
+        }
+      });
     }
 
     function switchTab(tabId) {
@@ -621,10 +608,8 @@
       document.getElementById(`tab-content-${tabId}`).classList.remove("hidden");
       if(tabId === 'table') renderTable();
     }
-    
     function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
-    function updateRangeLabel() {}
-    function setFastFilter(val) {}
+    function saveTeacherProfile() { teacherProfile.name = document.getElementById("teacher-name-input").value; saveAndRefresh(); }
   </script>
 
   <script type="module">
@@ -655,20 +640,13 @@
 
     tabLogin.addEventListener('click', () => {
       isLoginMode = true;
-      tabLogin.className = "w-1/2 pb-2 text-center border-b-2 border-blue-600 text-blue-600 focus:outline-none";
-      tabRegister.className = "w-1/2 pb-2 text-center border-b-2 border-transparent text-gray-500 hover:text-blue-600 focus:outline-none";
       authTitle.innerText = "Ingresar a mi cuenta";
       authSubmitBtn.innerText = "Entrar";
-      authMessage.classList.add("hidden");
     });
-
     tabRegister.addEventListener('click', () => {
       isLoginMode = false;
-      tabRegister.className = "w-1/2 pb-2 text-center border-b-2 border-blue-600 text-blue-600 focus:outline-none";
-      tabLogin.className = "w-1/2 pb-2 text-center border-b-2 border-transparent text-gray-500 hover:text-blue-600 focus:outline-none";
       authTitle.innerText = "Crear Cuenta Nueva";
       authSubmitBtn.innerText = "Registrarme";
-      authMessage.classList.add("hidden");
     });
 
     authForm.addEventListener('submit', (e) => {
@@ -678,43 +656,24 @@
 
       if (isLoginMode) {
         signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
+          .then(() => {
             authMessage.innerText = "¡Inicio de sesión exitoso!";
             authMessage.className = "text-xs mt-3 text-center font-medium text-green-600 block";
-            
-            // Oculta de forma automática el cuadro de logueo después de 1 segundo de éxito
-            setTimeout(() => {
-              authContainer.classList.add('hidden');
-            }, 1000);
+            setTimeout(() => { authContainer.classList.add('hidden'); }, 1000);
           })
-          .catch((error) => {
-            authMessage.innerText = "Error: " + traducirError(error.code);
+          .catch((err) => {
+            authMessage.innerText = "Error: Credenciales Incorrectas";
             authMessage.className = "text-xs mt-3 text-center font-medium text-red-600 block";
           });
       } else {
         createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            authMessage.innerText = "¡Cuenta creada con éxito! Ya puedes iniciar sesión.";
+          .then(() => {
+            authMessage.innerText = "¡Cuenta creada! Ya puedes iniciar sesión.";
             authMessage.className = "text-xs mt-3 text-center font-medium text-green-600 block";
             tabLogin.click();
-          })
-          .catch((error) => {
-            authMessage.innerText = "Error al registrar: " + traducirError(error.code);
-            authMessage.className = "text-xs mt-3 text-center font-medium text-red-600 block";
           });
       }
     });
-
-    function traducirError(codigo) {
-      switch (codigo) {
-        case 'auth/weak-password': return 'La contraseña debe tener al menos 6 caracteres.';
-        case 'auth/email-already-in-use': return 'Este correo ya está registrado.';
-        case 'auth/invalid-email': return 'El correo no es válido.';
-        case 'auth/wrong-password': return 'Contraseña incorrecta.';
-        case 'auth/user-not-found': return 'No existe un usuario con este correo.';
-        default: return 'Ocurrió un error inesperado: ' + codigo;
-      }
-    }
   </script>
 </body>
 </html>
