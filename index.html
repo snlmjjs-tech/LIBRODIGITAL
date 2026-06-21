@@ -47,9 +47,9 @@
       </div>
       <div>
         <h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-          PORTAL DOCENTE INCOSAF <span class="text-[10px] bg-brand-500/10 text-brand-600 dark:text-brand-400 font-semibold px-2 py-0.5 rounded border border-brand-500/20">LIBRO DE CLASES v2.2</span>
+          PORTAL DOCENTE INCOSAF <span class="text-[10px] bg-brand-500/10 text-brand-600 dark:text-brand-400 font-semibold px-2 py-0.5 rounded border border-brand-500/20">LIBRO DE CLASES v2.4</span>
         </h1>
-        <p class="text-xs text-slate-500 dark:text-slate-400" id="header-teacher-info">Cargando datos del docente...</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400" id="header-teacher-info">Esperando inicio de sesión...</p>
       </div>
     </div>
 
@@ -73,6 +73,10 @@
       <button onclick="toggleDarkMode()" class="p-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 rounded-xl transition-all">
         <svg id="sun-icon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
         <svg id="moon-icon" class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+      </button>
+
+      <button id="btn-logout" onclick="triggerLogout()" class="hidden px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl shadow transition-all">
+        🚪 Salir
       </button>
     </div>
   </header>
@@ -276,48 +280,51 @@
   </div>
 
   <script>
-    let teacherProfile = { name: "Sebastián Núñez", year: "2026" };
-    let subjects = [
-      { id: "ingles", name: "Inglés" },
-      { id: "matematicas", name: "Matemáticas" },
-      { id: "lenguaje", name: "Lenguaje" }
-    ];
-    let courses = [
-      { id: "3_medio_com_a", name: "3º Medio Comercial A" },
-      { id: "1_medio_a", name: "1º Medio A" }
-    ];
-    let activeSubjectId = "ingles";
-    let activeCourseId = "3_medio_com_a";
-    let evaluations = {
-      ingles: [
-        { id: "i_ev1", name: "Prueba Escrita 1", date: "2026-04-10", weight: 50 },
-        { id: "i_ev2", name: "Control de Lectura", date: "2026-05-15", weight: 50 }
-      ]
-    };
-    
-    let students = [
-      { id: 1, name: "Sofía Rojas", courseId: "3_medio_com_a", grades: { ingles: { i_ev1: 6.2, i_ev2: 5.8 }, matematicas: { m1: 5.5 }, lenguaje: { l1: 6.0 } } },
-      { id: 2, name: "Valentina Muñoz", courseId: "3_medio_com_a", grades: { ingles: { i_ev1: 6.8, i_ev2: 6.4 }, matematicas: { m1: 6.0 }, lenguaje: { l1: 6.5 } } },
-      { id: 3, name: "Lucas Silva", courseId: "1_medio_a", grades: { ingles: { i_ev1: 4.5 }, matematicas: { m1: 4.2 } } }
-    ];
+    // Variables globales globales controladas dinámicamente por usuario de Firebase
+    let currentUserUid = "public"; 
+    let teacherProfile = { name: "Docente", year: "2026" };
+    let subjects = [];
+    let courses = [];
+    let activeSubjectId = "";
+    let activeCourseId = "";
+    let evaluations = {};
+    let students = [];
 
     let radarChartInstance = null;
     let barChartInstance = null;
 
-    function safeGetItem(key) { return localStorage.getItem(key); }
-    function safeSetItem(key, value) { localStorage.setItem(key, value); }
+    function safeGetItem(key) { return localStorage.getItem(currentUserUid + "_" + key); }
+    function safeSetItem(key, value) { localStorage.setItem(currentUserUid + "_" + key, value); }
 
-    window.onload = function() {
-      if (safeGetItem("incosaf_subjects")) subjects = JSON.parse(safeGetItem("incosaf_subjects"));
-      if (safeGetItem("incosaf_courses")) courses = JSON.parse(safeGetItem("incosaf_courses"));
-      if (safeGetItem("incosaf_evaluations")) evaluations = JSON.parse(safeGetItem("incosaf_evaluations"));
-      if (safeGetItem("incosaf_students")) students = JSON.parse(safeGetItem("incosaf_students"));
+    // Carga los datos correspondientes únicamente al UID del usuario logueado
+    function loadUserData(uid) {
+      currentUserUid = uid;
       
+      // Semilla por defecto si es una cuenta totalmente nueva
+      const savedSubjects = safeGetItem("incosaf_subjects");
+      if (savedSubjects) {
+        subjects = JSON.parse(savedSubjects);
+        courses = JSON.parse(safeGetItem("incosaf_courses"));
+        evaluations = JSON.parse(safeGetItem("incosaf_evaluations"));
+        students = JSON.parse(safeGetItem("incosaf_students"));
+        teacherProfile = JSON.parse(safeGetItem("incosaf_profile")) || { name: "Usuario INCOSAF", year: "2026" };
+      } else {
+        // Estructura limpia inicial si el correo entra por primera vez
+        teacherProfile = { name: "Nuevo Docente", year: "2026" };
+        subjects = [{ id: "ingles", name: "Inglés" }];
+        courses = [{ id: "curso_1", name: "Primer Curso de Prueba" }];
+        evaluations = { ingles: [] };
+        students = [];
+      }
+
+      activeSubjectId = subjects[0]?.id || "";
+      activeCourseId = courses[0]?.id || "";
+
       document.getElementById("teacher-name-input").value = teacherProfile.name;
       document.getElementById("teacher-year-input").value = teacherProfile.year;
 
       renderAll();
-    };
+    }
 
     function renderAll() {
       updateHeaderAndLabels();
@@ -334,6 +341,7 @@
       safeSetItem("incosaf_courses", JSON.stringify(courses));
       safeSetItem("incosaf_evaluations", JSON.stringify(evaluations));
       safeSetItem("incosaf_students", JSON.stringify(students));
+      safeSetItem("incosaf_profile", JSON.stringify(teacherProfile));
       renderAll();
     }
 
@@ -350,7 +358,6 @@
       document.getElementById("header-active-course").innerHTML = courses.map(c => `<option value="${c.id}" ${c.id === activeCourseId ? 'selected':''}>${c.name}</option>`).join('');
     }
 
-    // LISTAS DE AGREGAR Y QUITAR ELEMENTOS (CORREGIDO)
     function renderCoursesList() {
       const container = document.getElementById("courses-badge-container");
       container.innerHTML = courses.map(c => `
@@ -386,7 +393,6 @@
       `).join('');
     }
 
-    // ACCIONES DE ELIMINACIÓN
     function removeCourse(id) {
       courses = courses.filter(c => c.id !== id);
       if(activeCourseId === id && courses.length > 0) activeCourseId = courses[0].id;
@@ -406,7 +412,13 @@
       saveAndRefresh();
     }
 
-    // MODALS CONTROLS
+    function removeStudent(id) {
+      if(confirm("¿Estás seguro de que deseas eliminar a este estudiante de forma permanente?")) {
+        students = students.filter(s => s.id !== id);
+        saveAndRefresh();
+      }
+    }
+
     function toggleNewCourseModalOn() { document.getElementById("course-config-modal").classList.remove("hidden"); }
     function toggleNewCourseModalOff() { document.getElementById("course-config-modal").classList.add("hidden"); }
     function toggleNewSubjectModalOn() { document.getElementById("subject-config-modal").classList.remove("hidden"); }
@@ -477,7 +489,6 @@
       return count > 0 ? parseFloat((total / count).toFixed(1)) : 1.0;
     }
 
-    // RENDERIZADO DE TABLAS Y GRÁFICOS
     function renderTable() {
       const header = document.getElementById("student-table-header");
       const body = document.getElementById("student-table-body");
@@ -486,12 +497,13 @@
 
       header.innerHTML = `<tr>
         <th class="p-3">Estudiante</th>
-        ${currentEvs.map(e => `<th class="p-3">${e.name}</th>`).join('')}
-        <th class="p-3">Promedio ${activeSubjectId.toUpperCase()}</th>
+        ${currentEvs.map(e => `<th class="p-3 text-center">${e.name}</th>`).join('')}
+        <th class="p-3 text-center">Promedio ${activeSubjectId.toUpperCase()}</th>
+        <th class="p-3 text-center w-24">Acciones</th>
       </tr>`;
 
       if(courseStudents.length === 0) {
-        body.innerHTML = `<tr><td colspan="${currentEvs.length + 2}" class="p-4 text-center text-slate-400 italic">No hay alumnos</td></tr>`;
+        body.innerHTML = `<tr><td colspan="${currentEvs.length + 3}" class="p-4 text-center text-slate-400 italic">No hay alumnos registrados en este curso</td></tr>`;
         return;
       }
 
@@ -502,9 +514,14 @@
             <td class="p-3 font-medium">${s.name}</td>
             ${currentEvs.map(e => {
               const grade = s.grades?.[activeSubjectId]?.[e.id] || "";
-              return `<td class="p-3"><input type="number" min="1" max="7" step="0.1" value="${grade}" onchange="updateGrade(${s.id}, '${activeSubjectId}', '${e.id}', this.value)" class="w-12 p-1 border rounded text-center dark:bg-slate-900"></td>`;
+              return `<td class="p-3 text-center"><input type="number" min="1" max="7" step="0.1" value="${grade}" onchange="updateGrade(${s.id}, '${activeSubjectId}', '${e.id}', this.value)" class="w-12 p-1 border rounded text-center dark:bg-slate-900"></td>`;
             }).join('')}
-            <td class="p-3 font-bold text-brand-600">${subAvg > 0 ? subAvg : '-'}</td>
+            <td class="p-3 text-center font-bold text-brand-600">${subAvg > 0 ? subAvg : '-'}</td>
+            <td class="p-3 text-center">
+              <button onclick="removeStudent(${s.id})" class="px-2 py-1 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-xs font-bold transition-colors">
+                🗑️ Borrar
+              </button>
+            </td>
           </tr>
         `;
       }).join('');
@@ -537,7 +554,6 @@
       });
     }
 
-    // FICHA ESTUDIANTE + LÓGICA DE GRÁFICOS COMPLETA
     function renderStudentListForProfile() {
       const container = document.getElementById("profile-student-list");
       const courseStudents = students.filter(s => s.courseId === activeCourseId);
@@ -559,7 +575,6 @@
       const generalAvg = getGeneralAverage(student);
       document.getElementById("profile-student-avg").innerText = generalAvg;
 
-      // Desglose lateral
       const breakdownContainer = document.getElementById("profile-subject-breakdown");
       breakdownContainer.innerHTML = subjects.map(s => {
         const avg = getAverageForSubject(student, s.id);
@@ -571,13 +586,11 @@
         `;
       }).join('');
 
-      // Insight Pedagógico automático
       const insight = document.getElementById("profile-pedagogical-insight");
       if(generalAvg >= 6.0) insight.innerText = "Excelente rendimiento global. Se recomienda asignarle roles de liderazgo o tutoría entre pares para mantener la motivación.";
       else if(generalAvg >= 4.0) insight.innerText = "Rendimiento regular y aprobado. Monitorear las materias con evaluaciones pendientes para consolidar los aprendizajes.";
       else insight.innerText = "Alerta pedagógica activa. Requiere plan de reforzamiento prioritario y citación a apoderado debido a promedio bajo la nota mínima.";
 
-      // Crear Gráfico de Radar para el Estudiante
       const ctx = document.getElementById('chart-profile-radar').getContext('2d');
       const radarLabels = subjects.map(s => s.name);
       const radarData = subjects.map(s => getAverageForSubject(student, s.id));
@@ -610,11 +623,16 @@
     }
     function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
     function saveTeacherProfile() { teacherProfile.name = document.getElementById("teacher-name-input").value; saveAndRefresh(); }
+
+    // Función de desconexión llamada por el botón Salir
+    function triggerLogout() {
+      window.location.reload(); 
+    }
   </script>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDvF1IwWiPS10IottkfGzTzJWv2a9mplGU",
@@ -635,8 +653,29 @@
     const authForm = document.getElementById('auth-form');
     const authMessage = document.getElementById('auth-message');
     const authContainer = document.getElementById('auth-container');
+    const btnLogout = document.getElementById('btn-logout');
 
     let isLoginMode = true;
+
+    // Escucha de forma activa el cambio de usuario de Firebase
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Al detectar un usuario válido, carga sus datos segmentados por su UID único
+        authContainer.classList.add('hidden');
+        btnLogout.classList.remove('hidden');
+        loadUserData(user.uid); 
+      } else {
+        authContainer.classList.remove('hidden');
+        btnLogout.classList.add('hidden');
+        loadUserData("public");
+      }
+    });
+
+    window.triggerLogout = function() {
+      signOut(auth).then(() => {
+        window.location.reload();
+      });
+    };
 
     tabLogin.addEventListener('click', () => {
       isLoginMode = true;
@@ -656,11 +695,6 @@
 
       if (isLoginMode) {
         signInWithEmailAndPassword(auth, email, password)
-          .then(() => {
-            authMessage.innerText = "¡Inicio de sesión exitoso!";
-            authMessage.className = "text-xs mt-3 text-center font-medium text-green-600 block";
-            setTimeout(() => { authContainer.classList.add('hidden'); }, 1000);
-          })
           .catch((err) => {
             authMessage.innerText = "Error: Credenciales Incorrectas";
             authMessage.className = "text-xs mt-3 text-center font-medium text-red-600 block";
