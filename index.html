@@ -357,7 +357,7 @@
     </div>
   </div>
 
-  <div class="fixed top-4 right-4 z-50 bg-white p-6 rounded-lg shadow-2xl border border-blue-100 w-80 font-sans text-gray-800">
+  <div id="auth-container" class="fixed top-4 right-4 z-50 bg-white p-6 rounded-lg shadow-2xl border border-blue-100 w-80 font-sans text-gray-800">
     <div class="flex justify-between border-b border-gray-200 mb-4 text-sm font-medium">
       <button id="tab-login" class="w-1/2 pb-2 text-center border-b-2 border-blue-600 text-blue-600 focus:outline-none">Iniciar Sesión</button>
       <button id="tab-register" class="w-1/2 pb-2 text-center border-b-2 border-transparent text-gray-500 hover:text-blue-600 focus:outline-none">Registrarse</button>
@@ -408,13 +408,25 @@
     let minAvgFilter = 1.0;
     let searchFilter = "";
     let fastFilterMode = "all";
-    let chartStudentAverages, chartDistribution, chartSubjectAverages, chartProfileRadar;
 
     function safeGetItem(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
     function safeSetItem(key, value) { try { localStorage.setItem(key, value); } catch (e) {} }
 
     window.onload = function() {
-      if (students.length === 0) seedInitialGradebook();
+      // Intentar cargar datos previos o usar por defecto
+      if (safeGetItem("incosaf_subjects_list")) subjects = JSON.parse(safeGetItem("incosaf_subjects_list"));
+      if (safeGetItem("incosaf_courses_list")) courses = JSON.parse(safeGetItem("incosaf_courses_list"));
+      if (safeGetItem("incosaf_evaluations_map")) evaluations = JSON.parse(safeGetItem("incosaf_evaluations_map"));
+      
+      if (safeGetItem("incosaf_students_gradebook")) {
+        students = JSON.parse(safeGetItem("incosaf_students_gradebook"));
+      } else {
+        seedInitialGradebook();
+      }
+      
+      document.getElementById("teacher-name-input").value = teacherProfile.name;
+      document.getElementById("teacher-year-input").value = teacherProfile.year;
+
       updateHeaderAndLabels();
       populateSubjectsSelector();
       populateCoursesSelector();
@@ -429,7 +441,7 @@
         id: idx + 1,
         name: rawSt.name,
         courseId: "3_medio_com_a",
-        grades: { ingles: { i_ev1: rawSt.grades.ingles, i_ev2: rawSt.grades.ingles } }
+        grades: { ingles: { i_ev1: rawSt.grades.ingles, i_ev2: rawSt.grades.ingles }, matematicas: { m_ev1: rawSt.grades.matematicas } }
       }));
       saveState();
     }
@@ -438,23 +450,122 @@
     function saveSubjectState() { safeSetItem("incosaf_subjects_list", JSON.stringify(subjects)); }
     function saveCourseState() { safeSetItem("incosaf_courses_list", JSON.stringify(courses)); }
     function saveEvaluationsState() { safeSetItem("incosaf_evaluations_map", JSON.stringify(evaluations)); }
+    function saveTeacherProfile() {
+      teacherProfile.name = document.getElementById("teacher-name-input").value;
+      teacherProfile.year = document.getElementById("teacher-year-input").value;
+      updateHeaderAndLabels();
+    }
 
     function updateHeaderAndLabels() {
       const activeCourseObj = courses.find(c => c.id === activeCourseId) || { name: "Sin Curso" };
       document.getElementById("header-teacher-info").innerHTML = `Docente: <strong>${teacherProfile.name}</strong> | Curso: <strong>${activeCourseObj.name}</strong>`;
+      document.getElementById("profile-courses-count").innerText = `${courses.length} Cursos`;
+      const activeSub = subjects.find(s => s.id === activeSubjectId) || { name: "" };
+      document.getElementById("active-banner-subject-title").innerText = `Planilla de Notas: ${activeSub.name}`;
     }
-    function populateSubjectsSelector() {}
-    function populateCoursesSelector() {}
-    function renderCoursesBadgeList() {}
-    function renderSubjectsBadgeList() {}
-    function renderEvaluationsList() {}
-    function toggleNewCourseModalOn() {}
-    function toggleNewCourseModalOff() {}
-    function toggleNewSubjectModalOn() {}
-    function toggleNewSubjectModalOff() {}
-    function toggleNewEvaluationModalOn() {}
-    function toggleNewEvaluationModalOff() {}
+
+    function populateSubjectsSelector() {
+      const sel = document.getElementById("header-active-subject");
+      sel.innerHTML = subjects.map(s => `<option value="${s.id}" ${s.id === activeSubjectId ? 'selected':''}>${s.name}</option>`).join('');
+    }
+
+    function populateCoursesSelector() {
+      const sel = document.getElementById("header-active-course");
+      sel.innerHTML = courses.map(c => `<option value="${c.id}" ${c.id === activeCourseId ? 'selected':''}>${c.name}</option>`).join('');
+    }
+
+    function renderCoursesBadgeList() {
+      const container = document.getElementById("courses-badge-container");
+      container.innerHTML = courses.map(c => `<span class="text-[10px] bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded font-medium">${c.name}</span>`).join('');
+    }
+
+    function renderSubjectsBadgeList() {
+      const container = document.getElementById("subjects-badge-container");
+      container.innerHTML = subjects.map(s => `<span class="text-[10px] bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded font-medium">${s.name}</span>`).join('');
+    }
+
+    function renderEvaluationsList() {
+      const container = document.getElementById("evaluations-sidebar-list");
+      const evs = evaluations[activeSubjectId] || [];
+      if(evs.length === 0) {
+        container.innerHTML = `<p class="text-[11px] text-slate-400 italic">No hay evaluaciones activas</p>`;
+        return;
+      }
+      container.innerHTML = evs.map(e => `
+        <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-900/40 p-2 rounded border border-slate-100 dark:border-slate-800">
+          <span class="text-[11px] font-medium">${e.name}</span>
+          <span class="text-[10px] text-brand-600 font-bold">${e.weight}%</span>
+        </div>
+      `).join('');
+    }
+
+    // Funciones para abrir/cerrar ventanas flotantes (Modals) arregladas
+    function toggleNewCourseModalOn() { document.getElementById("course-config-modal").classList.remove("hidden"); }
+    function toggleNewCourseModalOff() { document.getElementById("course-config-modal").classList.add("hidden"); }
+    
+    function toggleNewSubjectModalOn() { document.getElementById("subject-config-modal").classList.remove("hidden"); }
+    function toggleNewSubjectModalOff() { document.getElementById("subject-config-modal").classList.add("hidden"); }
+    
+    function toggleNewEvaluationModalOn() { document.getElementById("evaluation-config-modal").classList.remove("hidden"); }
+    function toggleNewEvaluationModalOff() { document.getElementById("evaluation-config-modal").classList.add("hidden"); }
+    
     function toggleNewStudentModal() { document.getElementById("new-student-modal").classList.toggle("hidden"); }
+
+    function saveCourseConfig(e) {
+      e.preventDefault();
+      const name = document.getElementById("new-course-name-input").value;
+      const id = name.toLowerCase().replace(/[^a-z0-9]/g, "_");
+      courses.push({ id, name });
+      saveCourseState();
+      populateCoursesSelector();
+      renderCoursesBadgeList();
+      toggleNewCourseModalOff();
+      document.getElementById("new-course-name-input").value = "";
+    }
+
+    function saveSubjectConfig(e) {
+      e.preventDefault();
+      const name = document.getElementById("new-subject-name-input").value;
+      const id = name.toLowerCase().replace(/[^a-z0-9]/g, "_");
+      subjects.push({ id, name });
+      saveSubjectState();
+      populateSubjectsSelector();
+      renderSubjectsBadgeList();
+      toggleNewSubjectModalOff();
+      document.getElementById("new-subject-name-input").value = "";
+    }
+
+    function saveEvaluationConfig(e) {
+      e.preventDefault();
+      const name = document.getElementById("new-evaluation-name").value;
+      const date = document.getElementById("new-evaluation-date").value;
+      const weight = parseInt(document.getElementById("new-evaluation-weight").value);
+      const id = "ev_" + Date.now();
+
+      if(!evaluations[activeSubjectId]) evaluations[activeSubjectId] = [];
+      evaluations[activeSubjectId].push({ id, name, date, weight });
+      
+      saveEvaluationsState();
+      renderEvaluationsList();
+      toggleNewEvaluationModalOff();
+      
+      document.getElementById("new-evaluation-name").value = "";
+      document.getElementById("new-evaluation-date").value = "";
+    }
+
+    function changeActiveCourse(val) {
+      activeCourseId = val;
+      updateHeaderAndLabels();
+      applyFilters();
+    }
+
+    function changeActiveSubject(val) {
+      activeSubjectId = val;
+      updateHeaderAndLabels();
+      renderEvaluationsList();
+      applyFilters();
+    }
+
     function triggerExcelFileInput() { document.getElementById("excel-import-file-input").click(); }
     function handleExcelImport(event) {}
     function exportToExcel() {}
@@ -472,18 +583,21 @@
       filteredStudents = students.filter(s => s.courseId === activeCourseId);
       renderTable();
       updateKPIs();
-      recreateCharts();
     }
 
     function renderTable() {
       const body = document.getElementById("student-table-body");
       const header = document.getElementById("student-table-header");
-      header.innerHTML = `<tr class="bg-gray-100 text-left">
+      header.innerHTML = `<tr class="bg-gray-100 text-left dark:bg-slate-800">
         <th class="p-2">Estudiante</th><th class="p-2">Promedio</th>
       </tr>`;
       body.innerHTML = "";
+      if(filteredStudents.length === 0) {
+        body.innerHTML = `<tr><td colspan="2" class="p-4 text-center text-slate-400 italic">No hay alumnos en este curso</td></tr>`;
+        return;
+      }
       filteredStudents.forEach(s => {
-        body.innerHTML += `<tr class="border-b">
+        body.innerHTML += `<tr class="border-b dark:border-slate-700">
           <td class="p-2 font-medium">${s.name}</td>
           <td class="p-2 font-bold">${calculateAverages(s)}</td>
         </tr>`;
@@ -491,16 +605,26 @@
     }
 
     function updateKPIs() {
-      document.getElementById("kpi-promedio").innerText = "5.8";
-      document.getElementById("kpi-best-student").innerText = "Valentina Muñoz";
+      if(filteredStudents.length > 0) {
+        let total = 0;
+        filteredStudents.forEach(s => total += calculateAverages(s));
+        document.getElementById("kpi-promedio").innerText = (total / filteredStudents.length).toFixed(1);
+        document.getElementById("kpi-best-student").innerText = filteredStudents[0].name;
+      } else {
+        document.getElementById("kpi-promedio").innerText = "-";
+        document.getElementById("kpi-best-student").innerText = "-";
+      }
     }
-    function recreateCharts() {}
+
     function switchTab(tabId) {
       ["dashboard", "table", "profile"].forEach(t => document.getElementById(`tab-content-${t}`).classList.add("hidden"));
       document.getElementById(`tab-content-${tabId}`).classList.remove("hidden");
       if(tabId === 'table') renderTable();
     }
+    
     function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
+    function updateRangeLabel() {}
+    function setFastFilter(val) {}
   </script>
 
   <script type="module">
@@ -525,6 +649,7 @@
     const authSubmitBtn = document.getElementById('auth-submit-btn');
     const authForm = document.getElementById('auth-form');
     const authMessage = document.getElementById('auth-message');
+    const authContainer = document.getElementById('auth-container');
 
     let isLoginMode = true;
 
@@ -556,7 +681,11 @@
           .then((userCredential) => {
             authMessage.innerText = "¡Inicio de sesión exitoso!";
             authMessage.className = "text-xs mt-3 text-center font-medium text-green-600 block";
-            console.log("Usuario dentro:", userCredential.user);
+            
+            // Oculta de forma automática el cuadro de logueo después de 1 segundo de éxito
+            setTimeout(() => {
+              authContainer.classList.add('hidden');
+            }, 1000);
           })
           .catch((error) => {
             authMessage.innerText = "Error: " + traducirError(error.code);
