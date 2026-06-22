@@ -361,7 +361,6 @@
           incosaf_profile: teacherProfile
         });
       }
-      renderAll();
     }
 
     function updateHeaderAndLabels() {
@@ -416,12 +415,14 @@
       courses = courses.filter(c => c.id !== id);
       if(activeCourseId === id && courses.length > 0) activeCourseId = courses[0].id;
       saveAndRefresh();
+      renderAll();
     }
 
     function removeSubject(id) {
       subjects = subjects.filter(s => s.id !== id);
       if(activeSubjectId === id && subjects.length > 0) activeSubjectId = subjects[0].id;
       saveAndRefresh();
+      renderAll();
     }
 
     function removeEvaluation(id) {
@@ -429,12 +430,14 @@
         evaluations[activeSubjectId] = evaluations[activeSubjectId].filter(e => e.id !== id);
       }
       saveAndRefresh();
+      renderAll();
     }
 
     function removeStudent(id) {
       if(confirm("¿Estás seguro de que deseas eliminar a este estudiante de forma permanente?")) {
         students = students.filter(s => s.id !== id);
         saveAndRefresh();
+        renderAll();
       }
     }
 
@@ -454,6 +457,7 @@
       toggleNewCourseModalOff();
       document.getElementById("new-course-name-input").value = "";
       saveAndRefresh();
+      renderAll();
     }
 
     function saveSubjectConfig(e) {
@@ -464,6 +468,7 @@
       toggleNewSubjectModalOff();
       document.getElementById("new-subject-name-input").value = "";
       saveAndRefresh();
+      renderAll();
     }
 
     function saveEvaluationConfig(e) {
@@ -476,6 +481,7 @@
       toggleNewEvaluationModalOff();
       document.getElementById("new-evaluation-name").value = "";
       saveAndRefresh();
+      renderAll();
     }
 
     function saveNewStudent(e) {
@@ -485,11 +491,11 @@
       toggleNewStudentModal();
       document.getElementById("new-student-name").value = "";
       saveAndRefresh();
-      renderTable(); 
+      renderAll(); 
     }
 
-    function changeActiveCourse(val) { activeCourseId = val; saveAndRefresh(); }
-    function changeActiveSubject(val) { activeSubjectId = val; saveAndRefresh(); }
+    function changeActiveCourse(val) { activeCourseId = val; renderAll(); }
+    function changeActiveSubject(val) { activeSubjectId = val; renderAll(); }
 
     function getAverageForSubject(student, subId) {
       const subGrades = student.grades?.[subId] || {};
@@ -540,8 +546,7 @@
             <td class="p-3 font-medium">${s.name}</td>
             ${currentEvs.map(e => {
               const grade = s.grades?.[activeSubjectId]?.[e.id] || "";
-              // CORREGIDO: Pasamos "this" directamente para leer el valor ingresado al vuelo en tiempo real
-              return `<td class="p-3 text-center"><input type="text" value="${grade > 0 ? grade : ''}" onchange="trackGradeLocal(${s.id}, '${activeSubjectId}', '${e.id}', this)" class="w-12 p-1 border rounded text-center dark:bg-slate-900"></td>`;
+              return `<td class="p-3 text-center"><input type="text" value="${grade > 0 ? grade : ''}" oninput="trackGradeLocal(${s.id}, '${activeSubjectId}', '${e.id}', this.value)" class="w-12 p-1 border rounded text-center dark:bg-slate-900"></td>`;
             }).join('')}
             <td class="p-3 text-center font-bold text-brand-600">${subAvg > 0 ? subAvg : '-'}</td>
             <td class="p-3 text-center">
@@ -554,14 +559,14 @@
       }).join('');
     }
 
-    // CORREGIDO: Procesa y guarda de forma infalible convirtiendo comas en puntos
-    function trackGradeLocal(studentId, subId, evId, inputElement) {
+    // CORREGIDO: Se ejecuta instantáneamente "oninput" de forma infalible guardando directo en la matriz estudiantes
+    function trackGradeLocal(studentId, subId, evId, value) {
       const student = students.find(s => s.id === studentId);
       if(student) {
         if(!student.grades[subId]) student.grades[subId] = {};
         
-        let value = inputElement.value.trim();
-        let cleanValue = value.replace(',', '.'); 
+        let valueStr = value.trim();
+        let cleanValue = valueStr.replace(',', '.'); 
         let parsedGrade = parseFloat(cleanValue);
         
         if (!isNaN(parsedGrade) && parsedGrade >= 1 && parsedGrade <= 7) {
@@ -572,10 +577,10 @@
       }
     }
 
-    // CORREGIDO: Guarda en Firebase y re-renderiza promedios al tiro
+    // CORREGIDO: Empuja los estados limpios guardados de las notas y refresca los promedios al tiro
     function forceSaveGradesToCloud() {
       saveAndRefresh();
-      renderTable(); 
+      renderAll(); 
       alert("¡Notas guardadas de forma segura en la nube! Sincronizado en todos tus dispositivos.");
     }
 
@@ -676,6 +681,7 @@
       }
 
       if(tabId === 'table') renderTable();
+      if(tabId === 'dashboard') renderDashboardChart();
     }
 
     function exportToExcel() {
@@ -735,7 +741,7 @@
         alert("¡Estudiantes extraídos correctamente! Se han agregado a tu lista en la nube.");
         document.getElementById("excel-file-uploader").value = ""; 
         saveAndRefresh();
-        renderTable();
+        renderAll();
       };
       reader.readAsArrayBuffer(file);
     }
