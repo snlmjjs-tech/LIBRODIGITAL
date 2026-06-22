@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Docente INCOSAF - Libro de Clases Digital</title>
+  <title>Portal Docente - Libro de Clases Digital</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -43,11 +43,11 @@
   <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex flex-wrap justify-between items-center gap-4 sticky top-0 z-40 shadow-sm">
     <div class="flex items-center gap-3.5">
       <div class="flex items-center justify-center">
-        <img src="Insignia INCOSAF.png" alt="Insignia INCOSAF" class="w-14 h-14 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/120x120/1e3a8a/ffffff?text=INCOSAF';">
+        <img src="Insignia INCOSAF.png" alt="Insignia" class="w-14 h-14 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/120x120/1e3a8a/ffffff?text=DOCENTE';">
       </div>
       <div>
         <h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-          PORTAL DOCENTE INCOSAF <span class="text-[10px] bg-brand-500/10 text-brand-600 dark:text-brand-400 font-semibold px-2 py-0.5 rounded border border-brand-500/20">LIBRO DE CLASES v3.1 NUBE</span>
+          PORTAL DOCENTE <span class="text-[10px] bg-brand-500/10 text-brand-600 dark:text-brand-400 font-semibold px-2 py-0.5 rounded border border-brand-500/20">v3.2 NUBE</span>
         </h1>
         <p class="text-xs text-slate-500 dark:text-slate-400" id="header-teacher-info">Esperando inicio de sesión en la nube...</p>
       </div>
@@ -66,7 +66,7 @@
 
       <nav class="flex space-x-1 bg-slate-100 dark:bg-slate-700/50 p-1 rounded-xl">
         <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="px-4 py-2 text-sm font-medium rounded-lg bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-sm flex items-center gap-2 transition-all">📊 Resumen</button>
-        <button onclick="switchTab('table')" id="btn-tab-table" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 transition-all">📋 Planilla</button>
+        <button onclick="switchTab('table')" id="btn-tab-table" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 transition-all">📝 Notas</button>
         <button onclick="switchTab('profile')" id="btn-tab-profile" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 transition-all">👤 Ficha Estudiante</button>
       </nav>
 
@@ -133,14 +133,16 @@
 
     <main class="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-900 p-6 flex flex-col justify-between gap-6">
       <div class="flex flex-col gap-6 w-full">
+        <!-- Rótulo de fondo azul modificado a PORTAL DOCENTE -->
         <div class="bg-gradient-to-r from-brand-900 to-brand-700 text-white rounded-2xl p-5 shadow-md flex justify-between items-center gap-4">
           <div>
             <span class="text-[10px] bg-white/20 text-white font-bold tracking-wider uppercase px-2.5 py-1 rounded-full">Gestión Escolar por Asignatura</span>
-            <h2 class="text-xl font-bold mt-2" id="active-banner-subject-title">Planilla de Notas</h2>
+            <h2 class="text-xl font-bold mt-2" id="active-banner-subject-title">PORTAL DOCENTE</h2>
           </div>
-          <button onclick="switchTab('table')" class="bg-white text-brand-900 text-xs font-bold px-4 py-2 rounded-xl shadow">✏️ Ver Planilla de Curso</button>
+          <button onclick="switchTab('table')" class="bg-white text-brand-900 text-xs font-bold px-4 py-2 rounded-xl shadow">✏️ Ver Notas de Curso</button>
         </div>
 
+        <!-- SECCIÓN RESUMEN -->
         <section id="tab-content-dashboard" class="space-y-6 fade-in">
           <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
             <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border xl:col-span-3 flex flex-col min-h-[300px]">
@@ -152,15 +154,23 @@
           </div>
         </section>
 
+        <!-- SECCIÓN NOTAS (PLANILLA REAUTORIZADA CON BOTÓN GUARDAR Y EXTRACTOR CORREGIDO) -->
         <section id="tab-content-table" class="hidden space-y-6 fade-in">
           <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border flex flex-col gap-4">
             <div class="flex flex-wrap justify-between items-center gap-4">
               <h3 class="text-base font-bold">Libro de Calificaciones Escolar</h3>
               <div class="flex flex-wrap gap-2">
-                <button onclick="triggerExcelImportClick()" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs shadow transition-all">
-                  📥 Extraer estudiantes y notas desde Excel
+                
+                <!-- Botón de guardado manual explícito requerido -->
+                <button onclick="forceSaveGradesToCloud()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md flex items-center gap-1 transition-all animate-pulse">
+                  💾 Guardar Notas en la Nube
                 </button>
-                <input type="file" id="excel-file-uploader" class="hidden" accept=".xlsx, .xls" onchange="importStudentsAndGradesFromExcel(event)">
+
+                <!-- Botón de extracción modificado según la orden -->
+                <button onclick="triggerExcelImportClick()" class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold rounded-xl text-xs border transition-all">
+                  📥 Extraer estudiantes desde Excel
+                </button>
+                <input type="file" id="excel-file-uploader" class="hidden" accept=".xlsx, .xls" onchange="importStudentsFromExcel(event)">
                 
                 <button onclick="exportToExcel()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-xs shadow transition-all">
                   📥 Descargar informe Excel
@@ -177,6 +187,7 @@
           </div>
         </section>
 
+        <!-- SECCIÓN FICHA ESTUDIANTE -->
         <section id="tab-content-profile" class="hidden space-y-6 fade-in">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border flex flex-col gap-4">
@@ -219,6 +230,7 @@
     </main>
   </div>
 
+  <!-- MODALS -->
   <div id="subject-config-modal" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50">
     <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 shadow-xl border">
       <h3 class="text-base font-bold mb-4">Añadir Asignatura</h3>
@@ -275,6 +287,7 @@
     </div>
   </div>
 
+  <!-- AUTH CONTAINER -->
   <div id="auth-container" class="fixed top-4 right-4 z-50 bg-white p-6 rounded-lg shadow-2xl border border-blue-100 w-80 font-sans text-gray-800">
     <div class="flex justify-between border-b border-gray-200 mb-4 text-sm font-medium">
       <button id="tab-login" class="w-1/2 pb-2 text-center border-b-2 border-blue-600 text-blue-600 focus:outline-none">Iniciar Sesión</button>
@@ -318,7 +331,7 @@
         courses = data.incosaf_courses || [];
         evaluations = data.incosaf_evaluations || {};
         students = data.incosaf_students || [];
-        teacherProfile = data.incosaf_profile || { name: "Usuario INCOSAF", year: "2026" };
+        teacherProfile = data.incosaf_profile || { name: "Usuario Docente", year: "2026" };
       } else {
         teacherProfile = { name: "Nuevo Docente", year: "2026" };
         subjects = [{ id: "ingles", name: "Inglés" }];
@@ -364,10 +377,9 @@
       document.getElementById("header-teacher-info").innerHTML = `Docente: <strong>${teacherProfile.name}</strong> | Curso: <strong>${activeCourseObj.name}</strong>`;
       document.getElementById("profile-courses-count").innerText = `${courses.length} Cursos`;
       const activeSub = subjects.find(s => s.id === activeSubjectId) || { name: "" };
-      document.getElementById("active-banner-subject-title").innerText = `Planilla de Notas: ${activeSub.name}`;
+      document.getElementById("active-banner-subject-title").innerText = `Notas: ${activeSub.name}`;
     }
 
-    // SELECTORES
     function populateSelectors() {
       document.getElementById("header-active-subject").innerHTML = subjects.map(s => `<option value="${s.id}" ${s.id === activeSubjectId ? 'selected':''}>${s.name}</option>`).join('');
       document.getElementById("header-active-course").innerHTML = courses.map(c => `<option value="${c.id}" ${c.id === activeCourseId ? 'selected':''}>${c.name}</option>`).join('');
@@ -420,7 +432,7 @@
       saveAndRefresh();
     }
 
-    UX_SUGG_REMOVEEVAL: function removeEvaluation(id) {
+    function removeEvaluation(id) {
       if(evaluations[activeSubjectId]) {
         evaluations[activeSubjectId] = evaluations[activeSubjectId].filter(e => e.id !== id);
       }
@@ -434,7 +446,6 @@
       }
     }
 
-    // MODALES CONTROLS
     function toggleNewCourseModalOn() { document.getElementById("course-config-modal").classList.remove("hidden"); }
     function toggleNewCourseModalOff() { document.getElementById("course-config-modal").classList.add("hidden"); }
     function toggleNewSubjectModalOn() { document.getElementById("subject-config-modal").classList.remove("hidden"); }
@@ -475,15 +486,12 @@
       saveAndRefresh();
     }
 
-    // CORREGIDO: Al agregar un alumno, renderiza la planilla inmediatamente al tiro
     function saveNewStudent(e) {
       e.preventDefault();
       const name = document.getElementById("new-student-name").value;
       students.push({ id: Date.now(), name, courseId: activeCourseId, grades: {} });
       toggleNewStudentModal();
       document.getElementById("new-student-name").value = "";
-      
-      // Guardar en la nube y forzar refresco visual inmediato de la planilla
       saveAndRefresh();
       renderTable(); 
     }
@@ -534,7 +542,8 @@
             <td class="p-3 font-medium">${s.name}</td>
             ${currentEvs.map(e => {
               const grade = s.grades?.[activeSubjectId]?.[e.id] || "";
-              return `<td class="p-3 text-center"><input type="number" min="1" max="7" step="0.1" value="${grade}" onchange="updateGrade(${s.id}, '${activeSubjectId}', '${e.id}', this.value)" class="w-12 p-1 border rounded text-center dark:bg-slate-900"></td>`;
+              // El cambio no se empuja de inmediato a la nube hasta presionar Guardar
+              return `<td class="p-3 text-center"><input type="number" min="1" max="7" step="0.1" value="${grade}" onchange="trackGradeLocal(${s.id}, '${activeSubjectId}', '${e.id}', this.value)" class="w-12 p-1 border rounded text-center dark:bg-slate-900"></td>`;
             }).join('')}
             <td class="p-3 text-center font-bold text-brand-600">${subAvg > 0 ? subAvg : '-'}</td>
             <td class="p-3 text-center">
@@ -547,13 +556,19 @@
       }).join('');
     }
 
-    function updateGrade(studentId, subId, evId, value) {
+    // Almacena la nota temporalmente en memoria mientras escribe
+    function trackGradeLocal(studentId, subId, evId, value) {
       const student = students.find(s => s.id === studentId);
       if(student) {
         if(!student.grades[subId]) student.grades[subId] = {};
         student.grades[subId][evId] = value ? parseFloat(value) : 0;
-        saveAndRefresh();
       }
+    }
+
+    // NUEVA FUNCIÓN: Envía de golpe las notas ingresadas a Firebase
+    function forceSaveGradesToCloud() {
+      saveAndRefresh();
+      alert("¡Notas guardadas de forma segura en la nube! Sincronizado en todos tus dispositivos.");
     }
 
     function renderDashboardChart() {
@@ -655,11 +670,10 @@
       if(tabId === 'table') renderTable();
     }
 
-    // EXPORTACIÓN A EXCEL
     function exportToExcel() {
       const courseStudents = students.filter(s => s.courseId === activeCourseId);
       if(courseStudents.length === 0) {
-        alert("No hay datos para exportar en este curso.");
+        alert("No hay datos para exportar.");
         return;
       }
 
@@ -682,13 +696,12 @@
       XLSX.writeFile(workbook, `Informe_Notas_${activeCourseObj.name.replace(/ /g, "_")}.xlsx`);
     }
 
-    // NUEVA FUNCIÓN: DISPARAR EL EXCEL FILE UPLOADER
     function triggerExcelImportClick() {
       document.getElementById("excel-file-uploader").click();
     }
 
-    // NUEVA FUNCIÓN: EXTRAER ESTUDIANTES Y NOTAS DESDE EXCEL DIRECTAMENTE A LA NUBE
-    function importStudentsAndGradesFromExcel(event) {
+    // MODIFICADO: Extrae única y exclusivamente los NOMBRES de los estudiantes del Excel
+    function importStudentsFromExcel(event) {
       const file = event.target.files[0];
       if (!file) return;
 
@@ -700,39 +713,20 @@
         const worksheet = workbook.Sheets[firstSheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-        const currentEvs = evaluations[activeSubjectId] || [];
-
         jsonData.forEach(row => {
-          // Validar que la fila contenga una columna llamada 'Estudiante'
           if (row["Estudiante"]) {
             const studentName = row["Estudiante"].trim();
             
-            // Comprobar si el alumno ya existe en el curso activo para no duplicarlo
             let student = students.find(s => s.name.toLowerCase() === studentName.toLowerCase() && s.courseId === activeCourseId);
             
             if (!student) {
-              student = { id: Date.now() + Math.floor(Math.random() * 1000), name: studentName, courseId: activeCourseId, grades: {} };
-              students.push(student);
+              students.push({ id: Date.now() + Math.floor(Math.random() * 1000), name: studentName, courseId: activeCourseId, grades: {} });
             }
-
-            if (!student.grades[activeSubjectId]) {
-              student.grades[activeSubjectId] = {};
-            }
-
-            // Extraer las notas correspondientes a las evaluaciones que tienes creadas en el panel
-            currentEvs.forEach(ev => {
-              if (row[ev.name] !== undefined) {
-                const gradeVal = parseFloat(row[ev.name]);
-                if (!isNaN(gradeVal) && gradeVal >= 1 && gradeVal <= 7) {
-                  student.grades[activeSubjectId][ev.id] = gradeVal;
-                }
-              }
-            });
           }
         });
 
-        alert("¡Datos extraídos con éxito! Alumnos y notas cargados en la nube.");
-        document.getElementById("excel-file-uploader").value = ""; // Limpiar el input
+        alert("¡Estudiantes extraídos correctamente! Se han agregado a tu lista en la nube.");
+        document.getElementById("excel-file-uploader").value = ""; 
         saveAndRefresh();
         renderTable();
       };
@@ -744,6 +738,7 @@
     function triggerLogout() { window.location.reload(); }
   </script>
 
+  <!-- FIREBASE IMPORTS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
