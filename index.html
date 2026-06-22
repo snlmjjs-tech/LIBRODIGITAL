@@ -47,9 +47,9 @@
       </div>
       <div>
         <h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-          PORTAL DOCENTE INCOSAF <span class="text-[10px] bg-brand-500/10 text-brand-600 dark:text-brand-400 font-semibold px-2 py-0.5 rounded border border-brand-500/20">LIBRO DE CLASES v2.4</span>
+          PORTAL DOCENTE INCOSAF <span class="text-[10px] bg-brand-500/10 text-brand-600 dark:text-brand-400 font-semibold px-2 py-0.5 rounded border border-brand-500/20">LIBRO DE CLASES v3.0 NUBE</span>
         </h1>
-        <p class="text-xs text-slate-500 dark:text-slate-400" id="header-teacher-info">Esperando inicio de sesión...</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400" id="header-teacher-info">Esperando inicio de sesión en la nube...</p>
       </div>
     </div>
 
@@ -280,7 +280,6 @@
   </div>
 
   <script>
-    // Variables globales globales controladas dinámicamente por usuario de Firebase
     let currentUserUid = "public"; 
     let teacherProfile = { name: "Docente", year: "2026" };
     let subjects = [];
@@ -292,27 +291,22 @@
 
     let radarChartInstance = null;
     let barChartInstance = null;
+    let firebaseDatabaseReference = null;
 
-    function safeGetItem(key) { return localStorage.getItem(currentUserUid + "_" + key); }
-    function safeSetItem(key, value) { localStorage.setItem(currentUserUid + "_" + key, value); }
-
-    // Carga los datos correspondientes únicamente al UID del usuario logueado
-    function loadUserData(uid) {
+    function initDataFromCloud(uid, data, dbPushFunction) {
       currentUserUid = uid;
-      
-      // Semilla por defecto si es una cuenta totalmente nueva
-      const savedSubjects = safeGetItem("incosaf_subjects");
-      if (savedSubjects) {
-        subjects = JSON.parse(savedSubjects);
-        courses = JSON.parse(safeGetItem("incosaf_courses"));
-        evaluations = JSON.parse(safeGetItem("incosaf_evaluations"));
-        students = JSON.parse(safeGetItem("incosaf_students"));
-        teacherProfile = JSON.parse(safeGetItem("incosaf_profile")) || { name: "Usuario INCOSAF", year: "2026" };
+      firebaseDatabaseReference = dbPushFunction;
+
+      if (data && data.incosaf_subjects) {
+        subjects = data.incosaf_subjects;
+        courses = data.incosaf_courses || [];
+        evaluations = data.incosaf_evaluations || {};
+        students = data.incosaf_students || [];
+        teacherProfile = data.incosaf_profile || { name: "Usuario INCOSAF", year: "2026" };
       } else {
-        // Estructura limpia inicial si el correo entra por primera vez
         teacherProfile = { name: "Nuevo Docente", year: "2026" };
         subjects = [{ id: "ingles", name: "Inglés" }];
-        courses = [{ id: "curso_1", name: "Primer Curso de Prueba" }];
+        courses = [{ id: "curso_1", name: "Primer Curso" }];
         evaluations = { ingles: [] };
         students = [];
       }
@@ -337,11 +331,15 @@
     }
 
     function saveAndRefresh() {
-      safeSetItem("incosaf_subjects", JSON.stringify(subjects));
-      safeSetItem("incosaf_courses", JSON.stringify(courses));
-      safeSetItem("incosaf_evaluations", JSON.stringify(evaluations));
-      safeSetItem("incosaf_students", JSON.stringify(students));
-      safeSetItem("incosaf_profile", JSON.stringify(teacherProfile));
+      if(firebaseDatabaseReference) {
+        firebaseDatabaseReference({
+          incosaf_subjects: subjects,
+          incosaf_courses: courses,
+          incosaf_evaluations: evaluations,
+          incosaf_students: students,
+          incosaf_profile: teacherProfile
+        });
+      }
       renderAll();
     }
 
@@ -587,9 +585,9 @@
       }).join('');
 
       const insight = document.getElementById("profile-pedagogical-insight");
-      if(generalAvg >= 6.0) insight.innerText = "Excelente rendimiento global. Se recomienda asignarle roles de liderazgo o tutoría entre pares para mantener la motivación.";
-      else if(generalAvg >= 4.0) insight.innerText = "Rendimiento regular y aprobado. Monitorear las materias con evaluaciones pendientes para consolidar los aprendizajes.";
-      else insight.innerText = "Alerta pedagógica activa. Requiere plan de reforzamiento prioritario y citación a apoderado debido a promedio bajo la nota mínima.";
+      if(generalAvg >= 6.0) insight.innerText = "Excelente rendimiento global. Se recomienda asignarle roles de liderazgo o tutoría entre pares.";
+      else if(generalAvg >= 4.0) insight.innerText = "Rendimiento regular y aprobado. Monitorear las materias con evaluaciones pendientes.";
+      else insight.innerText = "Alerta pedagógica activa. Requiere plan de reforzamiento prioritario.";
 
       const ctx = document.getElementById('chart-profile-radar').getContext('2d');
       const radarLabels = subjects.map(s => s.name);
@@ -624,15 +622,13 @@
     function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
     function saveTeacherProfile() { teacherProfile.name = document.getElementById("teacher-name-input").value; saveAndRefresh(); }
 
-    // Función de desconexión llamada por el botón Salir
-    function triggerLogout() {
-      window.location.reload(); 
-    }
+    function triggerLogout() { window.location.reload(); }
   </script>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDvF1IwWiPS10IottkfGzTzJWv2a9mplGU",
@@ -640,11 +636,13 @@
       projectId: "libro-digital-5b032",
       storageBucket: "libro-digital-5b032.firebasestorage.app",
       messagingSenderId: "141901799802",
-      appId: "1:141901799802:web:ea3d38b2d28677acfdf6c3"
+      appId: "1:141901799802:web:ea3d38b2d28677acfdf6c3",
+      databaseURL: "https://libro-digital-5b032-default-rtdb.firebaseio.com/"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getDatabase(app);
 
     const tabLogin = document.getElementById('tab-login');
     const tabRegister = document.getElementById('tab-register');
@@ -657,17 +655,27 @@
 
     let isLoginMode = true;
 
-    // Escucha de forma activa el cambio de usuario de Firebase
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Al detectar un usuario válido, carga sus datos segmentados por su UID único
         authContainer.classList.add('hidden');
         btnLogout.classList.remove('hidden');
-        loadUserData(user.uid); 
+        
+        const userDbRef = ref(db, 'users/' + user.uid);
+        
+        get(userDbRef).then((snapshot) => {
+          const cloudData = snapshot.val();
+          
+          const dbPushFunction = (updatedData) => {
+            set(ref(db, 'users/' + user.uid), updatedData);
+          };
+
+          initDataFromCloud(user.uid, cloudData, dbPushFunction);
+        });
+
       } else {
         authContainer.classList.remove('hidden');
         btnLogout.classList.add('hidden');
-        loadUserData("public");
+        initDataFromCloud("public", null, null);
       }
     });
 
