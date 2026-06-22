@@ -133,7 +133,6 @@
 
     <main class="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-900 p-6 flex flex-col justify-between gap-6">
       <div class="flex flex-col gap-6 w-full">
-        <!-- Rótulo de fondo azul modificado a PORTAL DOCENTE -->
         <div class="bg-gradient-to-r from-brand-900 to-brand-700 text-white rounded-2xl p-5 shadow-md flex justify-between items-center gap-4">
           <div>
             <span class="text-[10px] bg-white/20 text-white font-bold tracking-wider uppercase px-2.5 py-1 rounded-full">Gestión Escolar por Asignatura</span>
@@ -154,19 +153,17 @@
           </div>
         </section>
 
-        <!-- SECCIÓN NOTAS (PLANILLA REAUTORIZADA CON BOTÓN GUARDAR Y EXTRACTOR CORREGIDO) -->
+        <!-- SECCIÓN NOTAS -->
         <section id="tab-content-table" class="hidden space-y-6 fade-in">
           <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border flex flex-col gap-4">
             <div class="flex flex-wrap justify-between items-center gap-4">
               <h3 class="text-base font-bold">Libro de Calificaciones Escolar</h3>
               <div class="flex flex-wrap gap-2">
                 
-                <!-- Botón de guardado manual explícito requerido -->
-                <button onclick="forceSaveGradesToCloud()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md flex items-center gap-1 transition-all animate-pulse">
+                <button onclick="forceSaveGradesToCloud()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md flex items-center gap-1 transition-all">
                   💾 Guardar Notas en la Nube
                 </button>
 
-                <!-- Botón de extracción modificado según la orden -->
                 <button onclick="triggerExcelImportClick()" class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold rounded-xl text-xs border transition-all">
                   📥 Extraer estudiantes desde Excel
                 </button>
@@ -542,8 +539,7 @@
             <td class="p-3 font-medium">${s.name}</td>
             ${currentEvs.map(e => {
               const grade = s.grades?.[activeSubjectId]?.[e.id] || "";
-              // El cambio no se empuja de inmediato a la nube hasta presionar Guardar
-              return `<td class="p-3 text-center"><input type="number" min="1" max="7" step="0.1" value="${grade}" onchange="trackGradeLocal(${s.id}, '${activeSubjectId}', '${e.id}', this.value)" class="w-12 p-1 border rounded text-center dark:bg-slate-900"></td>`;
+              return `<td class="p-3 text-center"><input type="text" value="${grade}" onchange="trackGradeLocal(${s.id}, '${activeSubjectId}', '${e.id}', this.value)" class="w-12 p-1 border rounded text-center dark:bg-slate-900"></td>`;
             }).join('')}
             <td class="p-3 text-center font-bold text-brand-600">${subAvg > 0 ? subAvg : '-'}</td>
             <td class="p-3 text-center">
@@ -556,18 +552,28 @@
       }).join('');
     }
 
-    // Almacena la nota temporalmente en memoria mientras escribe
+    // CORREGIDO: Procesa y parsea las notas reemplazando comas por puntos automáticamente
     function trackGradeLocal(studentId, subId, evId, value) {
       const student = students.find(s => s.id === studentId);
       if(student) {
         if(!student.grades[subId]) student.grades[subId] = {};
-        student.grades[subId][evId] = value ? parseFloat(value) : 0;
+        
+        // Convertir comas en puntos antes de procesar el número
+        let cleanValue = value.replace(',', '.'); 
+        let parsedGrade = parseFloat(cleanValue);
+        
+        if (!isNaN(parsedGrade) && parsedGrade >= 1 && parsedGrade <= 7) {
+          student.grades[subId][evId] = parsedGrade;
+        } else {
+          student.grades[subId][evId] = 0;
+        }
       }
     }
 
-    // NUEVA FUNCIÓN: Envía de golpe las notas ingresadas a Firebase
+    // CORREGIDO: Guarda en Firebase y actualiza la tabla para refrescar los promedios en pantalla
     function forceSaveGradesToCloud() {
       saveAndRefresh();
+      renderTable(); 
       alert("¡Notas guardadas de forma segura en la nube! Sincronizado en todos tus dispositivos.");
     }
 
@@ -700,7 +706,6 @@
       document.getElementById("excel-file-uploader").click();
     }
 
-    // MODIFICADO: Extrae única y exclusivamente los NOMBRES de los estudiantes del Excel
     function importStudentsFromExcel(event) {
       const file = event.target.files[0];
       if (!file) return;
