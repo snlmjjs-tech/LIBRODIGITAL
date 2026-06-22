@@ -141,7 +141,6 @@
           <button onclick="switchTab('table')" class="bg-white text-brand-900 text-xs font-bold px-4 py-2 rounded-xl shadow">✏️ Ver Notas de Curso</button>
         </div>
 
-        <!-- SECCIÓN RESUMEN -->
         <section id="tab-content-dashboard" class="space-y-6 fade-in">
           <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
             <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border xl:col-span-3 flex flex-col min-h-[300px]">
@@ -153,7 +152,6 @@
           </div>
         </section>
 
-        <!-- SECCIÓN NOTAS -->
         <section id="tab-content-table" class="hidden space-y-6 fade-in">
           <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border flex flex-col gap-4">
             <div class="flex flex-wrap justify-between items-center gap-4">
@@ -184,7 +182,6 @@
           </div>
         </section>
 
-        <!-- SECCIÓN FICHA ESTUDIANTE -->
         <section id="tab-content-profile" class="hidden space-y-6 fade-in">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border flex flex-col gap-4">
@@ -227,7 +224,6 @@
     </main>
   </div>
 
-  <!-- MODALS -->
   <div id="subject-config-modal" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50">
     <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 shadow-xl border">
       <h3 class="text-base font-bold mb-4">Añadir Asignatura</h3>
@@ -284,7 +280,6 @@
     </div>
   </div>
 
-  <!-- AUTH CONTAINER -->
   <div id="auth-container" class="fixed top-4 right-4 z-50 bg-white p-6 rounded-lg shadow-2xl border border-blue-100 w-80 font-sans text-gray-800">
     <div class="flex justify-between border-b border-gray-200 mb-4 text-sm font-medium">
       <button id="tab-login" class="w-1/2 pb-2 text-center border-b-2 border-blue-600 text-blue-600 focus:outline-none">Iniciar Sesión</button>
@@ -501,8 +496,14 @@
       const keys = Object.keys(subGrades);
       if(keys.length === 0) return 0;
       let sum = 0;
-      keys.forEach(k => sum += subGrades[k]);
-      return parseFloat((sum / keys.length).toFixed(1));
+      let validKeysCount = 0;
+      keys.forEach(k => {
+        if(subGrades[k] && subGrades[k] > 0) {
+          sum += subGrades[k];
+          validKeysCount++;
+        }
+      });
+      return validKeysCount > 0 ? parseFloat((sum / validKeysCount).toFixed(1)) : 0;
     }
 
     function getGeneralAverage(student) {
@@ -539,7 +540,8 @@
             <td class="p-3 font-medium">${s.name}</td>
             ${currentEvs.map(e => {
               const grade = s.grades?.[activeSubjectId]?.[e.id] || "";
-              return `<td class="p-3 text-center"><input type="text" value="${grade}" onchange="trackGradeLocal(${s.id}, '${activeSubjectId}', '${e.id}', this.value)" class="w-12 p-1 border rounded text-center dark:bg-slate-900"></td>`;
+              // CORREGIDO: Pasamos "this" directamente para leer el valor ingresado al vuelo en tiempo real
+              return `<td class="p-3 text-center"><input type="text" value="${grade > 0 ? grade : ''}" onchange="trackGradeLocal(${s.id}, '${activeSubjectId}', '${e.id}', this)" class="w-12 p-1 border rounded text-center dark:bg-slate-900"></td>`;
             }).join('')}
             <td class="p-3 text-center font-bold text-brand-600">${subAvg > 0 ? subAvg : '-'}</td>
             <td class="p-3 text-center">
@@ -552,13 +554,13 @@
       }).join('');
     }
 
-    // CORREGIDO: Procesa y parsea las notas reemplazando comas por puntos automáticamente
-    function trackGradeLocal(studentId, subId, evId, value) {
+    // CORREGIDO: Procesa y guarda de forma infalible convirtiendo comas en puntos
+    function trackGradeLocal(studentId, subId, evId, inputElement) {
       const student = students.find(s => s.id === studentId);
       if(student) {
         if(!student.grades[subId]) student.grades[subId] = {};
         
-        // Convertir comas en puntos antes de procesar el número
+        let value = inputElement.value.trim();
         let cleanValue = value.replace(',', '.'); 
         let parsedGrade = parseFloat(cleanValue);
         
@@ -570,7 +572,7 @@
       }
     }
 
-    // CORREGIDO: Guarda en Firebase y actualiza la tabla para refrescar los promedios en pantalla
+    // CORREGIDO: Guarda en Firebase y re-renderiza promedios al tiro
     function forceSaveGradesToCloud() {
       saveAndRefresh();
       renderTable(); 
@@ -743,7 +745,6 @@
     function triggerLogout() { window.location.reload(); }
   </script>
 
-  <!-- FIREBASE IMPORTS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
