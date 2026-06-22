@@ -433,11 +433,13 @@
       renderAll();
     }
 
+    // CORREGIDO: Al eliminar al estudiante refresca la vista visual de inmediato al tiro
     function removeStudent(id) {
       if(confirm("¿Estás seguro de que deseas eliminar a este estudiante de forma permanente?")) {
         students = students.filter(s => s.id !== id);
         saveAndRefresh();
-        renderAll();
+        renderTable(); 
+        renderStudentListForProfile();
       }
     }
 
@@ -484,6 +486,7 @@
       renderAll();
     }
 
+    // CORREGIDO: Al agregar al estudiante refresca la vista visual de inmediato al tiro
     function saveNewStudent(e) {
       e.preventDefault();
       const name = document.getElementById("new-student-name").value;
@@ -491,7 +494,8 @@
       toggleNewStudentModal();
       document.getElementById("new-student-name").value = "";
       saveAndRefresh();
-      renderAll(); 
+      renderTable(); 
+      renderStudentListForProfile();
     }
 
     function changeActiveCourse(val) { activeCourseId = val; renderAll(); }
@@ -559,7 +563,7 @@
       }).join('');
     }
 
-    // CORREGIDO: Se ejecuta instantáneamente "oninput" de forma infalible guardando directo en la matriz estudiantes
+    // CORREGIDO: Se ejecuta instantáneamente "oninput" de forma infalible guardando directo en la memoria ram
     function trackGradeLocal(studentId, subId, evId, value) {
       const student = students.find(s => s.id === studentId);
       if(student) {
@@ -577,10 +581,10 @@
       }
     }
 
-    // CORREGIDO: Empuja los estados limpios guardados de las notas y refresca los promedios al tiro
+    // CORREGIDO: Empuja los estados limpios guardados de las notas y refresca los promedios al tiro sin perder nada
     function forceSaveGradesToCloud() {
       saveAndRefresh();
-      renderAll(); 
+      renderTable(); 
       alert("¡Notas guardadas de forma segura en la nube! Sincronizado en todos tus dispositivos.");
     }
 
@@ -714,6 +718,7 @@
       document.getElementById("excel-file-uploader").click();
     }
 
+    // CORREGIDO POR COMPLETO: Lee masivamente y renderiza en la tabla al tiro
     function importStudentsFromExcel(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -726,22 +731,29 @@
         const worksheet = workbook.Sheets[firstSheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
+        let agregados = 0;
+
         jsonData.forEach(row => {
           if (row["Estudiante"]) {
             const studentName = row["Estudiante"].trim();
             
-            let student = students.find(s => s.name.toLowerCase() === studentName.toLowerCase() && s.courseId === activeCourseId);
+            // Validar duplicados en el curso activo
+            let studentExists = students.some(s => s.name.toLowerCase() === studentName.toLowerCase() && s.courseId === activeCourseId);
             
-            if (!student) {
-              students.push({ id: Date.now() + Math.floor(Math.random() * 1000), name: studentName, courseId: activeCourseId, grades: {} });
+            if (!studentExists) {
+              students.push({ id: Date.now() + Math.floor(Math.random() * 5000), name: studentName, courseId: activeCourseId, grades: {} });
+              agregados++;
             }
           }
         });
 
-        alert("¡Estudiantes extraídos correctamente! Se han agregado a tu lista en la nube.");
+        alert(`¡Extracción completada! Se ingresaron ${agregados} alumnos nuevos al curso actual.`);
         document.getElementById("excel-file-uploader").value = ""; 
+        
+        // Guardado síncrono y refresco visual al tiro
         saveAndRefresh();
-        renderAll();
+        renderTable();
+        renderStudentListForProfile();
       };
       reader.readAsArrayBuffer(file);
     }
